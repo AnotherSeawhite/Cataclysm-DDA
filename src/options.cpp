@@ -2654,7 +2654,6 @@ void options_manager::add_options_graphics()
              false, COPT_CURSES_HIDE
            );
 #endif
-        
 #if defined(__ANDROID__)
         get_option( "FRAMEBUFFER_ACCEL" ).setPrerequisite( "SOFTWARE_RENDERING" );
 #else
