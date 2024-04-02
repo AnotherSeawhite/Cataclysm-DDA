@@ -360,12 +360,8 @@ static void WinCreate()
     if( !software_renderer ) {
         dbg( D_INFO ) << "Attempting to initialize accelerated SDL renderer.";
 
-        int init_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
-        if( get_option<bool>( "VSYNC" ) ) {
-            init_flags |= SDL_RENDERER_PRESENTVSYNC;
-        }
-
-        renderer.reset( SDL_CreateRenderer( ::window.get(), renderer_id, init_flags ) );
+        renderer.reset( SDL_CreateRenderer( ::window.get(), renderer_id, SDL_RENDERER_ACCELERATED |
+                                            SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE ) );
         if( printErrorIf( !renderer,
                           "Failed to initialize accelerated renderer, falling back to software rendering" ) ) {
             software_renderer = true;
