@@ -1,0 +1,8 @@
+  name: Upload a Build Artifact
+  uses: actions/upload-artifact@v4.3.1
+  with:
+    name: translation
+    path: .github/workflows/pull-translations.yml
+    compression-level: 0
+    # If true, an artifact with a matching name will be deleted before a new one is uploaded. If false, the action will fail if an artifact for the given name already exists. Does not fail if the artifact does not exist.
+    overwrite: true
