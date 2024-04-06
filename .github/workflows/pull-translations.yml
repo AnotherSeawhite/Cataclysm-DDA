@@ -42,13 +42,6 @@ jobs:
         run: ./lang/discard_invalid_po.sh
       - name: "Update stats"
         run: ./lang/update_stats.sh
-      - name: "Upload Translation Artifact"
-        uses: actions/upload-artifact@v4
-        with:
-          name: ready-to-use
-          path: .github/workflows/pull-translations.yml
-          compression-level: 0
-          overwrite: true
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
