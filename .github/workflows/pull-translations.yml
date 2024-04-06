@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ready-to-use
-          path: translation-artifacts
+          path: .github/workflows/pull-translations.yml
           compression-level: 0
           overwrite: true
       - name: Create Pull Request
