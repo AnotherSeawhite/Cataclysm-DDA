@@ -13,27 +13,14 @@ jobs:
       - name: "Install Transifex CLI"
         run: |
           curl -sL https://github.com/transifex/cli/releases/download/v1.6.4/tx-linux-amd64.tar.gz | sudo tar zxvf - -C /usr/bin tx
-      - name: "Delete existing i18n branch"
-        uses: actions/github-script@v6.3.3
-        with:
-          github-token: ${{ secrets.TX_PR_CREATOR }}
-          script: |
-            try {
-              await github.rest.git.deleteRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: "heads/i18n"
-              })
-            } catch (error) {
-              console.log(error)
-            }
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "Get current date"
-        uses: josStorer/get-current-time@v2.0.2
-        id: current-date
-        with:
-          format: 'DD MMMM YYYY'
+      - name: "Pull translations"
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        run: tx pull --force
+      - name: "Discard invalid translations"
+        run: ./lang/discard_invalid_po.sh
       - name: Compile translations
         run: |
           lang/compile_mo.sh all
@@ -41,5 +28,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ready-to-use
-          path: lang/mo
+          path: lang/mo/ko/LC_MESSAGES/cataclysm-dda.mo
           overwrite: true
