@@ -1,12 +1,11 @@
 name: "Pull translations from Transifex"
 
 on:
-  schedule:
-    - cron: "42 1 * * 6"
+  workflow_dispatch:
 
 jobs:
   pull-translations:
-    if: github.repository == 'CleverRaven/Cataclysm-DDA'
+    if: github.repository == 'AnotherSeawhite/Cataclysm-DDA'
     runs-on: ubuntu-22.04
     steps:
       - name: install gettext tools
