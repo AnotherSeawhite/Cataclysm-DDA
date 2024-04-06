@@ -34,7 +34,7 @@ jobs:
         id: current-date
         with:
           format: 'DD MMMM YYYY'
-      - name: Compile translations (windows)
+      - name: Compile translations
         run: |
           lang/compile_mo.sh all
       - name: "Upload Translation Artifact"
@@ -42,5 +42,4 @@ jobs:
         with:
           name: ready-to-use
           path: lang/mo
-          compression-level: 0
           overwrite: true
