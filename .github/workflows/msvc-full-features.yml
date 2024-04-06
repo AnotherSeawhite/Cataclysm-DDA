@@ -1,20 +1,6 @@
 name: Cataclysm Windows build
 
 on:
-  push:
-    branches:
-    - master
-    paths-ignore:
-    - 'android/**'
-    - 'build-data/osx/**'
-    - 'doc/**'
-    - 'doxygen_doc/**'
-    - 'gfx/**'
-    - 'lang/**'
-    - 'lgtm/**'
-    - 'tools/**'
-    - '!tools/format/**'
-    - 'utilities/**'
   pull_request:
     branches:
     - master
