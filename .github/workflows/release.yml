@@ -64,13 +64,6 @@ jobs:
             ext: zip
             content: application/zip
             sound: 0
-          - name: Android x64
-            os: ubuntu-latest
-            mxe: none
-            android: arm64
-            artifact: android-x64
-            ext: apk
-            content: application/apk
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     permissions: write-all
