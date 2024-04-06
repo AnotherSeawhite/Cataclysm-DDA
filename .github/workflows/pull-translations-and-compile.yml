@@ -1,4 +1,4 @@
-name: "Pull translations from Transifex"
+name: "Pull translations and compile"
 
 on:
   workflow_dispatch:
