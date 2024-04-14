@@ -99,6 +99,7 @@
 #include "trap.h"
 #include "ui.h"
 #include "ui_manager.h"
+#include "uistate.h"
 #include "units.h"
 #include "value_ptr.h"
 #include "veh_type.h"
@@ -266,8 +267,6 @@ static const faction_id faction_no_faction( "no_faction" );
 static const fault_id fault_bionic_salvaged( "fault_bionic_salvaged" );
 
 static const field_type_str_id field_fd_clairvoyant( "fd_clairvoyant" );
-
-static const furn_str_id furn_f_null( "f_null" );
 
 static const itype_id fuel_type_animal( "animal" );
 static const itype_id fuel_type_muscle( "muscle" );
@@ -3060,6 +3059,13 @@ void Character::remove_mission_items( int mission_id )
 void Character::on_move( const tripoint_abs_ms &old_pos )
 {
     Creature::on_move( old_pos );
+    // Ugly to compare a tripoint_bub_ms with a tripoint_abs_ms, but the 'z' component
+    // is the same regardless of the x/y reference point.
+    if( this->pos_bub().z() != old_pos.z() ) {
+        // Make sure caches are rebuilt in a timely manner to ensure companions aren't
+        // caught in the "dark" because the caches aren't updated on their next move.
+        get_map().build_map_cache( this->pos_bub().z() );
+    }
     // In case we've moved out of range of lifting assist.
     if( using_lifting_assist ) {
         invalidate_weight_carried_cache();
@@ -3180,8 +3186,10 @@ units::mass Character::weight_capacity() const
     // Get base capacity from creature,
     // then apply enchantment.
     units::mass ret = Creature::weight_capacity();
+    // Not using get_str() so pain and other temporary effects won't decrease carrying capacity;
+    // transiently reducing carry weight is unlikely to have any play impact besides being very annoying.
     /** @EFFECT_STR increases carrying capacity */
-    ret += get_str() * 4_kilogram;
+    ret += ( get_str_base() + get_str_bonus() ) * 4_kilogram;
 
     ret = enchantment_cache->modify_value( enchant_vals::mod::CARRY_WEIGHT, ret );
 
@@ -5602,7 +5610,7 @@ Character::comfort_response_t Character::base_comfort_value( const tripoint_bub_
             }
         }
         // Not in a vehicle, start checking furniture/terrain/traps at this point in decreasing order
-        else if( furn_at_pos != f_null ) {
+        else if( furn_at_pos != furn_str_id::NULL_ID() ) {
             comfort += 0 + furn_at_pos.obj().comfort;
         }
         // Web sleepers can use their webs if better furniture isn't available
@@ -5653,7 +5661,7 @@ Character::comfort_response_t Character::base_comfort_value( const tripoint_bub_
             comfort += static_cast<int>( comfort_level::very_comfortable );
         }
     } else if( plantsleep ) {
-        if( vp || furn_at_pos != f_null ) {
+        if( vp || furn_at_pos != furn_str_id::NULL_ID() ) {
             // Sleep ain't happening in a vehicle or on furniture
             comfort = static_cast<int>( comfort_level::impossible );
         } else {
@@ -9202,7 +9210,7 @@ units::temperature_delta Character::floor_bedding_warmth( const tripoint &pos )
     const optional_vpart_position vp = here.veh_at( pos );
     const std::optional<vpart_reference> boardable = vp.part_with_feature( "BOARDABLE", true );
     // Search the floor for bedding
-    if( furn_at_pos != f_null ) {
+    if( furn_at_pos != furn_str_id::NULL_ID() ) {
         return furn_at_pos.obj().floor_bedding_warmth;
     } else if( !trap_at_pos.is_null() ) {
         return trap_at_pos.floor_bedding_warmth;
@@ -9555,6 +9563,11 @@ void Character::add_to_inv_search_caches( item &it ) const
 
         cache.second.items.push_back( it.get_safe_reference() );
     }
+}
+
+void Character::clear_inventory_search_cache()
+{
+    inv_search_caches.clear();
 }
 
 bool Character::has_charges( const itype_id &it, int quantity,
@@ -10433,11 +10446,10 @@ void Character::place_corpse( const tripoint_abs_omt &om_target )
     // and essentially select the last one that has no furniture.
     // Q: Why check for furniture? (Check for passable or can-place-items seems more useful.) A: Furniture blocks revival?
     // Q: Why not grep a random point out of all the possible points (e.g. via random_entry)?
-    // Q: Why use furn_str_id instead of f_null?
     // TODO: fix it, see above.
-    if( bay.furn( fin ) != furn_f_null ) {
+    if( bay.furn( fin ) != furn_str_id::NULL_ID() ) {
         for( const tripoint &p : bay.points_on_zlevel() ) {
-            if( bay.furn( p ) == furn_f_null ) {
+            if( bay.furn( p ) == furn_str_id::NULL_ID() ) {
                 fin.x = p.x;
                 fin.y = p.y;
             }
@@ -12388,33 +12400,36 @@ stat_mod Character::get_pain_penalty() const
 {
     stat_mod ret;
     int pain = get_perceived_pain();
-    if( pain <= 0 ) {
+    // if less than 10 pain, do not apply any penalties
+    if( pain <= 10 ) {
         return ret;
     }
 
-    // Int and per are penalized more, 100 pain to drop stat to zero vs 140-ish for str and dex
-    float penalty_mod = pain * 0.01f;
-    float lesser_penalty_mod = pain * 0.007f;
+    float penalty_str = pain * get_option<float>( "PAIN_PENALTY_MOD_STR" );
+    float penalty_dex = pain * get_option<float>( "PAIN_PENALTY_MOD_DEX" );
+    float penalty_int = pain * get_option<float>( "PAIN_PENALTY_MOD_INT" );
+    float penalty_per = pain * get_option<float>( "PAIN_PENALTY_MOD_PER" );
 
 
     ret.strength = enchantment_cache->modify_value( enchant_vals::mod::PAIN_PENALTY_MOD_STR,
-                   get_str() * lesser_penalty_mod );
+                   get_str() * penalty_str );
 
     ret.dexterity = enchantment_cache->modify_value( enchant_vals::mod::PAIN_PENALTY_MOD_DEX,
-                    get_dex() * lesser_penalty_mod );
+                    get_dex() * penalty_dex );
 
     ret.intelligence = enchantment_cache->modify_value( enchant_vals::mod::PAIN_PENALTY_MOD_INT,
-                       get_int() * penalty_mod );
+                       get_int() * penalty_int );
 
     ret.perception = enchantment_cache->modify_value( enchant_vals::mod::PAIN_PENALTY_MOD_PER,
-                     get_per() * penalty_mod );
+                     get_per() * penalty_per );
 
 
     // Prevent negative penalties, there is better ways to give bonuses for pain
-    ret.strength = std::max( ret.strength, 0 );
-    ret.dexterity = std::max( ret.dexterity, 0 );
-    ret.intelligence = std::max( ret.intelligence, 0 );
-    ret.perception = std::max( ret.perception, 0 );
+    // Also not make character has 0 stats
+    ret.strength = std::max( ret.strength, 1 );
+    ret.dexterity = std::max( ret.dexterity, 1 );
+    ret.intelligence = std::max( ret.intelligence, 1 );
+    ret.perception = std::max( ret.perception, 1 );
 
 
     int speed_penalty = std::pow( pain, 0.7f );
@@ -12843,7 +12858,8 @@ void Character::process_items()
     // Load all items that use the UPS and have their own battery to their minimal functional charge,
     // The tool is not really useful if its charges are below charges_to_use
     std::vector<item *> inv_use_ups = cache_get_items_with( flag_USE_UPS, []( item & it ) {
-        return !!it.ammo_data();
+        return ( it.ammo_capacity( ammo_battery ) > it.ammo_remaining() ||
+                 ( it.type->battery && it.type->battery->max_capacity > it.energy_remaining( nullptr ) ) );
     } );
     if( !inv_use_ups.empty() ) {
         const units::energy available_charges = available_ups();
