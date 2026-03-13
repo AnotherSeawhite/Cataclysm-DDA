@@ -303,8 +303,8 @@ android {
         }
         experimental {
             dimension "version"
-            applicationIdSuffix ".experimental"
-            resValue "string", "app_name", "Cataclysm DDA (experimental)"
+            applicationIdSuffix ".test"
+            resValue "string", "app_name", "Cataclysm DDA (TEST)"
         }
     }
 
