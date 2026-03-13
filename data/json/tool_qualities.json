@@ -323,6 +323,11 @@
   },
   {
     "type": "tool_quality",
+    "id": "SNOW_MAKING",
+    "name": { "str": "snow making" }
+  },
+  {
+    "type": "tool_quality",
     "id": "GRIND",
     "name": { "str": "grinding" }
   },
@@ -466,5 +471,11 @@
     "type": "tool_quality",
     "id": "THREAD_TAP",
     "name": { "str": "thread tapping" }
+  },
+  {
+    "type": "tool_quality",
+    "id": "STRIKING_SURFACE",
+    "//": "If item can be used to ignite matches.",
+    "name": { "str": "striking surface" }
   }
 ]

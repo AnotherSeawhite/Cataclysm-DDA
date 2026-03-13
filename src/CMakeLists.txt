@@ -13,7 +13,24 @@ if (WIN32)
             OBJECT_DEPENDS "${RSRC_RC_DEP}")
 endif ()
 
-file(GLOB CATACLYSM_DDA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB CATACLYSM_DDA_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/cata_allocator_c.c)
+
+if (MSVC)
+    set_source_files_properties(
+        ${CMAKE_CURRENT_SOURCE_DIR}/mapgen.cpp
+        PROPERTIES COMPILE_OPTIONS "/bigobj"
+    )
+endif()
+
+if (NOT WARN_STALE_DATA)
+    set_source_files_properties(
+        ${CMAKE_CURRENT_SOURCE_DIR}/flexbuffer_cache.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/options.cpp
+        PROPERTIES COMPILE_DEFINITIONS NO_STALE_DATA_WARN
+    )
+endif()
 
 list(REMOVE_ITEM CATACLYSM_DDA_SOURCES ${MAIN_CPP} ${MESSAGES_CPP})
 
@@ -81,7 +98,7 @@ if (TILES)
     target_compile_definitions(cataclysm-tiles-common PUBLIC TILES )
     if(NOT "${CMAKE_EXPORT_COMPILE_COMMANDS}")
         target_precompile_headers(cataclysm-tiles-common PUBLIC
-            ${CMAKE_SOURCE_DIR}/pch/main-pch.hpp)
+            "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_SOURCE_DIR}/pch/main-pch.hpp>")
     endif ()
     if (LOCALIZE)
         target_include_directories(cataclysm-tiles-common PUBLIC
@@ -137,6 +154,7 @@ if (TILES)
         target_link_libraries(cataclysm-tiles-common PUBLIC setupapi.lib)
         if (SOUND)
             target_link_libraries(cataclysm-tiles-common PUBLIC shlwapi.lib)
+            target_link_libraries(cataclysm-tiles-common PUBLIC dwrite.lib)
         endif()
         if (BACKTRACE)
             target_link_libraries(cataclysm-tiles-common PUBLIC dbghelp.lib)
@@ -155,6 +173,13 @@ if (TILES)
     if (RELEASE)
         install(TARGETS cataclysm-tiles RUNTIME)
     endif ()
+
+    if (TARGET ZLIB::ZLIB)
+        target_link_libraries(cataclysm-tiles-common PUBLIC ZLIB::ZLIB)
+    else()
+        target_link_libraries(cataclysm-tiles-common PUBLIC ${ZLIB_LIBRARIES})
+    endif()
+
 endif ()
 
 # Build curses version if requested
@@ -163,7 +188,6 @@ if (CURSES)
             ${CATACLYSM_DDA_SOURCES}
             ${CATACLYSM_DDA_HEADERS})
     target_include_directories(cataclysm-common INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-
     target_link_libraries(cataclysm-common PUBLIC third-party)
 
     if (WIN32)
@@ -171,6 +195,12 @@ if (CURSES)
                 ${MAIN_CPP}
                 ${MESSAGES_CPP}
                 ${RESOURCE_RC})
+        if(NOT MINGW)
+            # Use only our RT_MANIFEST from resource.rc
+            target_link_options(cataclysm PRIVATE
+                "LINKER:/MANIFEST:NO"
+            )
+        endif()
     else ()
         add_executable(cataclysm
                 ${MAIN_CPP}
@@ -189,8 +219,10 @@ if (CURSES)
                 ${ICONV_LIBRARIES})
     endif ()
 
-    target_include_directories(cataclysm-common PUBLIC ${CURSES_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
-    target_link_libraries(cataclysm-common PUBLIC ${CURSES_LIBRARIES} ${ZLIB_LIBRARIES})
+    target_include_directories(cataclysm-common PUBLIC
+        ${CURSES_INCLUDE_DIR} ${NCURSES_INCLUDE_DIRS}
+    )
+    target_link_libraries(cataclysm-common PUBLIC ${CURSES_LIBRARIES})
 
     if (CMAKE_USE_PTHREADS_INIT)
         target_compile_options(cataclysm-common PUBLIC "-pthread")
@@ -202,6 +234,9 @@ if (CURSES)
 
     if (WIN32)
         # Global settings for Windows targets (at end)
+        if(USE_PDCURSES)
+            target_compile_definitions(cataclysm-common PUBLIC USE_PDCURSES)
+        endif()
         target_link_libraries(cataclysm-common PUBLIC gdi32.lib)
         target_link_libraries(cataclysm-common PUBLIC winmm.lib)
         target_link_libraries(cataclysm-common PUBLIC imm32.lib)
@@ -222,6 +257,12 @@ if (CURSES)
     if (RELEASE)
         install(TARGETS cataclysm RUNTIME)
     endif ()
+
+    if (TARGET ZLIB::ZLIB)
+        target_link_libraries(cataclysm-common PUBLIC ZLIB::ZLIB)
+    else()
+        target_link_libraries(cataclysm-common PUBLIC ${ZLIB_LIBRARIES})
+    endif()
 endif ()
 
 if (MINGW AND NOT RELEASE)

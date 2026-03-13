@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <set>
@@ -34,7 +35,7 @@ int Character::ammo_count_for( const item_location &gun ) const
 
     if( required > 0 ) {
         int total_ammo = 0;
-        total_ammo += gun->ammo_remaining();
+        total_ammo += gun->ammo_remaining( );
 
         bool has_mag = gun->magazine_integral();
 
@@ -43,7 +44,7 @@ int Character::ammo_count_for( const item_location &gun ) const
         for( const item_location &ammo : found_ammo ) {
             if( ammo->is_magazine() ) {
                 has_mag = true;
-                total_ammo += ammo->ammo_remaining();
+                total_ammo += ammo->ammo_remaining( );
             } else if( ammo->is_ammo() ) {
                 loose_ammo += ammo->charges;
             }
@@ -109,7 +110,8 @@ bool Character::list_ammo( const item_location &base, std::vector<item::reload_o
                 // even if something is preventing reloading at the moment.
                 ammo_match_found = true;
             } else if( ( ammo->has_flag( flag_SPEEDLOADER ) || ammo->has_flag( flag_SPEEDLOADER_CLIP ) ) &&
-                       p->allows_speedloader( ammo->typeId() ) && ammo->ammo_remaining() > 1 && p->ammo_remaining() < 1 ) {
+                       p->allows_speedloader( ammo->typeId() ) && ammo->ammo_remaining( ) > 1 &&
+                       p->ammo_remaining( ) < 1 ) {
                 // Again, this is "are they compatible", later check handles "can we do it now".
                 ammo_match_found = p.can_reload_with( ammo, false );
             }
@@ -163,7 +165,7 @@ int Character::item_reload_cost( const item &it, const item &ammo, int qty ) con
 
     int cost = 0;
     if( it.is_gun() ) {
-        cost = it.get_reload_time();
+        cost = it.get_reload_time() * qty;
     } else if( it.type->magazine ) {
         cost = it.type->magazine->reload_time * qty;
     } else {
@@ -207,7 +209,7 @@ hint_rating Character::rate_action_reload( const item &it ) const
 hint_rating Character::rate_action_unload( const item &it ) const
 {
     if( it.is_container() && !it.empty() &&
-        it.can_unload_liquid() ) {
+        it.can_unload() ) {
         return hint_rating::good;
     }
 
@@ -221,7 +223,7 @@ hint_rating Character::rate_action_unload( const item &it ) const
 
     for( const item *e : it.gunmods() ) {
         if( ( e->is_gun() && !e->has_flag( flag_NO_UNLOAD ) &&
-              ( e->magazine_current() || e->ammo_remaining() > 0 || e->casings_count() > 0 ) ) ||
+              ( e->magazine_current() || e->ammo_remaining( ) > 0 || e->casings_count() > 0 ) ) ||
             ( e->has_flag( flag_BRASS_CATCHER ) && !e->is_container_empty() ) ) {
             return hint_rating::good;
         }
@@ -231,7 +233,7 @@ hint_rating Character::rate_action_unload( const item &it ) const
         return hint_rating::cant;
     }
 
-    if( it.ammo_remaining() > 0 || it.casings_count() > 0 ) {
+    if( it.ammo_remaining( ) > 0 || it.casings_count() > 0 ) {
         return hint_rating::good;
     }
 

@@ -27,7 +27,8 @@
         [ "propane_cooker", 2 ],
         [ "acetylene_cooker", 1 ],
         [ "popcan_stove", 3 ],
-        [ "fire", -1 ]
+        [ "fire", -1 ],
+        [ "fake_solar_cooker", -1 ]
       ]
     ]
   },
@@ -65,7 +66,7 @@
     "id": "frying_oil",
     "type": "requirement",
     "//": "Oil usable for frying. Note: the oil is reusable.",
-    "tools": [ [ [ "cooking_oil", -1 ], [ "cooking_oil2", -1 ], [ "ghee", -1 ] ] ]
+    "tools": [ [ [ "cooking_oil", -1 ], [ "tallow", -1 ], [ "ghee", -1 ] ] ]
   },
   {
     "id": "water_boiling_heat",
@@ -94,8 +95,8 @@
         [ "propane_cooker", 16 ],
         [ "acetylene_cooker", 8 ],
         [ "popcan_stove", 20 ],
-        [ "atomic_coffeepot", 115 ],
-        [ "fire", -1 ]
+        [ "fire", -1 ],
+        [ "fake_solar_cooker", -1 ]
       ]
     ]
   },

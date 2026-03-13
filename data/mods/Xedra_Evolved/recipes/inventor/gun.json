@@ -300,7 +300,6 @@
         [ "m14ebr", 1 ],
         [ "M24", 1 ],
         [ "ak308", 1 ],
-        [ "savage_111f", 1 ],
         [ "scar_h", 1 ]
       ],
       [
@@ -310,7 +309,6 @@
         [ "m14ebr", 1 ],
         [ "M24", 1 ],
         [ "ak308", 1 ],
-        [ "savage_111f", 1 ],
         [ "scar_h", 1 ]
       ],
       [ [ "pipe", 15 ] ],
@@ -359,7 +357,6 @@
         [ "remington_870", 1 ],
         [ "remington_870_express", 1 ],
         [ "ksg", 1 ],
-        [ "ksg-25", 1 ],
         [ "saiga_12", 1 ],
         [ "tavor_12", 1 ],
         [ "winchester_1897", 1 ]
@@ -609,7 +606,7 @@
       }
     ],
     "components": [
-      [ [ "heavy_disposable_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
+      [ [ "heavy_plus_battery_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
       [ [ "plastic_chunk", 25 ] ],
       [ [ "scrap", 20 ] ],
       [ [ "power_supply", 4 ] ],
@@ -653,7 +650,7 @@
       }
     ],
     "components": [
-      [ [ "heavy_disposable_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
+      [ [ "heavy_plus_battery_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
       [ [ "plastic_chunk", 25 ] ],
       [ [ "scrap", 20 ] ],
       [ [ "power_supply", 4 ] ],
@@ -697,7 +694,7 @@
       }
     ],
     "components": [
-      [ [ "heavy_disposable_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
+      [ [ "heavy_plus_battery_cell", 1 ], [ "inventor_heavy_cell", 1 ] ],
       [ [ "plastic_chunk", 25 ] ],
       [ [ "scrap", 20 ] ],
       [ [ "power_supply", 4 ] ],

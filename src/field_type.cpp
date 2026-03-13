@@ -1,12 +1,12 @@
 #include "field_type.h"
 
-#include <cstdlib>
+#include <algorithm>
 
 #include "debug.h"
 #include "enum_conversions.h"
 #include "enums.h"
+#include "flexbuffer_json.h"
 #include "generic_factory.h"
-#include "json.h"
 
 const field_type_str_id fd_null = field_type_str_id::NULL_ID();
 const field_type_str_id fd_acid( "fd_acid" );
@@ -25,6 +25,7 @@ const field_type_str_id fd_dazzling( "fd_dazzling" );
 const field_type_str_id fd_electricity( "fd_electricity" );
 const field_type_str_id fd_electricity_unlit( "fd_electricity_unlit" );
 const field_type_str_id fd_extinguisher( "fd_extinguisher" );
+const field_type_str_id fd_fatigue( "fd_fatigue" );
 const field_type_str_id fd_fire( "fd_fire" );
 const field_type_str_id fd_fire_vent( "fd_fire_vent" );
 const field_type_str_id fd_flame_burst( "fd_flame_burst" );
@@ -46,7 +47,6 @@ const field_type_str_id fd_last_known( "fd_last_known" );
 const field_type_str_id fd_nuke_gas( "fd_nuke_gas" );
 const field_type_str_id fd_plasma( "fd_plasma" );
 const field_type_str_id fd_push_items( "fd_push_items" );
-const field_type_str_id fd_reality_tear( "fd_reality_tear" );
 const field_type_str_id fd_relax_gas( "fd_relax_gas" );
 const field_type_str_id fd_sap( "fd_sap" );
 const field_type_str_id fd_shock_vent( "fd_shock_vent" );
@@ -177,7 +177,29 @@ const field_intensity_level &field_type::get_intensity_level( int level ) const
     return intensity_levels[level];
 }
 
-void field_type::load( const JsonObject &jo, const std::string_view )
+void field_effect::deserialize( const JsonObject &jo )
+{
+    mandatory( jo, false, "effect_id", id );
+    optional( jo, false, "min_duration", min_duration );
+    optional( jo, false, "max_duration", max_duration );
+    optional( jo, false, "intensity", intensity );
+    optional( jo, false, "body_part", bp, bodypart_str_id::NULL_ID() );
+    optional( jo, false, "is_environmental", is_environmental );
+    optional( jo, false, "immune_in_vehicle", immune_in_vehicle );
+    optional( jo, false, "immune_inside_vehicle", immune_inside_vehicle );
+    optional( jo, false, "immune_outside_vehicle", immune_outside_vehicle );
+    optional( jo, false, "chance_in_vehicle", chance_in_vehicle );
+    optional( jo, false, "chance_inside_vehicle", chance_inside_vehicle );
+    optional( jo, false, "chance_outside_vehicle", chance_outside_vehicle );
+    optional( jo, false, "message", message );
+    optional( jo, false, "message_npc", message_npc );
+    const auto game_message_type_reader = enum_flags_reader<game_message_type> { "game message types" };
+    optional( jo, false, "message_type", env_message_type, game_message_type_reader );
+    JsonObject jid = jo.get_object( "immunity_data" );
+    field_types::load_immunity( jid, immunity_data );
+}
+
+void field_type::load( const JsonObject &jo, std::string_view )
 {
     optional( jo, was_loaded, "legacy_enum_id", legacy_enum_id, -1 );
     for( const JsonObject jao : jo.get_array( "intensity_levels" ) ) {
@@ -230,25 +252,7 @@ void field_type::load( const JsonObject &jo, const std::string_view )
         if( jao.has_array( "effects" ) ) {
             for( const JsonObject joe : jao.get_array( "effects" ) ) {
                 field_effect fe;
-                mandatory( joe, was_loaded, "effect_id", fe.id );
-                optional( joe, was_loaded, "min_duration", fe.min_duration );
-                optional( joe, was_loaded, "max_duration", fe.max_duration );
-                optional( joe, was_loaded, "intensity", fe.intensity );
-                optional( joe, was_loaded, "body_part", fe.bp, bodypart_str_id::NULL_ID() );
-                optional( joe, was_loaded, "is_environmental", fe.is_environmental );
-                optional( joe, was_loaded, "immune_in_vehicle", fe.immune_in_vehicle );
-                optional( joe, was_loaded, "immune_inside_vehicle", fe.immune_inside_vehicle );
-                optional( joe, was_loaded, "immune_outside_vehicle", fe.immune_outside_vehicle );
-                optional( joe, was_loaded, "chance_in_vehicle", fe.chance_in_vehicle );
-                optional( joe, was_loaded, "chance_inside_vehicle", fe.chance_inside_vehicle );
-                optional( joe, was_loaded, "chance_outside_vehicle", fe.chance_outside_vehicle );
-                optional( joe, was_loaded, "message", fe.message );
-                optional( joe, was_loaded, "message_npc", fe.message_npc );
-                const auto game_message_type_reader = enum_flags_reader<game_message_type> { "game message types" };
-                optional( joe, was_loaded, "message_type", fe.env_message_type, game_message_type_reader );
-                JsonObject jid = joe.get_object( "immunity_data" );
-                field_types::load_immunity( jid, fe.immunity_data );
-
+                fe.deserialize( joe );
                 intensity_level.field_effects.emplace_back( fe );
             }
         } else {
@@ -292,8 +296,11 @@ void field_type::load( const JsonObject &jo, const std::string_view )
     optional( jo, was_loaded, "has_acid", has_acid, false );
     optional( jo, was_loaded, "has_elec", has_elec, false );
     optional( jo, was_loaded, "has_fume", has_fume, false );
+    optional( jo, was_loaded, "moppable", moppable, false );
     optional( jo, was_loaded, "priority", priority, 0 );
     optional( jo, was_loaded, "half_life", half_life, 0_turns );
+    optional( jo, was_loaded, "linear_half_life", linear_half_life, false );
+    optional( jo, was_loaded, "indestructible", indestructible, false );
     const auto description_affix_reader = enum_flags_reader<description_affix> { "description affixes" };
     optional( jo, was_loaded, "description_affix", desc_affix, description_affix_reader,
               description_affix::DESCRIPTION_AFFIX_IN );
@@ -309,8 +316,12 @@ void field_type::load( const JsonObject &jo, const std::string_view )
     optional( jo, was_loaded, "mopsafe", mopsafe, false );
 
     optional( jo, was_loaded, "decrease_intensity_on_contact", decrease_intensity_on_contact, false );
-
-    bash_info.load( jo, "bash", map_bash_info::field, "field " + id.str() );
+    if( jo.has_object( "bash" ) ) {
+        if( !bash_info ) {
+            bash_info.emplace();
+        }
+        bash_info->load( jo.get_object( "bash" ), was_loaded, "field " + id.str() );
+    }
     if( was_loaded && jo.has_member( "copy-from" ) && looks_like.empty() ) {
         looks_like = jo.get_string( "copy-from" );
     }
@@ -389,17 +400,17 @@ void field_types::load_immunity( const JsonObject &jid, field_immunity_data &fd 
     }
     for( JsonArray jao : jid.get_array( "body_part_env_resistance" ) ) {
         fd.immunity_data_body_part_env_resistance.emplace_back(
-            io::string_to_enum<body_part_type::type>
+            io::string_to_enum<bp_type>
             ( jao.get_string( 0 ) ), jao.get_int( 1 ) );
     }
     for( JsonArray jao : jid.get_array( "immunity_flags_worn" ) ) {
-        fd.immunity_data_part_item_flags.emplace_back( io::string_to_enum<body_part_type::type>
+        fd.immunity_data_part_item_flags.emplace_back( io::string_to_enum<bp_type>
                 ( jao.get_string( 0 ) ), jao.get_string( 1 ) );
     }
 
     for( JsonArray jao : jid.get_array( "immunity_flags_worn_any" ) ) {
         fd.immunity_data_part_item_flags_any.emplace_back(
-            io::string_to_enum<body_part_type::type>
+            io::string_to_enum<bp_type>
             ( jao.get_string( 0 ) ), jao.get_string( 1 ) );
     }
 }

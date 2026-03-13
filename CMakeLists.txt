@@ -32,6 +32,7 @@ option(JSON_FORMAT "Build JSON formatter" "OFF")
 option(CATA_CCACHE "Try to find and build with ccache" "ON")
 option(CATA_CLANG_TIDY_PLUGIN "Build Cata's custom clang-tidy checks as a plugin" "OFF")
 option(CATA_CLANG_TIDY_EXECUTABLE "Build Cata's custom clang-tidy checks as an executable" "OFF")
+option(WARN_STALE_DATA "Warn if file integrity check fails" "OFF")
 option(TESTS "Compile Cata's tests" "ON")
 set(CATA_CLANG_TIDY_INCLUDE_DIR "" CACHE STRING
         "Path to internal clang-tidy headers required for plugin (e.g. ClangTidy.h)")
@@ -105,6 +106,13 @@ endif()
 #SET(CMAKE_SHARED_LIBRARY_C_FLAGS "${CMAKE_SHARED_LIBRARY_C_FLAGS} -m32")
 #SET(CMAKE_SHARED_LIBRARY_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -m32")
 
+if (NOT MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcx16")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcx16")
+endif()
+
+include(ListImportedTargets)
+
 find_package(PkgConfig)
 if (NOT DYNAMIC_LINKING)
     if(NOT MSVC)
@@ -133,8 +141,7 @@ message(STATUS "${PROJECT_NAME} build options --")
 
 # Preset variables
 if (NOT LANGUAGES)
-    set(LANGUAGES ar cs da de el es_AR es_ES fil_PH fr ga_IE hu id is it_IT ja ko nb nl pl pt_BR ro
-    ru sr tr uk_UA zh_CN zh_TW)
+    set(LANGUAGES "")
 endif ()
 
 if (GIT_BINARY)
@@ -211,7 +218,7 @@ message(STATUS "LOCALIZE                      : ${LOCALIZE}")
 message(STATUS "USE_XDG_DIR                   : ${USE_XDG_DIR}")
 message(STATUS "USE_HOME_DIR                  : ${USE_HOME_DIR}")
 message(STATUS "LANGUAGES                     : ${LANGUAGES}")
-message(STATUS "See doc/COMPILING/COMPILING-CMAKE.md for details and more info --")
+message(STATUS "See doc/c++/COMPILING-CMAKE.md for details and more info --")
 
 if (NOT MSVC)
     set(CATA_WARNINGS
@@ -227,7 +234,6 @@ if (NOT MSVC)
              -Wsuggest-override \
              -Wunused-macros \
              -Wzero-as-null-pointer-constant \
-             -Wno-unknown-warning-option \
              -Wno-dangling-reference \
              -Wno-c++20-compat")
     if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
@@ -255,7 +261,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
             "This project requires an out of source build. \
              Remove the file 'CMakeCache.txt' found in this directory before continuing; \
              create a separate build directory and run 'cmake [options] <srcs>' from there. \
-             See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
+             See doc/c++/COMPILING-CMAKE.md for details and more info.")
 endif ()
 
 #set(THREADS_USE_PTHREADS_WIN32 True)
@@ -284,27 +290,29 @@ if (TILES)
                 "This project requires SDL2 to be installed to compile in graphical mode.  \
                  Please install the SDL2 development libraries, \
                  or try compiling without -DTILES=1 for a text-only compilation. \
-                 See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
+                 See doc/c++/COMPILING-CMAKE.md for details and more info.")
     endif ()
 
     message(STATUS "Searching for SDL2_TTF library --")
     find_package(SDL2_ttf)
-    if (NOT (SDL2_TTF_FOUND OR TARGET SDL2::SDL2_ttf OR TARGET SDL2_ttf::SDL2_ttf-static))
+    if (NOT (SDL2_TTF_FOUND OR TARGET SDL2::SDL2_ttf OR TARGET SDL2_ttf::SDL2_ttf
+        OR TARGET SDL2_ttf::SDL2_ttf-static))
         message(FATAL_ERROR
                 "This project requires SDL2_ttf to be installed to compile in graphical mode. \
                  Please install the SDL2_ttf development libraries, \
                  or try compiling without -DTILES=1 for a text-only compilation. \
-                 See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
+                 See doc/c++/COMPILING-CMAKE.md for details and more info.")
     endif ()
 
     message(STATUS "Searching for SDL2_image library --")
     find_package(SDL2_image)
-    if (NOT (SDL2_IMAGE_FOUND OR TARGET SDL2::SDL2_image OR TARGET SDL2_image::SDL2_image-static))
+    if (NOT (SDL2_IMAGE_FOUND OR TARGET SDL2::SDL2_image OR TARGET SDL2_image::SDL2_image
+        OR TARGET SDL2_image::SDL2_image-static))
         message(FATAL_ERROR
                 "This project requires SDL2_image to be installed to compile in graphical mode. \
                  Please install the SDL2_image development libraries, \
                  or try compiling without -DTILES=1 for a text-only compilation. \
-                 See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
+                 See doc/c++/COMPILING-CMAKE.md for details and more info.")
     endif ()
     add_definitions(-DTILES)
 endif ()
@@ -314,13 +322,51 @@ if (CURSES)
     message(STATUS "Searching for Curses library --")
     set(CURSES_NEED_NCURSES TRUE)
     set(CURSES_NEED_WIDE TRUE)
-    find_package(Curses)
-    if (NOT CURSES_FOUND)
+    if (WIN32 AND VCPKG_MANIFEST_MODE)
+        find_package(unofficial-pdcurses CONFIG)
+        if(TARGET unofficial::pdcurses::pdcurses)
+            get_target_property(_IMPORTED_CONFIGURATIONS unofficial::pdcurses::pdcurses
+                IMPORTED_CONFIGURATIONS
+            )
+            if (RELEASE AND "Release" IN_LIST _IMPORTED_CONFIGURATIONS)
+                get_target_property(_IMPORTED_LOCATION unofficial::pdcurses::pdcurses
+                IMPORTED_IMPLIB_RELEASE)
+            elseif("Debug" IN_LIST _IMPORTED_CONFIGURATIONS)
+                get_target_property(_IMPORTED_LOCATION unofficial::pdcurses::pdcurses
+                IMPORTED_IMPLIB_DEBUG)
+            endif()
+            set_target_properties(unofficial::pdcurses::pdcurses PROPERTIES
+                IMPORTED_LOCATION ${_IMPORTED_LOCATION})
+            set(USE_PDCURSES TRUE)
+        endif()
+    elseif(MSYS2)
+        if(True) # GNU NCURSES: mingw-w64-ucrt-x86_64-ncurses
+            add_library(pdcurses STATIC IMPORTED)
+            set_target_properties(pdcurses PROPERTIES
+                IMPORTED_LOCATION $ENV{MSYSTEM_PREFIX}/lib/libncursesw.a
+                INTERFACE_INCLUDE_DIRECTORIES $ENV{MSYSTEM_PREFIX}/include/ncursesw
+            )
+            set(USE_PDCURSES FALSE)
+        else() # PDCursesMOD: mingw-w64-ucrt-x86_64-pdcurses
+            add_library(pdcurses STATIC IMPORTED)
+            set_target_properties(pdcurses PROPERTIES
+                IMPORTED_LOCATION $ENV{MSYSTEM_PREFIX}/lib/libpdcurses_wingui.a
+                INTERFACE_INCLUDE_DIRECTORIES $ENV{MSYSTEM_PREFIX}/include/pdcurses
+                INTERFACE_COMPILE_DEFINITIONS
+                "PDC_WIDE;PDC_FORCE_UTF8;PDC_NCMOUSE;PDC_RGB;CHTYPE_32"
+            )
+            set(USE_PDCURSES TRUE)
+        endif()
+        set(CURSES_FOUND True)
+    else ()
+        find_package(Curses)
+    endif ()
+    if (NOT (CURSES_FOUND OR TARGET unofficial::pdcurses::pdcurses))
         message(FATAL_ERROR
                 "This project requires ncurses to be installed to be compiled in text-only mode. \
                  Please install the ncurses development libraries, \
                  or try compiling with -DTILES=1 for a graphical compilation. \
-                 See doc/COMPILING/COMPILING-CMAKE.md for details and more info")
+                 See doc/c++/COMPILING-CMAKE.md for details and more info")
     endif ()
     if (NOT DYNAMIC_LINKING)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNCURSES_STATIC")
@@ -328,23 +374,18 @@ if (CURSES)
 endif ()
 
 if (SOUND)
-    # You need TILES to be able to use SOUND
-    if (NOT TILES)
-        message(FATAL_ERROR
-                "You must enable graphical support with -DTILES=1 \
-                 to be able to enable sound support. \
-                 See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
-    endif ()
-
     # Sound requires SDL_mixer library
     message(STATUS "Searching for SDL2_mixer library --")
+    if (VCPKG_MANIFEST_MODE)
+        find_package(Vorbis CONFIG REQUIRED)
+    endif()
     find_package(SDL2_mixer)
     if (NOT (SDL2_MIXER_FOUND OR TARGET SDL2_mixer::SDL2_mixer
                               OR TARGET SDL2_mixer::SDL2_mixer-static))
         message(FATAL_ERROR
                 "You need the SDL2_mixer development library \
                     to be able to compile with sound enabled. \
-                    See doc/COMPILING/COMPILING-CMAKE.md for details and more info.")
+                    See doc/c++/COMPILING-CMAKE.md for details and more info.")
     endif()
 endif ()
 
@@ -383,12 +424,28 @@ if (USE_XDG_DIR)
     add_definitions(-DUSE_XDG_DIR)
 endif ()
 
-find_program(CCACHE_FOUND ccache)
+find_program(CCACHE_FOUND ccache HINTS ${CMAKE_CURRENT_SOURCE_DIR}/ccache)
 if (CCACHE_FOUND AND CATA_CCACHE)
-    set(CMAKE_C_COMPILER_LAUNCHER ccache)
-    set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-    set(CMAKE_C_LINKER_LAUNCHER ccache)
-    set(CMAKE_CXX_LINKER_LAUNCHER ccache)
+    set(CMAKE_C_COMPILER_LAUNCHER ${CCACHE_FOUND})
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_FOUND})
+    set(CMAKE_C_LINKER_LAUNCHER ${CCACHE_FOUND})
+    set(CMAKE_CXX_LINKER_LAUNCHER ${CCACHE_FOUND})
+    if (MSVC)
+        string(REPLACE /Zi /Z7 CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
+        string(REPLACE /Zi /Z7 CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+        string(REPLACE /Zi /Z7 CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+        string(REPLACE /Zi /Z7 CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+        cmake_path(GET CCACHE_FOUND PARENT_PATH ClToolPath)
+        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props "
+<Project>
+    <PropertyGroup>
+        <ClToolPath>${ClToolPath}</ClToolPath>
+        <TrackFileAccess>false</TrackFileAccess>
+        <UseMultiToolTask>true</UseMultiToolTask>
+    </PropertyGroup>
+</Project>
+        ")
+    endif ()
 endif ()
 
 add_subdirectory(src)
@@ -398,6 +455,8 @@ if (NOT MSVC)
 endif()
 
 if(TESTS)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/tests/catch/contrib)
+    include(Catch)
     add_subdirectory(tests)
 endif()
 

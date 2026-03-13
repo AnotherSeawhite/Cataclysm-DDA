@@ -1,30 +1,65 @@
 #include <algorithm>
-#include <cmath>
+#include <array>
 #include <cstdlib>
+#include <functional>
+#include <map>
+#include <memory>
+#include <set>
 #include <string>
 #include <utility>
+#include <vector>
 
+#include "activity_actor_definitions.h"
 #include "addiction.h"
 #include "avatar_action.h"
-#include "creature.h"
+#include "bodypart.h"
+#include "calendar.h"
+#include "catacharset.h"
 #include "character.h"
 #include "character_modifier.h"
+#include "color.h"
+#include "coordinates.h"
+#include "creature.h"
+#include "cursesdef.h"
+#include "debug.h"
 #include "display.h"
 #include "effect.h"
+#include "enums.h"
 #include "flag.h"
 #include "game.h"
+#include "game_constants.h"
 #include "input_context.h"
+#include "input_enums.h"
+#include "inventory.h"
+#include "item.h"
+#include "messages.h"
 #include "output.h"
+#include "point.h"
+#include "proficiency.h"
+#include "requirements.h"
+#include "skill.h"
+#include "string_formatter.h"
+#include "translation.h"
+#include "translations.h"
+#include "type_id.h"
 #include "ui_manager.h"
+#include "uilist.h"
+#include "units.h"
 #include "weather.h"
+#include "weighted_list.h"
+#include "wound.h"
+
+class avatar;
 
 static const efftype_id effect_bite( "bite" );
 static const efftype_id effect_bleed( "bleed" );
 static const efftype_id effect_infected( "infected" );
 static const efftype_id effect_mending( "mending" );
 
+static const json_character_flag json_flag_BIONIC_LIMB( "BIONIC_LIMB" );
 static const json_character_flag json_flag_PAIN_IMMUNE( "PAIN_IMMUNE" );
 
+static const trait_id trait_DEBUG_HS( "DEBUG_HS" );
 static const trait_id trait_SUNLIGHT_DEPENDENT( "SUNLIGHT_DEPENDENT" );
 static const trait_id trait_TROGLO( "TROGLO" );
 static const trait_id trait_TROGLO2( "TROGLO2" );
@@ -110,7 +145,7 @@ class medical_column
                           const int BORDER_END ) const {
             mvwvline( window, point( COLUMN_START.x, BORDER_START ), LINE_XOXO,
                       BORDER_END - 4 ); // |
-            mvwputch( window, point( COLUMN_START.x, BORDER_END - 1 ), BORDER_COLOR,
+            mvwaddch( window, point( COLUMN_START.x, BORDER_END - 1 ),
                       LINE_XXOX ); // _|_
         }
 
@@ -209,14 +244,13 @@ static std::string coloured_stat_display( int statCur, int statMax )
         cstatus = c_green;
     }
     std::string cur = colorize( string_format( _( "%2d" ), statCur ), cstatus );
-    return string_format( _( "%s (%s)" ), cur, statMax );
+    return string_format( _( "%s (%d)" ), cur, statMax );
 }
 
-static void draw_medical_titlebar( const catacurses::window &window, avatar *player,
+static void draw_medical_titlebar( const catacurses::window &window, Character &you,
                                    const int WIDTH )
 {
     input_context ctxt( "MEDICAL", keyboard_mode::keychar );
-    const Character &you = *player->as_character();
 
     werase( window );
     draw_border( window, BORDER_COLOR, _( " MEDICAL " ) );
@@ -233,33 +267,31 @@ static void draw_medical_titlebar( const catacurses::window &window, avatar *pla
 
     int width = getmaxx( window );
     int height = getmaxy( window );
-    for( int i = 1; i < height - 1; ++i ) {
-        // |
-        mvwputch( window, point( 0, i ), BORDER_COLOR, LINE_XOXO );
-        // |
-        mvwputch( window, point( width - 1, i ), BORDER_COLOR, LINE_XOXO );
-    }
-    // |-
-    mvwputch( window, point( 0, height - 1 ), BORDER_COLOR, LINE_XXXO );
-    // -|
-    mvwputch( window, point( width - 1, height - 1 ), BORDER_COLOR, LINE_XOXX );
+    wattron( window, BORDER_COLOR );
+    // NOLINTNEXTLINE(cata-use-named-point-constants)
+    mvwvline( window, point( 0,          1 ), LINE_XOXO, height - 2 ); // |
+    mvwvline( window, point( width - 1, 1 ), LINE_XOXO, height - 2 );  // |
+
+    mvwaddch( window, point( 0,         height - 1 ), LINE_XXXO ); // |-
+    mvwaddch( window, point( width - 1, height - 1 ), LINE_XOXX ); // -|
+    wattroff( window, BORDER_COLOR );
 
     int right_indent = 2;
     int cur_str_pos = 0;
 
     // Pain Indicator
-    auto pain_descriptor = display::pain_text_color( *player );
+    auto pain_descriptor = display::pain_text_color( you );
     if( !pain_descriptor.first.empty() ) {
         const std::string pain_str = string_format( _( "In %s" ), pain_descriptor.first );
 
         cur_str_pos = right_print( window, 1, right_indent, pain_descriptor.second, pain_str );
 
         // Borders
-        for( int i = 1; i < getmaxy( window ) - 1; i++ ) {
-            mvwputch( window, point( cur_str_pos - 2, i ), BORDER_COLOR, LINE_XOXO ); // |
-        }
-        mvwputch( window, point( cur_str_pos - 2, 0 ), BORDER_COLOR, LINE_OXXX ); // ^|^
-        mvwputch( window, point( cur_str_pos - 2, 2 ), BORDER_COLOR, LINE_XXOX ); // _|_
+        wattron( window, BORDER_COLOR );
+        mvwvline( window, point( cur_str_pos - 2, 1 ), LINE_XOXO, getmaxy( window ) - 2 );
+        mvwaddch( window, point( cur_str_pos - 2, 0 ), LINE_OXXX ); // ^|^
+        mvwaddch( window, point( cur_str_pos - 2, 2 ), LINE_XXOX ); // _|_
+        wattroff( window, BORDER_COLOR );
         right_indent += utf8_width( remove_color_tags( pain_str ) ) + 3;
     }
 
@@ -272,11 +304,11 @@ static void draw_medical_titlebar( const catacurses::window &window, avatar *pla
         cur_str_pos = right_print( window, 1, right_indent, hunger_pair.second, hunger_pair.first );
 
         // Borders
-        for( int i = 1; i < getmaxy( window ) - 1; i++ ) {
-            mvwputch( window, point( cur_str_pos - 2, i ), BORDER_COLOR, LINE_XOXO ); // |
-        }
-        mvwputch( window, point( cur_str_pos - 2, 0 ), BORDER_COLOR, LINE_OXXX ); // ^|^
-        mvwputch( window, point( cur_str_pos - 2, 2 ), BORDER_COLOR, LINE_XXOX ); // _|_
+        wattron( window, BORDER_COLOR );
+        mvwvline( window, point( cur_str_pos - 2, 1 ), LINE_XOXO, getmaxy( window ) - 2 ); // |
+        mvwaddch( window, point( cur_str_pos - 2, 0 ), LINE_OXXX ); // ^|^
+        mvwaddch( window, point( cur_str_pos - 2, 2 ), LINE_XXOX ); // _|_
+        wattroff( window, BORDER_COLOR );
 
         right_indent += utf8_width( hunger_pair.first ) + 3;
     }
@@ -286,11 +318,11 @@ static void draw_medical_titlebar( const catacurses::window &window, avatar *pla
         cur_str_pos = right_print( window, 1, right_indent, thirst_pair.second, thirst_pair.first );
 
         // Borders
-        for( int i = 1; i < getmaxy( window ) - 1; i++ ) {
-            mvwputch( window, point( cur_str_pos - 2, i ), BORDER_COLOR, LINE_XOXO ); // |
-        }
-        mvwputch( window, point( cur_str_pos - 2, 0 ), BORDER_COLOR, LINE_OXXX ); // ^|^
-        mvwputch( window, point( cur_str_pos - 2, 2 ), BORDER_COLOR, LINE_XXOX ); // _|_
+        wattron( window, BORDER_COLOR );
+        mvwvline( window, point( cur_str_pos - 2, 1 ), LINE_XOXO, getmaxy( window ) - 2 ); // |
+        mvwaddch( window, point( cur_str_pos - 2, 0 ), LINE_OXXX ); // ^|^
+        mvwaddch( window, point( cur_str_pos - 2, 2 ), LINE_XXOX ); // _|_
+        wattroff( window, BORDER_COLOR );
 
         right_indent += utf8_width( thirst_pair.first ) + 3;
     }
@@ -300,11 +332,11 @@ static void draw_medical_titlebar( const catacurses::window &window, avatar *pla
         cur_str_pos = right_print( window, 1, right_indent, sleepiness_pair.second, sleepiness_pair.first );
 
         // Borders
-        for( int i = 1; i < getmaxy( window ) - 1; i++ ) {
-            mvwputch( window, point( cur_str_pos - 2, i ), BORDER_COLOR, LINE_XOXO ); // |
-        }
-        mvwputch( window, point( cur_str_pos - 2, 0 ), BORDER_COLOR, LINE_OXXX ); // ^|^
-        mvwputch( window, point( cur_str_pos - 2, 2 ), BORDER_COLOR, LINE_XXOX ); // _|_
+        wattron( window, BORDER_COLOR );
+        mvwvline( window, point( cur_str_pos - 2, 1 ), LINE_XOXO, getmaxy( window ) - 2 ); // |
+        mvwaddch( window, point( cur_str_pos - 2, 0 ), LINE_OXXX ); // ^|^
+        mvwaddch( window, point( cur_str_pos - 2, 2 ), LINE_XXOX ); // _|_
+        wattroff( window, BORDER_COLOR );
 
         right_indent += utf8_width( sleepiness_pair.first ) + 3;
     }
@@ -332,35 +364,35 @@ static void draw_medical_titlebar( const catacurses::window &window, avatar *pla
 }
 
 // Displays a summary of each bodypart's health, including a display for a few 'statuses'
-static medical_column draw_health_summary( const int column_count, avatar *player,
+static medical_column draw_health_summary( const int column_count, Character &you,
         const point &COLUMN_START,
         const std::pair<int, int> &COLUMN_BOUNDS )
 {
     medical_column health_column = medical_column( column_count, COLUMN_START, COLUMN_BOUNDS );
     const int max_width = health_column.max_width();
 
-    for( const bodypart_id &part : player->get_all_body_parts( get_body_part_flags::sorted ) ) {
+    for( const bodypart_id &part : you.get_all_body_parts( get_body_part_flags::sorted ) ) {
         std::string header; // Bodypart Title
         std::string hp_str; // Bodypart HP
         std::string detail;
         std::string description;
 
-        const int bleed_intensity = player->get_effect_int( effect_bleed, part );
+        const int bleed_intensity = you.get_effect_int( effect_bleed, part );
         const bool bleeding = bleed_intensity > 0;
-        const bool bitten = player->has_effect( effect_bite, part.id() );
-        const bool infected = player->has_effect( effect_infected, part.id() );
-        const bool no_feeling = player->has_flag( json_flag_PAIN_IMMUNE );
-        const int maximal_hp = player->get_part_hp_max( part );
-        const int current_hp = player->get_part_hp_cur( part );
-        const bool limb_is_broken = player->is_limb_broken( part );
-        const bool limb_is_mending = player->worn_with_flag( flag_SPLINT, part );
+        const bool bitten = you.has_effect( effect_bite, part.id() );
+        const bool infected = you.has_effect( effect_infected, part.id() );
+        const bool no_feeling = you.has_flag( json_flag_PAIN_IMMUNE );
+        const int maximal_hp = you.get_part_hp_max( part );
+        const int current_hp = you.get_part_hp_cur( part );
+        const bool limb_is_broken = you.is_limb_broken( part );
+        const bool limb_is_mending = you.worn_with_flag( flag_SPLINT, part );
 
         if( limb_is_mending ) {
             detail += string_format( _( "[ %s ]" ), colorize( _( "SPLINTED" ), c_yellow ) );
             if( no_feeling ) {
                 hp_str = colorize( "==%==", c_blue );
             } else {
-                const effect &eff = player->get_effect( effect_mending, part );
+                const effect &eff = you.get_effect( effect_mending, part );
                 const int mend_perc = eff.is_null() ? 0.0 : 100 * eff.get_duration() / eff.get_max_duration();
 
                 const int num = mend_perc / 20;
@@ -389,12 +421,12 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
         }
         const std::string bp_name = uppercase_first_letter( body_part_name( part, 1 ) );
         header += colorize( bp_name,
-                            display::limb_color( *player,
+                            display::limb_color( you,
                                     part, true, true, true ) ) + " " + hp_str;
 
         // BLEEDING block
         if( bleeding ) {
-            const effect bleed_effect = player->get_effect( effect_bleed, part );
+            const effect bleed_effect = you.get_effect( effect_bleed, part );
             const nc_color bleeding_color = colorize_bleeding_intensity( bleed_intensity );
             detail += string_format( _( "[ %s ]" ), colorize( _( "BLEEDING" ), bleeding_color ) );
             description += string_format( "[ %s ] - %s\n",
@@ -404,7 +436,7 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
 
         // BITTEN block
         if( bitten ) {
-            const effect bite_effect = player->get_effect( effect_bite, part );
+            const effect bite_effect = you.get_effect( effect_bite, part );
             detail += string_format( _( "[ %s ]" ), colorize( _( "BITTEN" ), c_yellow ) );
             description += string_format( "[ %s ] - %s\n",
                                           colorize( bite_effect.get_speed_name(), c_yellow ),
@@ -413,8 +445,8 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
 
         // INFECTED block
         if( infected ) {
-            const effect infected_effect = player->get_effect( effect_infected, part );
-            detail += string_format( _( "[ %s ]" ), colorize( _( "INFECTED" ), c_pink ) );
+            const effect infected_effect = you.get_effect( effect_infected, part );
+            detail += string_format( _( "[ %s ]" ), colorize( _( "SEPTIC" ), c_pink ) );
             description += string_format( "[ %s ] - %s\n",
                                           colorize( infected_effect.get_speed_name(), c_pink ),
                                           infected_effect.disp_short_desc() );
@@ -427,14 +459,14 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
             line = selection_line( string_format( "[%s]", header ), description, max_width );
         }
 
-        const bodypart *bp = player->get_part( part );
+        const bodypart *bp = you.get_part( part );
         std::string detail_str;
         for( const limb_score &sc : limb_score::get_all() ) {
             if( !part->has_limb_score( sc.getId() ) ) {
                 continue;
             }
 
-            float injury_score = bp->get_limb_score( sc.getId(), 0, 0, 1 );
+            float injury_score = bp->get_limb_score( you, sc.getId(), 0, 0, 1 );
             float max_score = part->get_limb_score( sc.getId() );
 
             if( injury_score < max_score ) {
@@ -469,7 +501,7 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
                     continue;
                 }
                 std::string desc = mod.description().translated();
-                float injury_score = bp->get_limb_score( sc.first, 0, 0, 1 );
+                float injury_score = bp->get_limb_score( you, sc.first, 0, 0, 1 );
                 float max_score = part->get_limb_score( sc.first );
                 nc_color score_c;
 
@@ -483,9 +515,36 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
                     score_c = c_white;
                 }
 
-                std::string valstr = colorize( string_format( "%.2f", mod.modifier( *player->as_character() ) ),
+                std::string valstr = colorize( string_format( "%.2f", mod.modifier( you ) ),
                                                score_c );
                 detail_str += string_format( "%s: %s%s\n", desc, mod.mod_type_str(), valstr );
+            }
+        }
+
+        // for existing wounds
+        for( const wound &wd : bp->get_wounds() ) {
+            detail_str += "Current wounds:\n";
+            detail_str +=
+                string_format( "wound: %s - %s(healing time %s, healing percentage %.3f%%, gives pain: %d)\n",
+                               colorize( wd.type->get_name(), c_cyan ), wd.type->get_description(),
+                               to_string( wd.get_healing_time() ), wd.healing_percentage(), wd.get_pain() );
+        }
+
+        if( debug_mode ) {
+            detail_str += "All potential wounds:\n";
+            for( const std::pair<bp_wounds, int> &wd : bp->get_id()->potential_wounds ) {
+                std::string damage_types;
+
+                for( const damage_type_id dt : wd.first.damage_type ) {
+                    damage_types += dt.c_str();
+                    damage_types += ", ";
+                }
+                damage_types.pop_back();
+                damage_types.pop_back();
+                detail_str +=
+                    string_format( "%s:\nweight: %d\ndamage types required: %s\ndamage required: [ %d - %d ]\n",
+                                   colorize( wd.first.id.c_str(), c_yellow ), wd.second, damage_types, wd.first.damage_required.first,
+                                   wd.first.damage_required.second );
             }
         }
 
@@ -496,22 +555,23 @@ static medical_column draw_health_summary( const int column_count, avatar *playe
 }
 
 // Displays a summary list of all visible effects.
-static medical_column draw_effects_summary( const int column_count, avatar *player,
+static medical_column draw_effects_summary( const int column_count, Character &you,
         const point &COLUMN_START,
         const std::pair<int, int> &COLUMN_BOUNDS )
 {
     medical_column effects_column = medical_column( column_count, COLUMN_START, COLUMN_BOUNDS );
     const int max_width = effects_column.max_width();
 
-    for( const effect &eff : player->get_effects() ) {
+    for( const effect &eff : you.get_effects() ) {
         const std::string name = eff.disp_name();
         if( name.empty() ) {
             continue;
         }
-        effects_column.add_column_line( selection_line( name, eff.disp_desc(), max_width ) );
+        effects_column.add_column_line( selection_line( name,
+                                        eff.disp_desc() + '\n' + eff.disp_mod_source_info(), max_width ) );
     }
 
-    const float bmi = player->get_bmi_fat();
+    const float bmi = you.get_bmi_fat();
 
     if( bmi < character_weight_category::underweight ) {
         std::string starvation_name;
@@ -540,21 +600,21 @@ static medical_column draw_effects_summary( const int column_count, avatar *play
         effects_column.add_column_line( selection_line( starvation_name, starvation_text, max_width ) );
     }
 
-    if( player->has_trait( trait_TROGLO3 ) && g->is_in_sunlight( player->pos() ) ) {
+    if( you.has_trait( trait_TROGLO3 ) && g->is_in_sunlight( you.pos_bub() ) ) {
         effects_column.add_column_line( selection_line( "In Sunlight",
                                         "The sunlight irritates you terribly.\n", max_width ) );
-    } else if( player->has_trait( trait_TROGLO2 ) && g->is_in_sunlight( player->pos() ) &&
+    } else if( you.has_trait( trait_TROGLO2 ) && g->is_in_sunlight( you.pos_bub() ) &&
                incident_sun_irradiance( get_weather().weather_id, calendar::turn ) > irradiance::low ) {
         effects_column.add_column_line( selection_line( "In Sunlight",
                                         "The sunlight irritates you badly.\n", max_width ) );
-    } else if( ( player->has_trait( trait_TROGLO ) || player->has_trait( trait_TROGLO2 ) ) &&
-               g->is_in_sunlight( player->pos() ) &&
+    } else if( ( you.has_trait( trait_TROGLO ) || you.has_trait( trait_TROGLO2 ) ) &&
+               g->is_in_sunlight( you.pos_bub() ) &&
                incident_sun_irradiance( get_weather().weather_id, calendar::turn ) > irradiance::moderate ) {
         effects_column.add_column_line( selection_line( "In Sunlight", "The sunlight irritates you.\n",
                                         max_width ) );
     }
 
-    for( addiction &elem : player->addictions ) {
+    for( addiction &elem : you.addictions ) {
         if( elem.sated < 0_turns && elem.intensity >= MIN_ADDICTION_LEVEL ) {
             effects_column.add_column_line( selection_line( elem.type->get_name().translated(),
                                             elem.type->get_description().translated(), max_width ) );
@@ -568,8 +628,8 @@ static medical_column draw_effects_summary( const int column_count, avatar *play
     return effects_column;
 }
 
-// Displays a summary list of the player's statistics.
-static medical_column draw_stats_summary( const int column_count, avatar *player,
+// Displays a summary list of the character's statistics.
+static medical_column draw_stats_summary( const int column_count, Character &you,
         const point &COLUMN_START,
         const std::pair<int, int> &COLUMN_BOUNDS )
 {
@@ -577,8 +637,8 @@ static medical_column draw_stats_summary( const int column_count, avatar *player
     const int max_width = stats_column.max_width();
 
     std::string speed_detail_str;
-    int runcost = player->run_cost( 100 );
-    int newmoves = player->get_speed();
+    int runcost = you.run_cost( 100 );
+    int newmoves = you.get_speed();
 
     std::string coloured_str = colorize( string_format( _( "%d" ), runcost ),
                                          ( runcost <= 100 ? c_green : c_red ) );
@@ -596,7 +656,7 @@ static medical_column draw_stats_summary( const int column_count, avatar *player
                                            c_light_blue ),
                                    max_width );
 
-    const int speed_modifier = player->get_enchantment_speed_bonus();
+    const int speed_modifier = you.get_enchantment_speed_bonus();
 
     std::string pge_str;
     if( speed_modifier != 0 ) {
@@ -607,37 +667,37 @@ static medical_column draw_stats_summary( const int column_count, avatar *player
 
     int pen = 0;
 
-    if( player->weight_carried() > player->weight_capacity() ) {
-        pen = 25 * ( player->weight_carried() - player->weight_capacity() ) / player->weight_capacity();
+    if( you.weight_carried() > you.weight_capacity() ) {
+        pen = 25 * ( you.weight_carried() - you.weight_capacity() ) / you.weight_capacity();
         pge_str = pgettext( "speed penalty", "Overburdened " );
         speed_detail_str += colorize( string_format( _( "%s    -%2d%%\n" ), pge_str, pen ), c_red );
     }
 
-    pen = player->get_pain_penalty().speed;
+    pen = you.ppen_spd;
     if( pen >= 1 ) {
         pge_str = pgettext( "speed penalty", "Pain " );
         speed_detail_str += colorize( string_format( _( "%s    -%2d%%\n" ), pge_str, pen ), c_red );
     }
-    if( player->get_thirst() > 40 ) {
-        pen = std::abs( Character::thirst_speed_penalty( player->get_thirst() ) );
+    if( you.get_thirst() > 40 ) {
+        pen = std::abs( Character::thirst_speed_penalty( you.get_thirst() ) );
         pge_str = pgettext( "speed penalty", "Thirst " );
         speed_detail_str += colorize( string_format( _( "%s    -%2d%%\n" ), pge_str, pen ), c_red );
     }
-    if( player->kcal_speed_penalty() < 0 ) {
-        pen = std::abs( player->kcal_speed_penalty() );
-        pge_str = pgettext( "speed penalty", player->get_bmi() < character_weight_category::underweight ?
+    if( you.kcal_speed_penalty() < 0 ) {
+        pen = std::abs( you.kcal_speed_penalty() );
+        pge_str = pgettext( "speed penalty", you.get_bmi() < character_weight_category::underweight ?
                             "Starving" : "Underfed" );
         speed_detail_str += colorize( string_format( _( "%s    -%2d%%\n" ), pge_str, pen ), c_red );
     }
-    if( player->has_trait( trait_SUNLIGHT_DEPENDENT ) && !g->is_in_sunlight( player->pos() ) ) {
-        pen = ( g->light_level( player->posz() ) >= 12 ? 5 : 10 );
+    if( you.has_trait( trait_SUNLIGHT_DEPENDENT ) && !g->is_in_sunlight( you.pos_bub() ) ) {
+        pen = ( g->light_level( you.posz() ) >= 12 ? 5 : 10 );
         pge_str = pgettext( "speed penalty", "Out of Sunlight " );
         speed_detail_str += colorize( string_format( _( "%s     -%2d%%\n" ), pge_str, pen ), c_red );
     }
 
     std::map<std::string, int> speed_effects;
-    for( const effect &elem : player->get_effects() ) {
-        bool reduced = player->resists_effect( elem );
+    for( const effect &elem : you.get_effects() ) {
+        bool reduced = you.resists_effect( elem );
         int move_adjust = elem.get_mod( "SPEED", reduced );
         if( move_adjust != 0 ) {
             const std::string dis_text = elem.get_speed_name();
@@ -658,28 +718,28 @@ static medical_column draw_stats_summary( const int column_count, avatar *player
     stats_column.add_column_line( runcost_line );
     stats_column.add_column_line( movecost_line );
 
-    std::string strength_str = coloured_stat_display( player->get_str(), player->get_str_base() );
+    std::string strength_str = coloured_stat_display( you.get_str(), you.get_str_base() );
     stats_column.add_column_line(
         selection_line( string_format( _( "Strength: %s" ), strength_str ),
                         _( "Strength affects your melee damage, the amount of weight you can carry, your total HP, "
                            "your resistance to many diseases, and the effectiveness of actions which require brute force." ),
                         max_width ) );
 
-    std::string dexterity_str = coloured_stat_display( player->get_dex(), player->get_dex_base() );
+    std::string dexterity_str = coloured_stat_display( you.get_dex(), you.get_dex_base() );
     stats_column.add_column_line(
         selection_line( string_format( _( "Dexterity: %s" ), dexterity_str ),
                         _( "Dexterity affects your chance to hit in melee combat, helps you steady your "
                            "gun for ranged combat, and enhances many actions that require finesse." ),
                         max_width ) );
 
-    std::string intelligence_str = coloured_stat_display( player->get_int(), player->get_int_base() );
+    std::string intelligence_str = coloured_stat_display( you.get_int(), you.get_int_base() );
     stats_column.add_column_line(
         selection_line( string_format( _( "Intelligence: %s" ), intelligence_str ),
                         _( "Intelligence is less important in most situations, but it is vital for more complex tasks like "
                            "electronics crafting.  It also affects how much skill you can pick up from reading a book." ),
                         max_width ) );
 
-    std::string perception_str = coloured_stat_display( player->get_per(), player->get_per_base() );
+    std::string perception_str = coloured_stat_display( you.get_per(), you.get_per_base() );
     stats_column.add_column_line(
         selection_line( string_format( _( "Perception: %s" ), perception_str ),
                         _( "Perception is the most important stat for ranged combat.  It's also used for "
@@ -689,7 +749,7 @@ static medical_column draw_stats_summary( const int column_count, avatar *player
     return stats_column;
 }
 
-void avatar::disp_medical()
+bool Character::disp_medical()
 {
     // Windows
     catacurses::window w_title; // Title Bar - Tabs, Pain Indicator & Blood Indicator
@@ -755,7 +815,7 @@ void avatar::disp_medical()
 
         wnoutrefresh( wMedical );
 
-        draw_medical_titlebar( w_title, this, WIDTH );
+        draw_medical_titlebar( w_title, *this, WIDTH );
         mvwputch( w_title, point( second_column_x, HEADER_Y - 1 ), BORDER_COLOR, LINE_OXXX ); // ^|^
         mvwputch( w_title, point( third_column_x, HEADER_Y - 1 ), BORDER_COLOR, LINE_OXXX ); // ^|^
         wnoutrefresh( w_title );
@@ -768,17 +828,17 @@ void avatar::disp_medical()
 
         // Health Summary
         fold_and_print( wMedical, point( 2, HEADER_Y ), WIDTH - 2, c_light_blue, _( "HEALTH" ) );
-        medical_column health_column = draw_health_summary( column_id++, this, point( 0, TEXT_START_Y ),
+        medical_column health_column = draw_health_summary( column_id++, *this, point( 0, TEXT_START_Y ),
                                        std::pair<int, int>( second_column_x, HEIGHT ) );
 
         // Effects Summary
         mvwprintz( wMedical, point( second_column_x + 2, HEADER_Y ), c_light_blue, _( "EFFECTS" ) );
-        medical_column effects_column = draw_effects_summary( column_id++, this, point( second_column_x,
+        medical_column effects_column = draw_effects_summary( column_id++, *this, point( second_column_x,
                                         TEXT_START_Y ), std::pair<int, int>( third_column_x, HEIGHT ) );
 
         // Stats Summary
         mvwprintz( wMedical, point( third_column_x + 2, HEADER_Y ), c_light_blue, _( "STATS" ) );
-        medical_column stats_column = draw_stats_summary( column_id++, this, point( third_column_x,
+        medical_column stats_column = draw_stats_summary( column_id++, *this, point( third_column_x,
                                       TEXT_START_Y ), std::pair<int, int>( WIDTH - 2, 5 ) );
 
         // Description Text
@@ -815,10 +875,13 @@ void avatar::disp_medical()
                                            static_cast<int>( textformatted.size() ) );
 
             DESCRIPTION_WIN_OFFSET = DESC_W_BEGIN + DESCRIPTION_TEXT_Y;
-            mvwputch( wMedical, point( 0, DESCRIPTION_WIN_OFFSET - 1 ), BORDER_COLOR, LINE_XXXO );
-            mvwhline( wMedical, point( 1, DESCRIPTION_WIN_OFFSET - 1 ), LINE_OXOX, getmaxx( wMedical ) - 2 );
-            mvwputch( wMedical, point( getmaxx( wMedical ) - 1, DESCRIPTION_WIN_OFFSET - 1 ), BORDER_COLOR,
+            wattron( wMedical, BORDER_COLOR );
+            mvwaddch( wMedical, point( 0, DESCRIPTION_WIN_OFFSET - 1 ), LINE_XXXO );
+            mvwhline( wMedical, point( 1, DESCRIPTION_WIN_OFFSET - 1 ), LINE_OXOX,
+                      getmaxx( wMedical ) - 2 );
+            mvwaddch( wMedical, point( getmaxx( wMedical ) - 1, DESCRIPTION_WIN_OFFSET - 1 ),
                       LINE_XOXX );
+            wattroff( wMedical, BORDER_COLOR );
             fold_and_print( w_description, point( 1, DESCRIPTION_TEXT_Y ), WIDTH - 2, c_light_gray,
                             desc_str );
         } else {
@@ -836,11 +899,13 @@ void avatar::disp_medical()
             mvwprintz( wMedical, point( third_column_x + 2, INFO_START_Y + 1 ), c_light_blue,
                        detail_str.first );
 
-            mvwputch( wMedical, point( third_column_x, INFO_START_Y ), BORDER_COLOR, LINE_XXXO ); // |-
+            wattron( wMedical, BORDER_COLOR );
+            mvwaddch( wMedical, point( third_column_x, INFO_START_Y ), LINE_XXXO ); // |-
             mvwhline( wMedical, point( third_column_x + 1, INFO_START_Y ), LINE_OXOX,
                       getmaxx( wMedical ) - 2 ); // -
-            mvwputch( wMedical, point( getmaxx( wMedical ) - 1, INFO_START_Y ), BORDER_COLOR, // -|
+            mvwaddch( wMedical, point( getmaxx( wMedical ) - 1, INFO_START_Y ), // -|
                       LINE_XOXX );
+            wattroff( wMedical, BORDER_COLOR );
 
             const int info_width = WIDTH - third_column_x - 3;
             std::vector<std::string> textformatted = foldstring( detail_str.second, info_width,
@@ -879,8 +944,10 @@ void avatar::disp_medical()
 
         // Draw Column Borders
 
+        wattron( wMedical, BORDER_COLOR );
         effects_column.draw_column( wMedical, HEADER_Y, DESCRIPTION_WIN_OFFSET );
         stats_column.draw_column( wMedical, HEADER_Y, DESCRIPTION_WIN_OFFSET );
+        wattroff( wMedical, BORDER_COLOR );
 
         // Draw Scrollbars
 
@@ -891,7 +958,7 @@ void avatar::disp_medical()
         .offset_y( HEADER_Y )
         .content_size( content_size )
         .viewport_pos( cursor.y * 2 )
-        .viewport_size( DESC_W_BEGIN - 3 )
+        .viewport_size( DESCRIPTION_WIN_OFFSET - 4 )
         .scroll_to_last( true )
         .apply( wMedical );
 
@@ -913,6 +980,7 @@ void avatar::disp_medical()
     ctxt.register_action( "LEFT" );
     ctxt.register_action( "RIGHT" );
     ctxt.register_action( "APPLY" );
+    ctxt.register_action( "CONFIRM" );
     ctxt.register_action( "HELP_KEYBINDINGS" );
     ctxt.register_action( "SCROLL_INFOBOX_UP", to_translation( "Scroll up" ) );
     ctxt.register_action( "SCROLL_INFOBOX_DOWN", to_translation( "Scroll down" ) );
@@ -964,7 +1032,12 @@ void avatar::disp_medical()
             }
             info_scroll_position = 0;
         } else if( action == "APPLY" ) {
-            avatar_action::use_item( *this );
+            avatar *a = this->as_avatar();
+            if( a ) {
+                avatar_action::use_item( *a );
+            } else {
+                popup( _( "Applying not implemented for NPCs." ) );
+            }
         } else if( action == "SCROLL_INFOBOX_UP" || action == "SCROLL_INFOBOX_DOWN" ) {
             const int scroll_overflow = info_lines - INFO_SCROLL_POINT - 1;
             if( scroll_overflow > 0 ) {
@@ -980,8 +1053,191 @@ void avatar::disp_medical()
             } else {
                 info_scroll_position = 0;
             }
+        } else if( action == "CONFIRM" ) {
+            if( cursor.x == 0 && pick_wound_fix( cursor.y ) ) {
+                return true;
+            }
         } else if( action == "QUIT" ) {
             break;
         }
     }
+    return false;
+}
+
+struct healing_option {
+    wound_type_id wd;
+    wound_fix_id fix;
+    bool doable;
+    time_duration time_to_apply;
+};
+
+bool Character::pick_wound_fix( int pos )
+{
+    std::vector<healing_option> healing_options;
+    const inventory &inv = crafting_inventory();
+
+    const std::vector<bodypart_id> all_bp = get_all_body_parts( get_body_part_flags::sorted );
+    const bodypart_id bp_id = all_bp[pos];
+    bodypart *bp = get_part( bp_id );
+    const std::vector<wound> wounds = bp->get_wounds();
+
+    if( debug_mode || has_trait( trait_DEBUG_HS ) ) {
+        if( query_yn( "Open debug insertion and removing wounds?" ) ) {
+            uilist menu;
+            do {
+                menu.reset();
+                menu.text = "Toggle which wound?";
+                std::vector<std::pair<wound_type_id, bool>> opts;
+                for( const auto& [wound, weight] : bp_id->potential_wounds ) {
+                    opts.emplace_back( wound.id, bp->has_wound( wound.id ) );
+                    menu.addentry( -1, true, -1, string_format( opts.back().second ? "Treat: %s" : "Set: %s",
+                                   wound.id.str() ) );
+                }
+                if( opts.empty() ) {
+                    popup( string_format( "The %s doesn't have any wounds to toggle.", bp_id->name ) );
+                    return false;
+                }
+                menu.query();
+                if( menu.ret >= 0 ) {
+                    if( opts[menu.ret].second ) {
+                        bp->remove_wound( opts[menu.ret].first );
+                    } else {
+                        bp->add_wound( opts[menu.ret].first );
+                    }
+                }
+            } while( menu.ret >= 0 );
+            return false;
+        }
+    }
+
+    for( const wound &wd : wounds ) {
+        for( const wound_fix_id &fix_id : wd.type->fixes ) {
+            healing_option opt{wd.type, fix_id, true, fix_id->time};
+
+            for( const auto &[skill_id, level] : fix_id->skills ) {
+                if( get_greater_skill_or_knowledge_level( skill_id ) < level ) {
+                    opt.doable = false;
+                    break;
+                }
+            }
+
+            for( const wound_proficiency &w_prof : fix_id->proficiencies ) {
+
+                const bool has_prof = has_proficiency( w_prof.prof );
+
+                if( w_prof.is_mandatory && !has_prof ) {
+                    opt.doable = false;
+                }
+
+                if( has_prof ) {
+                    opt.time_to_apply *= w_prof.time_save;
+                }
+            }
+
+            opt.doable &= fix_id->get_requirements().can_make_with_inventory( inv, is_crafting_component );
+
+            healing_options.emplace_back( opt );
+        }
+    }
+
+    if( healing_options.empty() ) {
+        if( bp->get_wounds().empty() ) {
+            if( bp_id->has_flag( json_flag_BIONIC_LIMB ) ) {
+                popup( string_format( _( "The %s doesn't have any damage to repair." ), bp_id->name ) );
+                return false;
+            } else {
+                popup( string_format( _( "The %s doesn't have any wounds to treat." ), bp_id->name ) );
+                return false;
+            }
+        } else {
+            if( bp_id->has_flag( json_flag_BIONIC_LIMB ) ) {
+                popup( string_format( _( "The %s damage cannot be repaired." ), bp_id->name ) );
+                return false;
+            } else {
+                popup( string_format( _( "The %s wounds cannot be treated." ), bp_id->name ) );
+                return false;
+            }
+        }
+    }
+
+    uilist menu;
+    menu.title = _( "Treat which wound?" );
+    menu.desc_enabled = true;
+
+    constexpr int fold_width = 80;
+
+    for( healing_option &opt : healing_options ) {
+
+        const wound_fix &fix = *opt.fix;
+        const requirement_data &reqs = fix.get_requirements();
+        const nc_color col = opt.doable ? c_white : c_light_gray;
+
+        const std::vector<std::string> tools = reqs.get_folded_tools_list( fold_width, col, inv );
+        const std::vector<std::string> comps = reqs.get_folded_components_list( fold_width, col, inv,
+                                               is_crafting_component );
+
+        std::string descr = word_rewrap( fix.get_description(), 80 ) + "\n\n";
+
+        descr += string_format( _( "Time required: <color_cyan>%s</color>\n" ),
+                                to_string_approx( opt.time_to_apply ) );
+
+        if( !fix.skills.empty() ) {
+            descr += string_format( _( "Skills: %s\n" ), enumerate_as_string(
+            fix.skills.begin(), fix.skills.end(), [&]( const std::pair<skill_id, int> &sk ) {
+                if( get_greater_skill_or_knowledge_level( sk.first ) >= sk.second ) {
+                    return string_format( pgettext( "skill requirement",
+                                                    //~ %1$s: skill name, %2$s: current skill level, %3$s: required skill level
+                                                    "<color_cyan>%1$s</color> <color_green>(%2$d/%3$d)</color>" ),
+                                          sk.first->name(), static_cast<int>( get_greater_skill_or_knowledge_level( sk.first ) ), sk.second );
+                } else {
+                    return string_format( pgettext( "skill requirement",
+                                                    //~ %1$s: skill name, %2$s: current skill level, %3$s: required skill level
+                                                    "<color_cyan>%1$s</color> <color_red>(%2$d/%3$d)</color>" ),
+                                          sk.first->name(), static_cast<int>( get_greater_skill_or_knowledge_level( sk.first ) ), sk.second );
+                }
+            } ) );
+        }
+
+
+        if( !fix.proficiencies.empty() ) {
+            descr += string_format( _( "Proficiencies: %s\n" ), enumerate_as_string(
+            fix.proficiencies.begin(), fix.proficiencies.end(), [&]( const wound_proficiency & w_prof ) {
+                nc_color col;
+                if( has_proficiency( w_prof.prof ) ) {
+                    col = c_green;
+                } else if( w_prof.is_mandatory ) {
+                    col = c_red;
+                } else {
+                    col = c_light_gray;
+                }
+                return string_format( colorize( "%1$s", col ), w_prof.prof->name() );
+            } ) );
+        }
+
+        for( const std::string &line : tools ) {
+            descr += line + "\n";
+        }
+        for( const std::string &line : comps ) {
+            descr += line + "\n";
+        }
+        menu.addentry_desc( -1, true, -1, fix.get_name(), colorize( descr, col ) );
+
+    }
+
+    menu.query();
+
+    if( menu.ret < 0 ) {
+        return false;
+    }
+
+    const healing_option &opt = healing_options[menu.ret];
+    if( !opt.doable ) {
+        add_msg( m_info, _( "You are currently unable to treat the %s this way." ),
+                 opt.wd->get_name() );
+        return false;
+    }
+
+    assign_activity( fix_wound_activity_actor( opt.time_to_apply, bp_id, opt.wd, opt.fix ) );
+
+    return true;
 }

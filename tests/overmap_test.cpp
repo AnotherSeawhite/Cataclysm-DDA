@@ -1,29 +1,50 @@
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <functional>
+#include <list>
+#include <map>
 #include <memory>
+#include <optional>
+#include <regex>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
 #include <vector>
 
-#include "all_enum_values.h"
-#include "ammo.h"
 #include "calendar.h"
 #include "cata_catch.h"
 #include "city.h"
 #include "common_types.h"
 #include "coordinates.h"
+#include "debug.h"
+#include "enum_conversions.h"
 #include "enums.h"
 #include "game.h"
-#include "game_constants.h"
 #include "global_vars.h"
+#include "item.h"
 #include "item_factory.h"
 #include "itype.h"
 #include "map.h"
+#include "map_helpers.h"
 #include "map_iterator.h"
+#include "map_scale_constants.h"
 #include "mapbuffer.h"
 #include "omdata.h"
+#include "options.h"
 #include "output.h"
 #include "overmap.h"
+#include "overmap_location.h"
 #include "overmap_types.h"
 #include "overmapbuffer.h"
+#include "point.h"
+#include "recipe.h"
+#include "rng.h"
 #include "test_data.h"
 #include "type_id.h"
+#include "value_ptr.h"
 #include "vehicle.h"
 #include "vpart_position.h"
 
@@ -35,6 +56,84 @@ static const oter_str_id oter_cabin_west( "cabin_west" );
 
 static const overmap_special_id overmap_special_Cabin( "Cabin" );
 static const overmap_special_id overmap_special_Lab( "Lab" );
+
+static std::vector<oter_flags> all_oter_flags()
+{
+    const int max_flag = static_cast<int>( oter_flags::num_oter_flags );
+    std::vector<oter_flags> flags;
+    flags.reserve( max_flag );
+    for( int i = 0; i < max_flag; ++i ) {
+        flags.emplace_back( static_cast<oter_flags>( i ) );
+    }
+    return flags;
+}
+
+static std::vector<std::string> location_flag_strings()
+{
+    std::unordered_set<std::string> unique_flags;
+    for( const overmap_location &loc : overmap_locations::get_all() ) {
+        for( const std::string &flag : loc.get_flags() ) {
+            unique_flags.insert( flag );
+        }
+    }
+    std::vector<std::string> result( unique_flags.begin(), unique_flags.end() );
+    std::sort( result.begin(), result.end() );
+    return result;
+}
+
+static bool any_terrain_with_flag( const oter_flags flag )
+{
+    for( const oter_t &ter : overmap_terrains::get_all() ) {
+        if( ter.has_flag( flag ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+TEST_CASE( "oter_flags_string_round_trip", "[overmap][flags]" )
+{
+    const auto &flag_map = io::get_enum_lookup_map<oter_flags>();
+    const std::vector<oter_flags> flags = all_oter_flags();
+
+    CHECK( flag_map.size() == flags.size() );
+
+    std::unordered_set<std::string> seen_strings;
+    for( const oter_flags flag : flags ) {
+        const std::string flag_string = io::enum_to_string( flag );
+        CAPTURE( flag_string );
+        CHECK_FALSE( flag_string.empty() );
+        CHECK( flag_map.count( flag_string ) == 1 );
+        CHECK( io::string_to_enum<oter_flags>( flag_string ) == flag );
+        CHECK( seen_strings.emplace( flag_string ).second );
+    }
+}
+
+TEST_CASE( "overmap_location_flags_are_valid", "[overmap][flags]" )
+{
+    const std::vector<std::string> flags = location_flag_strings();
+
+    for( const std::string &flag : flags ) {
+        CAPTURE( flag );
+        CHECK( io::enum_is_valid<oter_flags>( flag ) );
+        CHECK( io::string_to_enum_optional<oter_flags>( flag ).has_value() );
+    }
+}
+
+TEST_CASE( "overmap_location_flags_match_terrain_flags", "[overmap][flags]" )
+{
+    const std::vector<std::string> flags = location_flag_strings();
+    const auto &flag_map = io::get_enum_lookup_map<oter_flags>();
+
+    for( const std::string &flag : flags ) {
+        const auto iter = flag_map.find( flag );
+        if( iter == flag_map.end() ) {
+            continue;
+        }
+        CAPTURE( flag );
+        CHECK( any_terrain_with_flag( iter->second ) );
+    }
+}
 
 TEST_CASE( "set_and_get_overmap_scents", "[overmap]" )
 {
@@ -140,7 +239,7 @@ TEST_CASE( "is_ot_match", "[overmap][terrain]" )
         // NOLINTNEXTLINE(cata-ot-match)
         CHECK( is_ot_match( "forest", oter_id( "forest" ), ot_match_type::exact ) );
         // NOLINTNEXTLINE(cata-ot-match)
-        CHECK( is_ot_match( "central_lab", oter_id( "central_lab" ), ot_match_type::exact ) );
+        CHECK( is_ot_match( "forest_thick", oter_id( "forest_thick" ), ot_match_type::exact ) );
 
         // Does not exactly match if rotation differs
         // NOLINTNEXTLINE(cata-ot-match)
@@ -162,7 +261,7 @@ TEST_CASE( "is_ot_match", "[overmap][terrain]" )
 
         // Does not match if base type does not match
         // NOLINTNEXTLINE(cata-ot-match)
-        CHECK_FALSE( is_ot_match( "lab", oter_id( "central_lab" ), ot_match_type::type ) );
+        CHECK_FALSE( is_ot_match( "forest", oter_id( "forest_thick" ), ot_match_type::type ) );
         // NOLINTNEXTLINE(cata-ot-match)
         CHECK_FALSE( is_ot_match( "sub_station", oter_id( "sewer_sub_station" ), ot_match_type::type ) );
     }
@@ -170,15 +269,16 @@ TEST_CASE( "is_ot_match", "[overmap][terrain]" )
     SECTION( "prefix match" ) {
         // Matches the complete string
         CHECK( is_ot_match( "forest", oter_id( "forest" ), ot_match_type::prefix ) );
-        CHECK( is_ot_match( "central_lab", oter_id( "central_lab" ), ot_match_type::prefix ) );
+        CHECK( is_ot_match( "forest_thick", oter_id( "forest_thick" ),
+                            ot_match_type::prefix ) );
 
         // Prefix matches when an underscore separator exists
-        CHECK( is_ot_match( "central", oter_id( "central_lab" ), ot_match_type::prefix ) );
-        CHECK( is_ot_match( "central", oter_id( "central_lab_stairs" ), ot_match_type::prefix ) );
+        CHECK( is_ot_match( "forest", oter_id( "forest_thick" ), ot_match_type::prefix ) );
+        CHECK( is_ot_match( "underground", oter_id( "underground_sub_station" ), ot_match_type::prefix ) );
 
         // Prefix itself may contain underscores
-        CHECK( is_ot_match( "central_lab", oter_id( "central_lab_stairs" ), ot_match_type::prefix ) );
-        CHECK( is_ot_match( "central_lab_train", oter_id( "central_lab_train_depot" ),
+        CHECK( is_ot_match( "sewer_end", oter_id( "sewer_end_north" ), ot_match_type::prefix ) );
+        CHECK( is_ot_match( "test_forest_very", oter_id( "test_forest_very_thick" ),
                             ot_match_type::prefix ) );
 
         // Prefix does not match without an underscore separator
@@ -186,28 +286,29 @@ TEST_CASE( "is_ot_match", "[overmap][terrain]" )
         CHECK_FALSE( is_ot_match( "fore", oter_id( "forest_thick" ), ot_match_type::prefix ) );
 
         // Prefix does not match the middle or end
-        CHECK_FALSE( is_ot_match( "lab", oter_id( "central_lab" ), ot_match_type::prefix ) );
-        CHECK_FALSE( is_ot_match( "lab", oter_id( "central_lab_stairs" ), ot_match_type::prefix ) );
+        CHECK_FALSE( is_ot_match( "sub", oter_id( "sewer_sub_station" ), ot_match_type::prefix ) );
+        CHECK_FALSE( is_ot_match( "station", oter_id( "sewer_sub_station" ), ot_match_type::prefix ) );
     }
 
     SECTION( "contains match" ) {
         // Matches the complete string
         CHECK( is_ot_match( "forest", oter_id( "forest" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "central_lab", oter_id( "central_lab" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "forest_thick", oter_id( "forest_thick" ),
+                            ot_match_type::contains ) );
 
         // Matches the beginning/middle/end of an underscore-delimited id
-        CHECK( is_ot_match( "central", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "lab", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "stairs", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "sewer", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "sub", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "station", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
 
         // Matches the beginning/middle/end without undercores as well
-        CHECK( is_ot_match( "cent", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "ral_lab", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "_lab_", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
-        CHECK( is_ot_match( "airs", oter_id( "central_lab_stairs" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "sewe", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "er_su", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "_sub_", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
+        CHECK( is_ot_match( "tion", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
 
         // Does not match if substring is not contained
-        CHECK_FALSE( is_ot_match( "forest", oter_id( "central_lab" ), ot_match_type::contains ) );
+        CHECK_FALSE( is_ot_match( "forest", oter_id( "sewer_sub_station" ), ot_match_type::contains ) );
         CHECK_FALSE( is_ot_match( "forestry", oter_id( "forest" ), ot_match_type::contains ) );
     }
 }
@@ -215,7 +316,7 @@ TEST_CASE( "is_ot_match", "[overmap][terrain]" )
 TEST_CASE( "mutable_overmap_placement", "[overmap][slow]" )
 {
     const overmap_special &special =
-        *overmap_special_id( GENERATE( "test_anthill", "test_crater", "test_microlab" ) );
+        *overmap_special_id( GENERATE( "test_crater", "test_microlab" ) );
     const city cit;
 
     constexpr int num_overmaps = 100;
@@ -227,7 +328,7 @@ TEST_CASE( "mutable_overmap_placement", "[overmap][slow]" )
     for( int j = 0; j < num_overmaps; ++j ) {
         // overmap objects are really large, so we don't want them on the
         // stack.  Use unique_ptr and put it on the heap
-        std::unique_ptr<overmap> om = std::make_unique<overmap>( point_abs_om( point_zero ) );
+        std::unique_ptr<overmap> om = std::make_unique<overmap>( point_abs_om::zero );
         om_direction::type dir = om_direction::type::north;
 
         int successes = 0;
@@ -249,6 +350,7 @@ TEST_CASE( "mutable_overmap_placement", "[overmap][slow]" )
             }
         }
 
+        CAPTURE( special.id.str() );
         CHECK( successes > num_trials_per_overmap / 2 );
     }
 }
@@ -257,7 +359,7 @@ static bool tally_items( std::unordered_map<itype_id, float> &global_item_count,
                          std::unordered_map<itype_id, int> &item_count, tinymap &tm )
 {
     bool found = false;
-    for( const tripoint &p : tm.points_on_zlevel() ) {
+    for( const tripoint_omt_ms &p : tm.points_on_zlevel() ) {
         for( item &i : tm.i_at( p ) ) {
             std::unordered_map<itype_id, float>::iterator iter = global_item_count.find( i.typeId() );
             if( iter != global_item_count.end() ) {
@@ -274,7 +376,7 @@ static bool tally_items( std::unordered_map<itype_id, float> &global_item_count,
         }
         if( const optional_vpart_position ovp = tm.veh_at( p ) ) {
             vehicle *const veh = &ovp->vehicle();
-            for( const int elem : veh->parts_at_relative( ovp->mount(), true ) ) {
+            for( const int elem : veh->parts_at_relative( ovp->mount_pos(), true ) ) {
                 const vehicle_part &vp = veh->part( elem );
                 for( item &i : veh->get_items( vp ) ) {
                     std::unordered_map<itype_id, float>::iterator iter = global_item_count.find( i.typeId() );
@@ -362,7 +464,7 @@ static void finalize_item_counts( std::unordered_map<itype_id, float> &item_coun
                 }
             }
         }
-        for( std::pair<const itype_id, int> demographics : category.second.item_weights ) {
+        for( const std::pair<const itype_id, int> &demographics : category.second.item_weights ) {
             item_counts[demographics.first] = 0.0;
         }
     }
@@ -390,10 +492,10 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
     finalize_item_counts( item_counts );
     map &main_map = get_map();
     point_abs_om overmap_origin = project_to<coords::om>( main_map.get_abs_sub().xy() );
-    g->place_player_overmap( { project_to<coords::omt>( overmap_origin + ( 6 * point_north_west ) ), 0 } );
+    g->place_player_overmap( { project_to<coords::omt>( overmap_origin + ( 6 * point::north_west ) ), 0 } );
     // Don't inherit overmap state from initialization or previous tests.
     overmap_buffer.clear();
-    for( int i = 0; i < 7; ++i ) {
+    for( int attempt_no = 0; attempt_no < 3; ++attempt_no ) {
         // First we just touch all the overmaps in an area to cause them to generate.
         for( const point_abs_om &om_cur : closest_points_first( overmap_origin, 0, 3 ) ) {
             point_abs_omt omt_start = project_to<coords::omt>( om_cur );
@@ -409,7 +511,7 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
             if( overmap_buffer.ter_existing( { omt_start, 0 } ) == oter_id() ) {
                 continue;
             }
-            point_abs_omt omt_end = omt_start + ( point_south_east * OMAPX );
+            point_abs_omt omt_end = omt_start + ( point::south_east * OMAPX );
             for( point_abs_omt p = omt_start; p.y() < omt_end.y(); p.y()++ ) {
                 for( p.x() = omt_start.x(); p.x() < omt_end.x(); p.x()++ ) {
                     REQUIRE( !main_map.inbounds( tripoint_abs_ms( project_to<coords::ms>( p ), 0 ) ) );
@@ -451,14 +553,18 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
                 for( int i = 0; i < sample_size; ++i ) {
                     // clear the generated maps so we keep getting new results.
                     MAPBUFFER.clear_outside_reality_bubble();
-                    tinymap tm;
-                    tm.generate( pos, calendar::turn );
+                    smallmap tm;
+                    tm.generate( pos, calendar::turn, false );
+                    // Map edits without the "mapgen_in_progress" variable set will toggle
+                    // player_adjusted_map to true, this should find callers that fail to do so.
+                    CHECK( !map_meddler::has_altered_submaps( *tm.cast_to_map() ) );
                     bool found = tally_items( item_counts, p.second.item_counts, tm );
                     if( enable_item_demographics && found && !p.second.found ) {
                         goal_samples = std::pow( std::log( std::max( 10, count ) ), 3 );
                         sample_size = goal_samples - p.second.samples;
                         p.second.found = true;
                     }
+                    tm.delete_unmerged_submaps();
                 }
             } );
             p.second.samples = goal_samples;
@@ -499,8 +605,18 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
 
             if( found ) {
                 FAIL( "oter_type_id was found in map but had SHOULD_NOT_SPAWN flag" );
-            } else if( !test_data::overmap_terrain_coverage_whitelist.count( id ) ) {
-                missing.push_back( id );
+            } else {
+                //oceans and highways are not guaranteed to be inside the checked overmap radius
+                bool is_whitelisted = id->has_flag( oter_flags::ocean ) || id->has_flag( oter_flags::highway );
+                for( const std::regex &wl : test_data::overmap_terrain_coverage_whitelist ) {
+                    std::cmatch m;
+                    is_whitelisted = is_whitelisted || (
+                                         // ensure the full string matches. Don't accept substrings.
+                                         std::regex_match( id_s.c_str(), m, wl ) && m.prefix().length() == 0 && m.suffix().length() == 0 );
+                }
+                if( !is_whitelisted ) {
+                    missing.emplace_back( id_s );
+                }
             }
         }
     }
@@ -520,11 +636,12 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
         } );
         CAPTURE( missing_oter_type_ids );
         INFO( "To resolve errors about missing terrains you can either give the terrain the "
-              "SHOULD_NOT_SPAWN flag (intended for terrains that should never spawn, for example "
-              "test terrains or work in progress), or tweak the constraints so that the terrain "
-              "can spawn more reliably, or add them to the whitelist above in this function "
-              "(inteded for terrains that sometimes spawn, but cannot be expected to spawn "
-              "reliably enough for this test)" );
+              "SHOULD_NOT_SPAWN flag, intended for terrains that should never spawn, for example "
+              "test terrains or work in progress, or tweak the constraints so that the terrain "
+              "can spawn more reliably, or add them to the whitelist at "
+              "/data/mods/TEST_DATA/overmap_terrain_coverage_test/overmap_terrain_coverage_whitelist.json "
+              "intended for terrains that sometimes spawn, but cannot be expected to spawn "
+              "reliably enough for this test." );
         CHECK( num_missing == 0 );
     }
 
@@ -616,6 +733,124 @@ TEST_CASE( "overmap_terrain_coverage", "[overmap][slow]" )
                 CHECK_THAT( current_type_actual_ratio,
                             Catch::Matchers::WithinRel( current_type_expected_ratio, 0.1f ) );
             }
+        }
+    }
+}
+
+TEST_CASE( "highway_find_intersection_bounds", "[overmap]" )
+{
+    overmap_buffer.clear();
+    highway_intersection_grid &highway_grid =
+        overmap_buffer.global_state.highway_intersections;
+    highway_grid.set_grid_origin( point_abs_om::zero );
+    point_abs_om pos = highway_grid.get_grid_origin();
+
+    const int c_separation = get_option<int>( "HIGHWAY_GRID_COLUMN_SEPARATION" );
+    const int r_separation = get_option<int>( "HIGHWAY_GRID_ROW_SEPARATION" );
+
+    const int col_test = c_separation / 2;
+    const int row_test = r_separation / 2;
+    const int col_test_2 = c_separation * 1.5;
+    const int row_test_2 = r_separation * 1.5;
+
+    //check points in 8 directions of origin
+    std::vector<std::pair<point_rel_om, point_rel_om>> input_output_pairs = {
+        //inside quadrants surrounding origin + 0,0
+        { point_rel_om( col_test, 0 ), point_rel_om( 0, 0 ) },
+        { point_rel_om( -col_test, 0 ), point_rel_om( -c_separation, 0 ) },
+        { point_rel_om( 0, row_test ), point_rel_om( 0, 0 ) },
+        { point_rel_om( 0, -row_test ), point_rel_om( 0, -r_separation ) },
+        { point_rel_om( col_test, row_test ), point_rel_om( 0, 0 ) },
+        { point_rel_om( -col_test, row_test ), point_rel_om( -c_separation, 0 ) },
+        { point_rel_om( col_test, -row_test ), point_rel_om( 0, -r_separation ) },
+        //on grid points
+        { point_rel_om( 0, 0 ), point_rel_om( 0, 0 ) },
+        { point_rel_om( -c_separation, 0 ), point_rel_om( -c_separation, 0 ) },
+        { point_rel_om( c_separation, 0 ), point_rel_om( c_separation, 0 ) },
+        { point_rel_om( 0, -r_separation ), point_rel_om( 0, -r_separation ) },
+        { point_rel_om( 0, r_separation ), point_rel_om( 0, r_separation ) },
+        //outside quadrants surrounding origin + 0,0
+        { point_rel_om( col_test_2, 0 ), point_rel_om( c_separation, 0 ) },
+        { point_rel_om( -col_test_2, 0 ), point_rel_om( -c_separation * 2, 0 ) },
+        { point_rel_om( 0, row_test_2 ), point_rel_om( 0, r_separation ) },
+        { point_rel_om( 0, -row_test_2 ), point_rel_om( 0, -r_separation * 2 ) },
+        { point_rel_om( col_test_2, row_test_2 ), point_rel_om( c_separation, r_separation ) },
+        { point_rel_om( -col_test_2, row_test_2 ), point_rel_om( -c_separation * 2, r_separation ) },
+        { point_rel_om( col_test_2, -row_test_2 ), point_rel_om( c_separation, -r_separation * 2 ) },
+        { point_rel_om( -col_test_2, -row_test_2 ), point_rel_om( -c_separation * 2, -r_separation * 2 ) }
+    };
+
+    for( const std::pair<point_rel_om, point_rel_om> &p : input_output_pairs ) {
+        std::vector<point_abs_om> bounds = highway_grid.find_feature_point_bounds( pos + p.first );
+        CHECK( bounds.back() == pos + p.second );
+    }
+
+}
+
+TEST_CASE( "overmap_generation_is_deterministic", "[overmap]" )
+{
+    // Verify that overmap generation produces identical results when the RNG
+    // engine starts from the same state.  Catches stale distribution cache
+    // bugs and any other hidden nondeterminism in the generation pipeline.
+
+    // NOLINTNEXTLINE(cata-determinism)
+    const cata_default_random_engine saved_engine = rng_get_engine();
+
+    map &main_map = get_map();
+    const point_abs_om origin = project_to<coords::om>( main_map.get_abs_sub().xy() );
+
+    // Generate a 2x2 cluster of overmaps (origin + 3 neighbors).
+    const std::vector<point_abs_om> cluster = closest_points_first( origin, 0, 1 );
+
+    constexpr int runs = 3;
+    std::vector<std::vector<oter_id>> snapshots( runs );
+
+    for( int run = 0; run < runs; ++run ) {
+        overmap_buffer.clear();
+        rng_get_engine() = saved_engine;
+
+        // Touch all overmaps in the cluster to trigger generation.
+        for( const point_abs_om &om : cluster ) {
+            const point_abs_omt omt = project_to<coords::omt>( om );
+            overmap_buffer.ter( { omt, 0 } );
+        }
+
+        // Snapshot every z=0 tile across the cluster.
+        std::vector<oter_id> &snap = snapshots[run];
+        snap.reserve( cluster.size() * OMAPX * OMAPY );
+        for( const point_abs_om &om : cluster ) {
+            const point_abs_omt omt_start = project_to<coords::omt>( om );
+            const point_abs_omt omt_end = omt_start + point::south_east * OMAPX;
+            for( int y = omt_start.y(); y < omt_end.y(); ++y ) {
+                for( int x = omt_start.x(); x < omt_end.x(); ++x ) {
+                    snap.push_back( overmap_buffer.ter( { point_abs_omt( x, y ), 0 } ) );
+                }
+            }
+        }
+    }
+
+    // Compare each run against the first.
+    for( int run = 1; run < runs; ++run ) {
+        REQUIRE( snapshots[run].size() == snapshots[0].size() );
+        bool match = true;
+        for( size_t i = 0; i < snapshots[0].size(); ++i ) {
+            if( snapshots[run][i] != snapshots[0][i] ) {
+                // Report the first mismatch with tile coordinates.
+                const int tiles_per_om = OMAPX * OMAPY;
+                const int om_idx = static_cast<int>( i ) / tiles_per_om;
+                const int local = static_cast<int>( i ) % tiles_per_om;
+                const int y = local / OMAPX;
+                const int x = local % OMAPX;
+                CAPTURE( run, om_idx, x, y );
+                CAPTURE( snapshots[0][i]->id );
+                CAPTURE( snapshots[run][i]->id );
+                FAIL( "overmap terrain mismatch between run 0 and run " << run );
+                match = false;
+                break;
+            }
+        }
+        if( match ) {
+            SUCCEED( "run " << run << " matches run 0" );
         }
     }
 }

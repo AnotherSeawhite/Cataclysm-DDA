@@ -19,11 +19,11 @@
 #include "to_string_id.h"
 #include "type_id.h"  // IWYU pragma: keep
 
+class cata_variant; // IWYU pragma: keep
 class JsonOut;
 class JsonValue;
-template <typename E> struct enum_traits;
-
 enum class mutagen_technique : int;
+template <typename E> struct enum_traits;
 
 namespace debug_menu
 {

@@ -2,10 +2,16 @@
 #ifndef CATA_SRC_NPCTALK_H
 #define CATA_SRC_NPCTALK_H
 
-#include "npc.h"
+#include <functional>
+#include <string>
+#include <vector>
+
 #include "type_id.h"
 
+class Character;
 class item;
+class JsonOut;
+class JsonValue;
 class json_talk_topic;
 class npc;
 class time_duration;
@@ -13,11 +19,16 @@ class time_duration;
 namespace talk_function
 {
 
+// anything that can be taught with training_activity_actor
+// only one of the given IDs should ever have contents
 struct teach_domain {
-    skill_id skill = skill_id();
-    matype_id style = matype_id();
-    spell_id spell = spell_id();
-    proficiency_id prof = proficiency_id();
+    skill_id skill;
+    matype_id style;
+    spell_id spell;
+    proficiency_id prof;
+    std::string to_string() const;
+    void serialize( JsonOut &jsout ) const;
+    void deserialize( const JsonValue &jsin );
 };
 
 void nothing( npc & );
@@ -47,7 +58,6 @@ void barber_beard( npc & );
 void barber_hair( npc & );
 void buy_haircut( npc & );
 void buy_shave( npc & );
-void morale_chat( npc & );
 void morale_chat_activity( npc & );
 void start_trade( npc & );
 void sort_loot( npc & );
@@ -57,6 +67,7 @@ void do_mopping( npc & );
 void do_read( npc & );
 void do_eread( npc & );
 void do_read_repeatedly( npc & );
+void do_study( npc & );
 void do_chop_plank( npc & );
 void do_vehicle_deconstruct( npc & );
 void do_vehicle_repair( npc & );
@@ -106,6 +117,9 @@ void start_training_npc( npc & );
 void start_training_seminar( npc &p );
 void start_training_gen( Character &teacher, std::vector<Character *> &students, teach_domain &d );
 
+// used for NPC camps
+void distribute_food_auto( npc &p );
+
 void wake_up( npc & );
 void copy_npc_rules( npc &p );
 void set_npc_pickup( npc &p );
@@ -134,6 +148,8 @@ int calc_spell_training_cost( const Character &teacher, const Character &student
                               const spell_id &id );
 
 const json_talk_topic *get_talk_topic( const std::string &id );
+
+std::vector<std::string> get_all_talk_topic_ids();
 
 std::vector<int> npcs_select_menu( const std::vector<Character *> &npc_list,
                                    const std::string &prompt,

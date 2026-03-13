@@ -9,7 +9,10 @@
     "move_cost": 0,
     "looks_like": "t_reinforced_door_glass_c",
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_laminated_door_glass_o",
     "bash": {
       "str_min": 100,
@@ -33,7 +36,9 @@
     "move_cost": 2,
     "looks_like": "t_reinforced_door_glass_o",
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
     "close": "t_laminated_door_glass_c",
     "bash": {
       "str_min": 100,
@@ -56,7 +61,10 @@
     "move_cost": 0,
     "looks_like": "t_reinforced_door_glass_c",
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_ballistic_door_glass_o",
     "bash": {
       "str_min": 200,
@@ -85,7 +93,9 @@
     "move_cost": 2,
     "looks_like": "t_reinforced_door_glass_o",
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
     "close": "t_ballistic_door_glass_c",
     "bash": {
       "str_min": 200,
@@ -108,7 +118,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "MINEABLE", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_reinforced_door_glass_o",
     "bash": {
       "str_min": 40,
@@ -120,7 +133,7 @@
       "ter_set": "t_mdoor_frame",
       "items": [
         { "item": "glass_shard", "count": [ 42, 84 ] },
-        { "item": "wire", "prob": 20 },
+        { "item": "mc_wire", "prob": 20 },
         { "item": "scrap", "count": [ 3, 5 ] }
       ]
     },
@@ -141,7 +154,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "MINEABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "MINEABLE", "SUPPORTS_ROOF" ],
     "open": "t_reinforced_door_glass_lab_o",
     "bash": {
       "str_min": 40,
@@ -153,7 +169,7 @@
       "ter_set": "t_thconc_floor",
       "items": [
         { "item": "glass_shard", "count": [ 42, 84 ] },
-        { "item": "wire", "prob": 20 },
+        { "item": "mc_wire", "prob": 20 },
         { "item": "scrap", "count": [ 3, 5 ] }
       ]
     },
@@ -174,7 +190,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
     "close": "t_reinforced_door_glass_c",
     "bash": {
       "str_min": 40,
@@ -186,7 +204,7 @@
       "ter_set": "t_mdoor_frame",
       "items": [
         { "item": "glass_shard", "count": [ 42, 84 ] },
-        { "item": "wire", "prob": 20 },
+        { "item": "mc_wire", "prob": 20 },
         { "item": "scrap", "count": [ 3, 5 ] }
       ]
     }
@@ -201,7 +219,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "MINEABLE", "SUPPORTS_ROOF" ],
     "close": "t_reinforced_door_glass_lab_c",
     "bash": {
       "str_min": 40,
@@ -213,7 +233,7 @@
       "ter_set": "t_thconc_floor",
       "items": [
         { "item": "glass_shard", "count": [ 42, 84 ] },
-        { "item": "wire", "prob": 20 },
+        { "item": "mc_wire", "prob": 20 },
         { "item": "scrap", "count": [ 3, 5 ] }
       ]
     }
@@ -228,7 +248,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_o",
     "deconstruct": {
       "ter_set": "t_door_frame",
@@ -244,6 +267,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -252,7 +276,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": { "result": "t_door_o", "message": "You notice the door is unlocked, so you simply open it.", "prying_data": {  } },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
@@ -268,12 +294,13 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE_ASH",
       "NOITEM",
       "OPENCLOSE_INSIDE",
       "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
       "BARRICADABLE_DOOR",
       "LOCKED",
       "BLOCK_WIND",
@@ -286,6 +313,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -294,7 +322,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o",
@@ -314,12 +344,13 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE_ASH",
       "NOITEM",
       "OPENCLOSE_INSIDE",
       "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
       "BARRICADABLE_DOOR",
       "LOCKED",
       "BLOCK_WIND",
@@ -332,6 +363,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b_peep",
@@ -340,7 +372,9 @@
         { "item": "2x4", "prob": 25 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o_peep",
@@ -360,23 +394,16 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [
-      "FLAMMABLE_ASH",
-      "ALARMED",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
-      "BARRICADABLE_DOOR",
-      "LOCKED",
-      "BLOCK_WIND",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "ALARMED", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR", "LOCKED", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "examine_action": "locked_object",
     "bash": {
       "str_min": 8,
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -385,7 +412,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o",
@@ -405,7 +434,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_lab_o",
     "deconstruct": {
       "ter_set": "t_door_lab_frame",
@@ -421,6 +453,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_lab_b",
@@ -429,7 +462,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
   },
@@ -444,7 +479,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_white_o",
     "deconstruct": {
       "ter_set": "t_door_white_frame",
@@ -460,6 +498,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_white_b",
@@ -468,7 +507,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
   },
@@ -483,7 +524,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_gray_o",
     "deconstruct": {
       "ter_set": "t_door_gray_frame",
@@ -499,6 +543,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_gray_b",
@@ -507,7 +552,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
   },
@@ -522,7 +569,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_red_o",
     "deconstruct": {
       "ter_set": "t_door_red_frame",
@@ -538,6 +588,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_red_b",
@@ -546,7 +597,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
   },
@@ -561,7 +614,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_green_o",
     "deconstruct": {
       "ter_set": "t_door_green_frame",
@@ -577,6 +633,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_green_b",
@@ -585,7 +642,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
   },
@@ -599,7 +658,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_white_frame",
       "items": [
@@ -623,7 +684,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -636,7 +699,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_gray_frame",
       "items": [
@@ -660,7 +725,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -673,7 +740,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_red_frame",
       "items": [
@@ -697,7 +766,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -710,7 +781,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_green_frame",
       "items": [
@@ -734,7 +807,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -748,21 +823,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_white_frame",
@@ -771,7 +840,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -786,21 +857,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_gray_frame",
@@ -809,7 +874,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -824,21 +891,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_red_frame",
@@ -847,7 +908,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -862,21 +925,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_green_frame",
@@ -885,7 +942,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -898,7 +957,9 @@
     "looks_like": "t_door_frame",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -909,7 +970,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_linoleum_white", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -922,7 +985,9 @@
     "looks_like": "t_door_frame",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -933,7 +998,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_linoleum_gray", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -946,7 +1013,9 @@
     "looks_like": "t_door_frame",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -957,7 +1026,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_carpet_red", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -970,7 +1041,9 @@
     "looks_like": "t_door_frame",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -981,7 +1054,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_carpet_green", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -995,7 +1070,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_red_o",
     "deconstruct": { "ter_set": "t_door_red_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1020,7 +1098,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_green_o",
     "deconstruct": { "ter_set": "t_door_green_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1045,7 +1126,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_white_o",
     "deconstruct": { "ter_set": "t_door_white_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1070,7 +1154,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_gray_o",
     "deconstruct": { "ter_set": "t_door_gray_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1095,7 +1182,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_red_c",
     "deconstruct": { "ter_set": "t_door_red_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1120,7 +1209,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_green_c",
     "deconstruct": { "ter_set": "t_door_green_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1144,7 +1235,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_white_c",
     "deconstruct": { "ter_set": "t_door_white_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1168,7 +1261,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_gray_c",
     "deconstruct": { "ter_set": "t_door_gray_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -1184,6 +1279,55 @@
   },
   {
     "type": "terrain",
+    "id": "t_door_lighthouse_lens_c",
+    "name": "closed lighthouse lens hinged section",
+    "description": "An intricate arrangement of glass, designed to focus light from within to be visible over long distances.  This section of the lens is on hinges and can be opened for maintenance.",
+    "symbol": "+",
+    "looks_like": "t_door_glass_c",
+    "color": "light_cyan",
+    "move_cost": 0,
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "BLOCK_WIND" ],
+    "open": "t_door_lighthouse_lens_o",
+    "bash": {
+      "str_min": 6,
+      "str_max": 20,
+      "sound": "glass breaking!",
+      "sound_fail": "whack!",
+      "sound_vol": 16,
+      "sound_fail_vol": 10,
+      "ter_set": "t_null",
+      "items": [ { "item": "glass_shard", "count": [ 42, 84 ] }, { "item": "scrap", "count": [ 3, 6 ] } ]
+    }
+  },
+  {
+    "type": "terrain",
+    "id": "t_door_lighthouse_lens_o",
+    "name": "open lighthouse lens hinged section",
+    "description": "An intricate arrangement of glass, designed to focus light from within to be visible over long distances.  This section of the lens is hinged and is currently open.",
+    "symbol": "'",
+    "looks_like": "t_door_glass_o",
+    "color": "light_cyan",
+    "move_cost": 2,
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT" ],
+    "close": "t_door_lighthouse_lens_c",
+    "bash": {
+      "str_min": 4,
+      "str_max": 20,
+      "sound": "glass breaking!",
+      "sound_fail": "whack!",
+      "sound_vol": 16,
+      "sound_fail_vol": 10,
+      "ter_set": "t_null",
+      "items": [ { "item": "glass_shard", "count": [ 42, 84 ] }, { "item": "scrap", "count": [ 3, 6 ] } ]
+    }
+  },
+  {
+    "type": "terrain",
     "id": "t_door_c_peep",
     "name": "closed wood door with peephole",
     "description": "A regular door made of ordinary wood, except this one has a peephole.  If you examined it more closely, you'd be able to peek through the hole.",
@@ -1193,7 +1337,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "examine_action": "door_peephole",
     "open": "t_door_o_peep",
     "deconstruct": {
@@ -1210,6 +1357,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b_peep",
@@ -1218,7 +1366,9 @@
         { "item": "2x4", "prob": 25 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": { "result": "t_door_o_peep", "message": "You notice the door is unlocked, so you simply open it.", "prying_data": {  } },
     "shoot": { "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 90 ] }
@@ -1234,21 +1384,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_frame",
@@ -1257,7 +1401,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -1272,21 +1418,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_lab_frame",
@@ -1295,7 +1435,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -1311,21 +1453,15 @@
     "move_cost": 0,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "flags": [
-      "TRANSPARENT",
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "BARRICADABLE_DOOR_DAMAGED",
-      "PERMEABLE",
-      "CONNECT_WITH_WALL",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR_DAMAGED", "PERMEABLE", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 5,
       "str_max": 70,
       "str_min_blocked": 7,
       "str_max_blocked": 90,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_frame",
@@ -1335,7 +1471,9 @@
         { "item": "nail", "charges": [ 1, 4 ] },
         { "item": "splinter", "count": [ 1, 4 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 10, 25 ], "reduce_damage_laser": [ 5, 20 ], "destroy_damage": [ 20, 70 ] }
   },
@@ -1348,7 +1486,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_frame",
       "items": [
@@ -1372,7 +1512,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1385,7 +1527,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_lab_frame",
       "items": [
@@ -1408,7 +1552,9 @@
         { "item": "2x4", "count": [ 1, 3 ] },
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1421,7 +1567,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_frame",
       "items": [
@@ -1447,7 +1595,9 @@
         { "item": "nail", "charges": [ 1, 6 ] },
         { "item": "splinter", "count": [ 2, 6 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1461,15 +1611,10 @@
     "move_cost": 0,
     "coverage": 100,
     "roof": "t_wood_roof",
-    "flags": [
-      "FLAMMABLE_ASH",
-      "DOOR",
-      "NOITEM",
-      "BARRICADABLE_DOOR_REINFORCED",
-      "CONNECT_WITH_WALL",
-      "BLOCK_WIND",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "BARRICADABLE_DOOR_REINFORCED", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_rdoor_o",
     "deconstruct": {
       "ter_set": "t_door_c",
@@ -1485,6 +1630,7 @@
       "str_max": 100,
       "str_min_blocked": 25,
       "str_max_blocked": 120,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_rdoor_b",
@@ -1492,7 +1638,9 @@
         { "item": "2x4", "count": [ 1, 4 ] },
         { "item": "splinter", "count": [ 2, 4 ] },
         { "item": "nail", "charges": [ 4, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "reduce_damage": [ 20, 35 ], "reduce_damage_laser": [ 10, 30 ], "destroy_damage": [ 30, 100 ] }
   },
@@ -1507,6 +1655,8 @@
     "move_cost": 0,
     "coverage": 75,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "TRANSPARENT",
       "FLAMMABLE_ASH",
@@ -1514,7 +1664,6 @@
       "REDUCE_SCENT",
       "BARRICADABLE_DOOR_REINFORCED_DAMAGED",
       "PERMEABLE",
-      "CONNECT_WITH_WALL",
       "SUPPORTS_ROOF"
     ],
     "bash": {
@@ -1522,6 +1671,7 @@
       "str_max": 90,
       "str_min_blocked": 20,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_b",
@@ -1530,7 +1680,9 @@
         { "item": "nail", "charges": [ 4, 18 ] },
         { "item": "splinter", "count": [ 2, 4 ] },
         { "item": "hinge", "count": [ 0, 1 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "shoot": { "chance_to_hit": 20, "reduce_damage": [ 15, 30 ], "reduce_damage_laser": [ 10, 30 ], "destroy_damage": [ 30, 80 ] }
   },
@@ -1544,7 +1696,9 @@
     "color": "red",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR_REINFORCED", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "BARRICADABLE_DOOR_REINFORCED", "ROAD", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_door_c",
       "items": [
@@ -1568,7 +1722,9 @@
         { "item": "nail", "charges": [ 8, 30 ] },
         { "item": "splinter", "count": [ 4, 8 ] },
         { "item": "hinge", "count": [ 0, 1 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1584,23 +1740,16 @@
     "lockpick_result": "t_door_c",
     "lockpick_message": "With a satisfying click, the lock on the door opens.",
     "roof": "t_wood_roof",
-    "flags": [
-      "FLAMMABLE_ASH",
-      "NOITEM",
-      "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
-      "BARRICADABLE_DOOR",
-      "LOCKED",
-      "BLOCK_WIND",
-      "PICKABLE",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "NOITEM", "REDUCE_SCENT", "BARRICADABLE_DOOR", "LOCKED", "BLOCK_WIND", "PICKABLE", "SUPPORTS_ROOF" ],
     "examine_action": "locked_object",
     "bash": {
       "str_min": 8,
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -1609,7 +1758,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o",
@@ -1631,12 +1782,13 @@
     "lockpick_result": "t_door_c",
     "lockpick_message": "With a satisfying click, the lock on the door opens.",
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE_ASH",
       "NOITEM",
       "OPENCLOSE_INSIDE",
       "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
       "BARRICADABLE_DOOR",
       "LOCKED",
       "PICKABLE",
@@ -1650,6 +1802,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -1658,7 +1811,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o",
@@ -1680,12 +1835,13 @@
     "lockpick_result": "t_door_c_peep",
     "lockpick_message": "With a satisfying click, the lock on the door opens.",
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE_ASH",
       "NOITEM",
       "OPENCLOSE_INSIDE",
       "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
       "BARRICADABLE_DOOR",
       "LOCKED",
       "PICKABLE",
@@ -1699,6 +1855,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b_peep",
@@ -1707,7 +1864,9 @@
         { "item": "2x4", "prob": 25 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o_peep",
@@ -1729,12 +1888,13 @@
     "lockpick_result": "t_door_c",
     "lockpick_message": "With a satisfying click, the lock on the door opens.",
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE_ASH",
       "ALARMED",
       "NOITEM",
       "REDUCE_SCENT",
-      "CONNECT_WITH_WALL",
       "BARRICADABLE_DOOR",
       "LOCKED",
       "BLOCK_WIND",
@@ -1747,6 +1907,7 @@
       "str_max": 80,
       "str_min_blocked": 15,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "smash!",
       "sound_fail": "whump!",
       "ter_set": "t_door_b",
@@ -1755,7 +1916,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "splinter", "count": [ 1, 2 ] },
         { "item": "nail", "charges": [ 0, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_o",
@@ -1775,7 +1938,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
     "open": "t_door_curtain_o",
     "deconstruct": {
       "ter_set": "t_dirt",
@@ -1808,7 +1974,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "EASY_DECONSTRUCT", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "EASY_DECONSTRUCT", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_makeshift_o",
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "2x4", "count": 6 }, { "item": "rope_makeshift_6", "count": 2 } ] },
     "bash": {
@@ -1816,6 +1985,7 @@
       "str_max": 20,
       "str_min_blocked": 6,
       "str_max_blocked": 30,
+      "profile": "wooden_door",
       "sound": "crack.",
       "sound_fail": "wham.",
       "ter_set": "t_door_frame",
@@ -1824,7 +1994,9 @@
         { "item": "rope_makeshift_6", "count": [ 0, 1 ] },
         { "item": "withered", "count": [ 2, 12 ] },
         { "item": "splinter", "count": [ 5, 10 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1837,7 +2009,9 @@
     "color": "dark_gray",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_dirt",
       "items": [ { "item": "stick", "count": 1 }, { "item": "sheet", "count": 2 }, { "item": "withered", "count": 12 } ]
@@ -1870,7 +2044,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "FLAMMABLE_ASH", "DOOR", "NOITEM", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
     "open": "t_door_grass_curtain_o",
     "deconstruct": {
       "ter_set": "t_dirt",
@@ -1902,7 +2079,9 @@
     "color": "dark_gray",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
     "deconstruct": {
       "ter_set": "t_dirt",
       "items": [ { "item": "stick", "count": 1 }, { "item": "grass_sheet", "count": 2 }, { "item": "cordage_6", "count": 6 } ]
@@ -1934,7 +2113,9 @@
     "color": "brown",
     "move_cost": 2,
     "roof": "t_wood_roof",
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "EASY_DECONSTRUCT", "SUPPORTS_ROOF" ],
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "2x4", "count": 6 }, { "item": "rope_makeshift_6", "count": 2 } ] },
     "close": "t_door_makeshift_c",
     "bash": {
@@ -1950,7 +2131,9 @@
         { "item": "rope_makeshift_6", "count": [ 0, 1 ] },
         { "item": "withered", "count": [ 2, 12 ] },
         { "item": "splinter", "count": [ 5, 10 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     }
   },
   {
@@ -1962,7 +2145,9 @@
     "looks_like": "t_floor",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -1973,7 +2158,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_floor", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -1986,7 +2173,9 @@
     "looks_like": "t_door_frame",
     "color": "brown",
     "move_cost": 2,
-    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAMMABLE_ASH", "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 6,
       "str_max": 25,
@@ -1997,7 +2186,9 @@
         { "item": "2x4", "count": [ 3, 6 ] },
         { "item": "splinter", "count": [ 3, 6 ] },
         { "item": "nail", "charges": [ 6, 12 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "deconstruct": { "ter_set": "t_thconc_floor", "items": [ { "item": "2x4", "count": 12 }, { "item": "nail", "charges": 24 } ] }
   },
@@ -2010,7 +2201,9 @@
     "looks_like": "t_door_frame",
     "color": "dark_gray",
     "move_cost": 2,
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 18,
       "str_max": 75,
@@ -2029,7 +2222,9 @@
     "looks_like": "t_mdoor_frame",
     "color": "dark_gray",
     "move_cost": 2,
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 18,
       "str_max": 75,
@@ -2049,7 +2244,9 @@
     "color": "dark_gray",
     "move_cost": 2,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 18,
       "str_max": 75,
@@ -2070,12 +2267,15 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "REDUCE_SCENT", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 15,
       "str_max": 80,
       "str_min_blocked": 17,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_b",
@@ -2084,7 +2284,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "nail", "charges": [ 2, 10 ] },
         { "item": "splinter", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_c",
@@ -2106,12 +2308,15 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "REDUCE_SCENT", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 10,
       "str_max": 40,
       "str_min_blocked": 9,
       "str_max_blocked": 50,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_frame",
@@ -2120,7 +2325,9 @@
         { "item": "nail", "charges": [ 2, 20 ] },
         { "item": "splinter", "count": 1 },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_b",
@@ -2143,12 +2350,15 @@
     "coverage": 95,
     "roof": "t_wood_roof",
     "examine_action": "door_peephole",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "REDUCE_SCENT", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 15,
       "str_max": 80,
       "str_min_blocked": 17,
       "str_max_blocked": 100,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_b_peep",
@@ -2156,7 +2366,9 @@
         { "item": "2x4", "count": [ 1, 3 ] },
         { "item": "nail", "charges": [ 2, 10 ] },
         { "item": "splinter", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_c_peep",
@@ -2178,12 +2390,15 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "NO_SCENT", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 25,
       "str_max": 60,
       "str_min_blocked": 32,
       "str_max_blocked": 70,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_rdoor_b",
@@ -2192,7 +2407,9 @@
         { "item": "wood_panel", "prob": 10 },
         { "item": "nail", "charges": [ 1, 8 ] },
         { "item": "splinter", "count": 1 }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_rdoor_c",
@@ -2214,12 +2431,15 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_wood_roof",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "NO_SCENT", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 20,
       "str_max": 50,
       "str_min_blocked": 24,
       "str_max_blocked": 60,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_b",
@@ -2228,7 +2448,9 @@
         { "item": "nail", "charges": [ 6, 54 ] },
         { "item": "splinter", "count": 1 },
         { "item": "hinge", "count": [ 0, 1 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_rdoor_b",
@@ -2251,12 +2473,15 @@
     "coverage": 95,
     "roof": "t_wood_roof",
     "examine_action": "door_peephole",
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
     "flags": [ "FLAMMABLE_ASH", "NOITEM", "WALL", "NO_SCENT", "SUPPORTS_ROOF" ],
     "bash": {
       "str_min": 10,
       "str_max": 40,
       "str_min_blocked": 9,
       "str_max_blocked": 50,
+      "profile": "wooden_door",
       "sound": "crash!",
       "sound_fail": "wham!",
       "ter_set": "t_door_frame",
@@ -2266,7 +2491,9 @@
         { "item": "nail", "charges": [ 2, 20 ] },
         { "item": "splinter", "count": 1 },
         { "item": "hinge", "count": [ 1, 2 ] }
-      ]
+      ],
+      "hit_field": [ "fd_dust", 2 ],
+      "destroyed_field": [ "fd_splinters", 1 ]
     },
     "prying": {
       "result": "t_door_b_peep",
@@ -2288,12 +2515,15 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_o",
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 80,
@@ -2319,7 +2549,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_flat_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_corrugated_o",
     "bash": {
       "str_min": 30,
@@ -2339,12 +2572,15 @@
     "id": "t_secretdoor_metal_c",
     "name": "metal wall",
     "description": "An industrially fabricated thick sheet carefully positioned and joined seamlessly with perimeter sealant, this wall is capable of resisting extreme elements as well as hostile forces.  Blast load rated and extremely fire-retardant, breaching it will require specialized tools or an industrial vehicle.",
-    "symbol": "LINE_OXOX",
+    "symbol": "#",
     "looks_like": "t_wall_metal",
     "color": "cyan",
     "move_cost": 0,
     "roof": "t_metal_floor",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "AUTO_WALL_SYMBOL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "AUTO_WALL_SYMBOL", "SUPPORTS_ROOF" ],
     "open": "t_secretdoor_metal_o",
     "bash": {
       "str_min": 80,
@@ -2365,7 +2601,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_floor",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_secretdoor_metal_c",
     "bash": {
       "str_min": 80,
@@ -2381,12 +2619,15 @@
     "id": "t_secretdoor_concrete_c",
     "name": "concrete wall",
     "description": "A faux concrete wall positioned and joined seamlessly with the wall, this wall is capable of resisting extreme elements as well as hostile forces.  Blast load rated and extremely fire-retardant, breaching it will require specialized tools or an industrial vehicle.",
-    "symbol": "LINE_OXOX",
+    "symbol": "#",
     "looks_like": "t_concrete_wall",
     "color": "light_gray",
     "move_cost": 0,
     "roof": "t_metal_floor",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "AUTO_WALL_SYMBOL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "AUTO_WALL_SYMBOL", "SUPPORTS_ROOF" ],
     "open": "t_secretdoor_concrete_o",
     "bash": {
       "str_min": 80,
@@ -2413,7 +2654,9 @@
     "symbol": "'",
     "color": "light_gray",
     "move_cost": 2,
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_secretdoor_concrete_c",
     "bash": {
       "str_min": 80,
@@ -2442,7 +2685,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_lab_o",
     "bash": {
       "str_min": 80,
@@ -2468,11 +2714,14 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "LOCKED", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "LOCKED", "SUPPORTS_ROOF" ],
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 80,
@@ -2497,7 +2746,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_metal_c",
     "bash": {
       "str_min": 80,
@@ -2522,7 +2773,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_metal_corrugated_c",
     "bash": {
       "str_min": 30,
@@ -2547,7 +2800,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_metal_lab_c",
     "bash": {
       "str_min": 80,
@@ -2573,7 +2828,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_o_peep",
     "examine_action": "door_peephole",
     "bash": {
@@ -2600,7 +2858,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_metal_c_peep",
     "bash": {
       "str_min": 80,
@@ -2628,11 +2888,13 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_roof",
-    "flags": [ "NOITEM", "REDUCE_SCENT", "CONNECT_WITH_WALL", "LOCKED", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "NOITEM", "REDUCE_SCENT", "LOCKED", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 80,
@@ -2659,11 +2921,13 @@
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "symbol": "+",
     "color": "cyan",
-    "flags": [ "NOITEM", "REDUCE_SCENT", "CONNECT_WITH_WALL", "LOCKED", "BLOCK_WIND", "PICKABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "NOITEM", "REDUCE_SCENT", "LOCKED", "BLOCK_WIND", "PICKABLE", "SUPPORTS_ROOF" ],
     "prying": {
       "result": "t_door_metal_o",
       "message": "You pry open the metal door.",
@@ -2684,16 +2948,9 @@
     "lockpick_result": "t_door_metal_c",
     "lockpick_message": "With a satisfying click, the lock on the door opens.",
     "roof": "t_metal_roof",
-    "flags": [
-      "NOITEM",
-      "REDUCE_SCENT",
-      "OPENCLOSE_INSIDE",
-      "CONNECT_WITH_WALL",
-      "LOCKED",
-      "BLOCK_WIND",
-      "PICKABLE",
-      "SUPPORTS_ROOF"
-    ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "NOITEM", "REDUCE_SCENT", "OPENCLOSE_INSIDE", "LOCKED", "BLOCK_WIND", "PICKABLE", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_o",
     "prying": {
       "result": "t_door_metal_o",
@@ -2704,7 +2961,7 @@
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 80,
@@ -2730,7 +2987,9 @@
     "color": "cyan",
     "move_cost": 0,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "NOITEM", "PERMEABLE", "CONNECT_WITH_WALL", "THIN_OBSTACLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "NOITEM", "PERMEABLE", "THIN_OBSTACLE", "SUPPORTS_ROOF" ],
     "hacksaw": {
       "result": "t_mdoor_frame",
       "duration": "15 minutes",
@@ -2741,7 +3000,7 @@
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 45,
@@ -2752,7 +3011,7 @@
       "sound_fail": "clang!",
       "ter_set": "t_floor",
       "items": [
-        { "item": "steel_chunk", "count": [ 1, 4 ] },
+        { "item": "mc_steel_chunk", "count": [ 1, 4 ] },
         { "item": "scrap", "count": [ 3, 12 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
       ]
@@ -2768,7 +3027,9 @@
     "color": "cyan",
     "move_cost": 2,
     "roof": "t_metal_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_bar_c",
     "bash": {
       "str_min": 40,
@@ -2779,7 +3040,7 @@
       "sound_fail": "clang!",
       "ter_set": "t_mdoor_frame",
       "items": [
-        { "item": "steel_chunk", "count": [ 1, 4 ] },
+        { "item": "mc_steel_chunk", "count": [ 1, 4 ] },
         { "item": "scrap", "count": [ 3, 12 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
       ]
@@ -2804,12 +3065,14 @@
       "message": "You finish cutting the metal.",
       "byproducts": [ { "item": "pipe", "count": 12 } ]
     },
-    "flags": [ "TRANSPARENT", "NOITEM", "PERMEABLE", "CONNECT_WITH_WALL", "LOCKED", "THIN_OBSTACLE", "PICKABLE", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "NOITEM", "PERMEABLE", "LOCKED", "THIN_OBSTACLE", "PICKABLE", "SUPPORTS_ROOF" ],
     "examine_action": "locked_object_pickable",
     "oxytorch": {
       "result": "t_mdoor_frame",
       "duration": "14 seconds",
-      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "steel_chunk", "count": [ 3, 8 ] } ]
+      "byproducts": [ { "item": "steel_plate", "count": [ 0, 1 ] }, { "item": "mc_steel_chunk", "count": [ 3, 8 ] } ]
     },
     "bash": {
       "str_min": 45,
@@ -2820,7 +3083,7 @@
       "sound_fail": "clang!",
       "ter_set": "t_mdoor_frame",
       "items": [
-        { "item": "steel_chunk", "count": [ 1, 4 ] },
+        { "item": "mc_steel_chunk", "count": [ 1, 4 ] },
         { "item": "scrap", "count": [ 3, 12 ] },
         { "item": "hinge", "count": [ 1, 2 ] }
       ]
@@ -2836,7 +3099,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_o",
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -2860,7 +3126,10 @@
     "color": "light_cyan",
     "move_cost": 0,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "TRANSPARENT", "DOOR", "NOITEM", "SUPPORTS_ROOF" ],
     "open": "t_door_glass_lab_o",
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -2870,7 +3139,7 @@
       "sound_fail": "whack!",
       "sound_vol": 16,
       "sound_fail_vol": 10,
-      "ter_set": "t_thconc_floor",
+      "ter_set": "t_strconc_floor",
       "items": [ { "item": "glass_shard", "count": [ 42, 84 ] } ]
     }
   },
@@ -2884,7 +3153,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_c",
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -2908,7 +3179,9 @@
     "color": "light_cyan",
     "move_cost": 2,
     "roof": "t_flat_roof",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_lab_c",
     "deconstruct": { "ter_set": "t_door_frame", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
@@ -2918,7 +3191,7 @@
       "sound_fail": "whack!",
       "sound_vol": 16,
       "sound_fail_vol": 10,
-      "ter_set": "t_thconc_floor",
+      "ter_set": "t_strconc_floor",
       "items": [ { "item": "glass_shard", "count": [ 42, 84 ] } ]
     }
   },
@@ -2930,7 +3203,10 @@
     "symbol": "+",
     "looks_like": "t_door_glass_c",
     "color": "white",
-    "flags": [ "DOOR", "NOITEM", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "DOOR", "NOITEM", "BLOCK_WIND", "SUPPORTS_ROOF", "TRANSLUCENT" ],
     "open": "t_door_glass_frosted_o",
     "copy-from": "t_door_glass_c"
   },
@@ -2942,9 +3218,22 @@
     "symbol": "+",
     "looks_like": "t_door_glass_frosted_c",
     "color": "white",
-    "flags": [ "DOOR", "NOITEM", "CONNECT_WITH_WALL", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "DOOR", "NOITEM", "SUPPORTS_ROOF", "TRANSLUCENT" ],
     "open": "t_door_glass_frosted_lab_o",
-    "copy-from": "t_door_glass_frosted_c"
+    "copy-from": "t_door_glass_frosted_c",
+    "bash": {
+      "str_min": 4,
+      "str_max": 20,
+      "sound": "glass breaking!",
+      "sound_fail": "whack!",
+      "sound_vol": 16,
+      "sound_fail_vol": 10,
+      "ter_set": "t_strconc_floor",
+      "items": [ { "item": "glass_shard", "count": [ 42, 84 ] } ]
+    }
   },
   {
     "type": "terrain",
@@ -2954,9 +3243,21 @@
     "symbol": "'",
     "looks_like": "t_door_glass_o",
     "color": "white",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_frosted_c",
-    "copy-from": "t_door_glass_o"
+    "copy-from": "t_door_glass_o",
+    "bash": {
+      "str_min": 4,
+      "str_max": 20,
+      "sound": "glass breaking!",
+      "sound_fail": "whack!",
+      "sound_vol": 16,
+      "sound_fail_vol": 10,
+      "ter_set": "t_floor",
+      "items": [ { "item": "glass_shard", "count": [ 42, 84 ] } ]
+    }
   },
   {
     "type": "terrain",
@@ -2966,7 +3267,9 @@
     "symbol": "'",
     "looks_like": "t_door_glass_frosted_o",
     "color": "white",
-    "flags": [ "TRANSPARENT", "FLAT", "CONNECT_WITH_WALL", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "TRANSPARENT", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_glass_frosted_lab_c",
     "copy-from": "t_door_glass_lab_o"
   },
@@ -2981,7 +3284,10 @@
     "move_cost": 0,
     "coverage": 95,
     "roof": "t_metal_flat_roof",
-    "flags": [ "NOITEM", "DOOR", "CONNECT_WITH_WALL", "BLOCK_WIND", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "rotates_to": "INDOORFLOOR",
+    "flags": [ "NOITEM", "DOOR", "BLOCK_WIND", "SUPPORTS_ROOF" ],
     "open": "t_door_metal_bulkhead_o",
     "bash": {
       "str_min": 80,
@@ -3003,7 +3309,9 @@
     "move_cost": 1,
     "coverage": 95,
     "roof": "t_metal_flat_roof",
-    "flags": [ "CONNECT_WITH_WALL", "FLAT", "ROAD", "SUPPORTS_ROOF" ],
+    "connect_groups": "WALL",
+    "connects_to": "WALL",
+    "flags": [ "FLAT", "ROAD", "SUPPORTS_ROOF" ],
     "close": "t_door_metal_bulkhead_c",
     "bash": {
       "str_min": 80,

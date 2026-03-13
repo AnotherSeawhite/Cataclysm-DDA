@@ -27,47 +27,17 @@
     "entries": [
       {
         "distribution": [
-          {
-            "distribution": [ { "item": "sunglasses_eye", "prob": 80 }, { "item": "fancy_sunglasses_eye", "prob": 20 } ],
-            "prob": 15
-          },
-          {
-            "distribution": [ { "item": "sunglasses_reading", "prob": 80 }, { "item": "fancy_sunglasses_reading", "prob": 20 } ],
-            "prob": 10
-          },
-          {
-            "distribution": [ { "item": "sunglasses_bifocal", "prob": 80 }, { "item": "fancy_sunglasses_bifocal", "prob": 20 } ],
-            "prob": 5
-          },
-          {
-            "distribution": [ { "item": "transition_glasses_eye", "prob": 80 }, { "item": "fancy_transition_glasses_eye", "prob": 20 } ],
-            "prob": 9
-          },
-          {
-            "distribution": [ { "item": "transition_glasses_reading", "prob": 80 }, { "item": "fancy_transition_glasses_reading", "prob": 20 } ],
-            "prob": 6
-          },
-          {
-            "distribution": [ { "item": "transition_glasses_bifocal", "prob": 80 }, { "item": "fancy_transition_glasses_bifocal", "prob": 20 } ],
-            "prob": 3
-          },
-          {
-            "distribution": [ { "item": "sunglasses", "prob": 80 }, { "item": "fancy_sunglasses", "prob": 20 } ],
-            "prob": 20
-          },
+          { "item": "sunglasses_eye", "prob": 15 },
+          { "item": "sunglasses_reading", "prob": 10 },
+          { "item": "sunglasses_bifocal", "prob": 5 },
+          { "item": "sunglasses", "prob": 20 },
           {
             "collection": [
               {
                 "distribution": [
-                  { "distribution": [ { "item": "glasses_eye", "prob": 80 }, { "item": "fancy_glasses_eye", "prob": 20 } ], "prob": 45 },
-                  {
-                    "distribution": [ { "item": "glasses_reading", "prob": 80 }, { "item": "fancy_glasses_reading", "prob": 20 } ],
-                    "prob": 30
-                  },
-                  {
-                    "distribution": [ { "item": "glasses_bifocal", "prob": 80 }, { "item": "fancy_glasses_bifocal", "prob": 20 } ],
-                    "prob": 20
-                  }
+                  { "item": "glasses_eye", "prob": 45 },
+                  { "item": "glasses_reading", "prob": 30 },
+                  { "item": "glasses_bifocal", "prob": 20 }
                 ]
               },
               { "item": "fitover_sunglasses" }
@@ -85,7 +55,7 @@
     "//": "Clothes that hunters take on hunting trips.",
     "subtype": "distribution",
     "entries": [
-      { "item": "balclava", "prob": 50 },
+      { "item": "balclava", "variant": "black", "prob": 50 },
       { "item": "hat_cotton", "prob": 50 },
       { "item": "hat_faux_fur", "prob": 25 },
       { "item": "hat_fur", "prob": 50 },
@@ -102,7 +72,9 @@
       { "item": "tacjacket", "prob": 75 },
       { "item": "jacket_army", "prob": 40 },
       { "item": "socks_wool", "prob": 50 },
-      { "item": "coat_winter", "prob": 50 },
+      { "item": "coat_winter", "prob": 35 },
+      { "item": "coat_light_winter", "prob": 45 },
+      { "item": "ski_bib", "prob": 5 },
       { "item": "greatcoat", "prob": 25 },
       { "item": "jacket_flannel", "prob": 75 },
       { "item": "peacoat", "prob": 25 },
@@ -129,7 +101,9 @@
         "prob": 65
       },
       { "item": "pants_tactical", "prob": 20 },
-      { "item": "pants_hiking", "prob": 10 }
+      { "item": "pants_hiking", "prob": 10 },
+      { "item": "gaiter_boot", "prob": 10 },
+      { "item": "gaiter_boot_heavy", "prob": 10 }
     ]
   },
   {
@@ -145,7 +119,8 @@
       { "item": "long_knit_scarf", "prob": 25 },
       { "item": "longshirt", "prob": 50 },
       { "item": "jacket_flannel", "prob": 50 },
-      { "item": "coat_winter", "prob": 25 },
+      { "item": "coat_winter", "prob": 20 },
+      { "item": "coat_light_winter", "prob": 30 },
       { "item": "peacoat", "prob": 25 },
       { "item": "gloves_wool", "prob": 25 },
       { "item": "gloves_wool_fingerless", "prob": 12 },
@@ -266,7 +241,11 @@
       { "distribution": [ { "item": "socks", "prob": 10 }, { "item": "socks_wool", "prob": 90 } ] },
       { "item": "boots_combat" },
       {
-        "collection": [ { "distribution": [ { "item": "balclava", "prob": 90 }, { "item": "balaclava_cut_resistant", "prob": 10 } ] } ],
+        "collection": [
+          {
+            "distribution": [ { "item": "balclava", "variant": "black", "prob": 90 }, { "item": "balaclava_cut_resistant", "prob": 10 } ]
+          }
+        ],
         "prob": 25
       },
       {
@@ -286,18 +265,16 @@
       { "group": "clothing_military" },
       { "item": "elbow_pads", "prob": 10 },
       { "item": "knee_pads", "prob": 85 },
-      { "item": "helmet_army", "prob": 80 },
+      {
+        "distribution": [ { "group": "army_helmet_nvg", "prob": 15 }, { "item": "helmet_army", "prob": 85 } ],
+        "prob": 80
+      },
       { "item": "gloves_tactical", "prob": 60 },
       { "group": "military_ballistic_vest", "prob": 90 },
       { "group": "molle_backpacks_and_accessories", "prob": 85 },
       { "group": "clothing_tactical_leg", "prob": 15 },
       {
-        "distribution": [
-          { "group": "clothing_glasses", "prob": 60 },
-          { "item": "glasses_bal", "prob": 30 },
-          { "item": "goggles_nv", "prob": 5, "charges": [ 0, 100 ] },
-          { "item": "goggles_ir", "prob": 5, "charges": [ 0, 100 ] }
-        ],
+        "distribution": [ { "group": "clothing_glasses", "prob": 60 }, { "item": "glasses_bal", "prob": 30 } ],
         "prob": 20
       },
       { "group": "clothing_watch", "prob": 5 }
@@ -312,43 +289,16 @@
       { "group": "clothing_military" },
       { "item": "elbow_pads", "prob": 10 },
       { "item": "knee_pads", "prob": 85 },
-      { "item": "helmet_army", "prob": 80 },
+      {
+        "distribution": [ { "group": "army_helmet_nvg", "prob": 20 }, { "item": "helmet_army", "prob": 80 } ],
+        "prob": 80
+      },
       { "item": "gloves_tactical", "prob": 60 },
       { "group": "military_ballistic_vest_pristine", "prob": 90 },
       { "group": "molle_backpacks_and_accessories", "prob": 85 },
       { "group": "clothing_tactical_leg", "prob": 15 },
       {
-        "distribution": [
-          { "group": "clothing_glasses", "prob": 60 },
-          { "item": "glasses_bal", "prob": 30 },
-          { "item": "goggles_nv", "prob": 5, "charges": [ 50, 100 ] },
-          { "item": "goggles_ir", "prob": 5, "charges": [ 50, 100 ] }
-        ],
-        "prob": 20
-      },
-      { "group": "clothing_watch", "prob": 5 }
-    ]
-  },
-  {
-    "id": "clothing_soldier_broken_armor_set",
-    "type": "item_group",
-    "subtype": "collection",
-    "items": [
-      { "group": "clothing_military" },
-      { "item": "elbow_pads", "prob": 10 },
-      { "item": "knee_pads", "prob": 85 },
-      { "item": "helmet_army", "prob": 80 },
-      { "item": "gloves_tactical", "prob": 60 },
-      { "group": "military_ballistic_vest", "prob": 100 },
-      { "group": "molle_backpacks_and_accessories", "prob": 85 },
-      { "group": "clothing_tactical_leg", "prob": 15 },
-      {
-        "distribution": [
-          { "group": "clothing_glasses", "prob": 60 },
-          { "item": "glasses_bal", "prob": 30 },
-          { "item": "goggles_nv", "prob": 5, "charges": [ 0, 100 ] },
-          { "item": "goggles_ir", "prob": 5, "charges": [ 0, 100 ] }
-        ],
+        "distribution": [ { "group": "clothing_glasses", "prob": 60 }, { "item": "glasses_bal", "prob": 30 } ],
         "prob": 20
       },
       { "group": "clothing_watch", "prob": 5 }
@@ -363,18 +313,16 @@
       { "group": "clothing_military" },
       { "item": "elbow_pads", "prob": 10 },
       { "item": "knee_pads", "prob": 85 },
-      { "item": "helmet_army", "prob": 80 },
+      {
+        "distribution": [ { "group": "army_helmet_nvg", "prob": 20 }, { "item": "helmet_army", "prob": 80 } ],
+        "prob": 80
+      },
       { "item": "gloves_tactical", "prob": 60 },
       { "group": "military_ballistic_vest_heavy", "prob": 90 },
       { "group": "molle_backpacks_and_accessories", "prob": 85 },
       { "group": "clothing_tactical_leg", "prob": 15 },
       {
-        "distribution": [
-          { "group": "clothing_glasses", "prob": 60 },
-          { "item": "glasses_bal", "prob": 30 },
-          { "item": "goggles_nv", "prob": 5, "charges": [ 0, 100 ] },
-          { "item": "goggles_ir", "prob": 5, "charges": [ 0, 100 ] }
-        ],
+        "distribution": [ { "group": "clothing_glasses", "prob": 60 }, { "item": "glasses_bal", "prob": 30 } ],
         "prob": 20
       },
       { "group": "clothing_watch", "prob": 5 }
@@ -389,18 +337,19 @@
       { "group": "clothing_military_winter" },
       { "item": "elbow_pads", "prob": 10 },
       { "item": "knee_pads", "prob": 85 },
-      { "collection": [ { "item": "helmet_army" }, { "item": "helmet_liner" } ], "prob": 80 },
+      {
+        "collection": [
+          { "distribution": [ { "group": "army_helmet_nvg", "prob": 15 }, { "item": "helmet_army", "prob": 85 } ] },
+          { "item": "helmet_liner" }
+        ],
+        "prob": 80
+      },
       { "collection": [ { "item": "gloves_liner", "prob": 60 }, { "item": "winter_gloves_army" } ], "prob": 80 },
       { "group": "military_ballistic_vest", "prob": 90 },
       { "group": "molle_backpacks_and_accessories", "prob": 85 },
       { "group": "clothing_tactical_leg", "prob": 15 },
       {
-        "distribution": [
-          { "group": "clothing_glasses", "prob": 60 },
-          { "item": "glasses_bal", "prob": 30 },
-          { "item": "goggles_nv", "prob": 5, "charges": [ 0, 100 ] },
-          { "item": "goggles_ir", "prob": 5, "charges": [ 0, 100 ] }
-        ],
+        "distribution": [ { "group": "clothing_glasses", "prob": 60 }, { "item": "glasses_bal", "prob": 30 } ],
         "prob": 20
       },
       { "group": "clothing_watch", "prob": 5 }
@@ -413,7 +362,7 @@
     "//": "Standard set of clothes worn by a military helicopter pilot.",
     "items": [
       { "item": "chestrig", "prob": 40 },
-      { "item": "flight_helmet", "ammo-item": "light_plus_battery_cell", "charges": [ 0, 150 ] },
+      { "item": "flight_helmet", "ammo-item": "light_battery_cell", "charges": [ 0, 150 ] },
       { "item": "mil_flight_suit", "prob": 80 },
       { "item": "nomex_gloves" },
       { "group": "loaded_webbing_belt" },
@@ -437,7 +386,7 @@
     "//": "todo: when #57228 would be closed, change this one to copy-from `clothing_military`",
     "items": [
       { "item": "chestrig", "prob": 40 },
-      { "item": "flight_helmet", "ammo-item": "light_plus_battery_cell", "charges": [ 0, 150 ] },
+      { "item": "flight_helmet", "ammo-item": "light_battery_cell", "charges": [ 0, 150 ] },
       { "item": "mil_flight_suit", "prob": 80 },
       { "item": "nomex_gloves" },
       { "group": "loaded_webbing_belt" },
@@ -540,8 +489,6 @@
               { "item": "polo_shirt", "prob": 50 },
               { "item": "denim_shirt", "prob": 20 },
               { "item": "tshirt", "prob": 80 },
-              { "item": "linuxtshirt", "prob": 10 },
-              { "item": "tshirt_tour", "prob": 10 },
               { "item": "rashguard", "prob": 10 }
             ]
           },
@@ -558,7 +505,6 @@
               { "item": "jacket_army", "prob": 25 },
               { "item": "jacket_windbreaker", "prob": 20 },
               { "item": "jacket_varsity", "prob": 20 },
-              { "item": "gosling_jacket", "prob": 5 },
               { "item": "sweater", "prob": 50 },
               { "item": "turtleneck", "prob": 30 },
               { "item": "trenchcoat", "prob": 10 },
@@ -621,11 +567,12 @@
       { "item": "gold_watch", "prob": 40 },
       { "item": "platinum_watch", "prob": 10 },
       { "item": "sf_watch", "prob": 5 },
-      { "item": "pocketwatch", "prob": 30 },
+      { "item": "pocketwatch", "prob": 5 },
       { "item": "diving_watch", "prob": 20 },
-      { "item": "game_watch", "prob": 20, "charges": [ 0, 50 ] },
-      { "item": "fitness_band", "prob": 10 },
-      { "item": "smart_watch", "prob": 10, "charges": [ 0, 80 ] }
+      { "item": "game_watch", "prob": 5, "charges": [ 0, 50 ] },
+      { "item": "fitness_band", "prob": 35 },
+      { "item": "smart_watch", "prob": 50, "charges": [ 0, 80 ] },
+      { "item": "smart_watch_adv", "prob": 25, "charges": [ 0, 40 ] }
     ]
   },
   {
@@ -674,11 +621,18 @@
       { "group": "hat_hard_modified", "prob": 30 },
       { "item": "hat_hard_hooded", "prob": 10 },
       { "group": "hat_hard_hooded_modified", "prob": 5 },
-      { "item": "miner_hat", "prob": 10, "charges": [ 0, 100 ] },
+      { "group": "hat_hard_flashlight", "prob": 10 },
       { "item": "wearable_light", "prob": 15, "charges": [ 0, 100 ] },
       { "item": "hat_hard", "variant": "flag_hat_hard", "prob": 70, "event": "independence_day" },
       { "item": "hat_hard_hooded", "variant": "flag_hat_hard", "prob": 20, "event": "independence_day" }
     ]
+  },
+  {
+    "id": "hat_hard_flashlight",
+    "type": "item_group",
+    "subtype": "collection",
+    "container-item": "hat_hard",
+    "items": [ { "item": "flashlight", "charges": [ 0, -1 ] } ]
   },
   {
     "id": "hat_hard_modified",
@@ -687,6 +641,7 @@
     "container-item": "hat_hard",
     "items": [
       { "group": "common_nape_protectors", "prob": 50 },
+      { "item": "flashlight", "charges": [ 0, -1 ], "prob": 50 },
       { "group": "common_face_shields", "prob": 15 },
       { "item": "plastic_chin_guard", "prob": 10 },
       { "item": "attachable_ear_muffs", "prob": 5 }
@@ -718,7 +673,11 @@
     "type": "item_group",
     "//": "Protective masks often worn by technicians and tradesmen.",
     "subtype": "distribution",
-    "entries": [ { "item": "mask_dust", "prob": 90 }, { "item": "mask_filter", "prob": 10, "charges": [ 0, 100 ] } ]
+    "entries": [
+      { "item": "mask_dust", "prob": 90 },
+      { "item": "mask_filter", "prob": 10, "charges": [ 0, 100 ] },
+      { "item": "mask_gas_half", "prob": 10, "charges": [ 0, 100 ] }
+    ]
   },
   {
     "id": "clothing_work_pants",
@@ -775,6 +734,20 @@
     ]
   },
   {
+    "id": "clothing_chainsaw_protection",
+    "type": "item_group",
+    "//": "Protective equipment often worn in professions that make use of chainsaws and other sawing tools.",
+    "subtype": "distribution",
+    "entries": [
+      { "item": "gloves_cut_resistant", "prob": 70 },
+      { "item": "armguard_cut_resistant", "prob": 60 },
+      { "item": "chaps_cut_resistant", "prob": 50 },
+      { "item": "apron_cut_resistant", "prob": 45 },
+      { "item": "balaclava_cut_resistant", "prob": 10 },
+      { "item": "throat_guard_cut_resistant", "prob": 5 }
+    ]
+  },
+  {
     "id": "hardware_clothing",
     "type": "item_group",
     "//": "wearable utility or protective gear you can buy in a common hardware store or find on a jobsite",
@@ -791,12 +764,19 @@
       [ "attachable_ear_muffs", 5 ],
       [ "mask_dust", 30 ],
       { "item": "mask_filter", "prob": 30, "charges": [ 0, 100 ] },
+      {
+        "distribution": [ { "item": "mask_gas", "charges": [ 0, -1 ], "prob": 50 }, { "group": "gasmask_bag_full", "prob": 50 } ],
+        "prob": 15
+      },
+      { "item": "mask_gas_half", "prob": 30, "charges": [ 0, 100 ] },
       [ "glasses_safety", 30 ],
       [ "ear_plugs", 35 ],
       [ "apron_cut_resistant", 5 ],
       [ "gloves_cut_resistant", 10 ],
       [ "chaps_cut_resistant", 5 ],
       [ "armguard_cut_resistant", 5 ],
+      [ "balaclava_cut_resistant", 2 ],
+      [ "throat_guard_cut_resistant", 2 ],
       [ "apron_leather", 10 ],
       [ "tool_belt", 30 ],
       [ "knee_pads", 20 ],
@@ -805,7 +785,7 @@
       [ "gloves_leather", 40 ],
       [ "gloves_work", 45 ],
       { "item": "wearable_light", "prob": 10, "charges": [ 0, 100 ] },
-      { "item": "miner_hat", "prob": 1, "charges": [ 0, 100 ] }
+      { "group": "hat_hard_flashlight", "prob": 1 }
     ]
   },
   {
@@ -892,7 +872,16 @@
     "//": "Full face protection worn with hazmat suits",
     "items": [
       { "collection": [ { "item": "glasses_safety" }, { "item": "mask_filter", "charges": [ 0, -1 ] } ], "prob": 40 },
-      { "item": "mask_gas", "prob": 60, "charges": [ 0, -1 ] }
+      {
+        "distribution": [
+          { "item": "mask_gas", "charges": [ 0, -1 ], "prob": 50 },
+          { "item": "mask_gas", "charges": [ 0, -1 ], "contents-group": "gasmask_inserts_in_use", "prob": 25 },
+          { "group": "gasmask_bag_full", "prob": 25 },
+          { "group": "gasmask_bag_used", "prob": 60 }
+        ],
+        "prob": 60
+      },
+      { "item": "mask_gas_half", "prob": 60, "charges": [ 0, -1 ] }
     ]
   },
   {
@@ -905,7 +894,7 @@
       { "item": "boxing_gloves", "prob": 50 },
       { "item": "headgear", "prob": 50 },
       { "item": "mouthpiece", "prob": 50 },
-      { "item": "jersey", "prob": 40 },
+      { "item": "jersey", "variant": "generic", "prob": 40 },
       { "item": "coat_rain", "prob": 15 },
       { "item": "hood_rain", "prob": 15 },
       { "item": "unitard", "prob": 10 },
@@ -919,7 +908,7 @@
       { "item": "water_clean", "prob": 30 },
       { "item": "sports_drink", "prob": 30 },
       { "group": "used_1st_aid", "prob": 20 },
-      { "item": "fitness_band", "prob": 5 }
+      { "item": "fitness_band", "prob": 25 }
     ]
   },
   {
@@ -957,8 +946,9 @@
       [ "keikogi", 25 ],
       [ "zubon_gi", 25 ],
       [ "hakama_gi", 10 ],
-      [ "mouthpiece", 5 ],
       [ "obi_gi", 10 ],
+      [ "mouthpiece", 5 ],
+      [ "jikatabi_sneakers", 5 ],
       [ "geta", 1 ],
       [ "haori", 1 ],
       [ "yukata", 1 ]
@@ -1430,13 +1420,14 @@
       [ "stockings", 50 ],
       [ "garter_belt", 25 ],
       [ "leggings", 20 ],
-      [ "tights", 50 ]
+      [ "tights", 50 ],
+      [ "cheongsam", 1 ]
     ]
   },
   {
     "id": "dress_shoes",
     "type": "item_group",
-    "items": [ [ "dress_shoes", 50 ], [ "heels", 50 ], [ "leathersandals", 20 ] ]
+    "items": [ [ "dress_shoes", 50 ], [ "heels", 50 ], [ "espadrilles", 20 ] ]
   },
   {
     "id": "wedding_dresses",
@@ -1461,7 +1452,6 @@
       { "item": "jeans", "prob": 90 },
       { "item": "jeans_ripped", "prob": 10 },
       { "item": "jeans_skinny", "prob": 20 },
-      { "item": "jeans_red", "prob": 50 },
       { "item": "shorts", "prob": 70 },
       { "item": "shorts_denim", "prob": 35 },
       { "item": "b_shorts", "prob": 30 },
@@ -1526,7 +1516,7 @@
       [ "leather_belt", 30 ],
       [ "pants_leather", 60 ],
       [ "pants_cargo", 70 ],
-      [ "pants_hiking", 1 ],
+      [ "pants_hiking", 5 ],
       { "item": "pants_tactical", "prob": 5 },
       [ "shorts_cargo", 50 ],
       [ "motorbike_pants", 5 ],
@@ -1556,10 +1546,10 @@
       [ "boy_shorts", 25 ],
       { "item": "boy_shorts", "variant": "flag_boy_shorts", "prob": 2 },
       { "item": "boy_shorts", "variant": "flag_boy_shorts", "prob": 70, "event": "independence_day" },
-      [ "gown", 1 ],
       [ "long_glove_white", 1 ],
       [ "veil_wedding", 1 ],
       [ "dress_wedding", 1 ],
+      [ "gaiter_boot", 1 ],
       [ "tshirt", 80 ],
       [ "tshirt_cropped", 8 ],
       [ "longshirt", 70 ],
@@ -1578,7 +1568,6 @@
       [ "jacket_varsity", 20 ],
       [ "jacket_jean", 35 ],
       [ "vest_jean", 15 ],
-      [ "gosling_jacket", 3 ],
       [ "blazer", 35 ],
       [ "towel", 40 ],
       [ "jacket_leather", 30 ],
@@ -1611,17 +1600,13 @@
       [ "bullwhip", 1 ],
       [ "10gal_hat", 3 ],
       [ "glasses_monocle", 2 ],
-      [ "duct_tape", 60 ],
-      [ "superglue", 20 ],
+      { "group": "duct_tape_roll_part", "prob": 60 },
+      { "group": "glue_weak_domestic", "prob": 20 },
       [ "firecracker_pack", 5 ],
       [ "firecracker", 5 ],
-      [ "wolfsuit", 3 ],
-      [ "dinosuit", 2 ],
-      [ "sharksuit", 2 ],
-      [ "felinesuit", 3 ],
-      [ "dragonsuit", 2 ],
+      [ "fursuit", 5 ],
       [ "zentai", 5 ],
-      { "item": "vibrator", "prob": 5, "charges": [ 0, 100 ] },
+      { "group": "sex_accessories_domestic", "prob": 5 },
       { "item": "condom", "prob": 30, "count": [ 1, 5 ] },
       [ "snuggie", 5 ],
       [ "flyer", 10 ],
@@ -1651,7 +1636,6 @@
       [ "survnote", 1 ],
       [ "b_shorts", 15 ],
       [ "halter_top", 30 ],
-      [ "linuxtshirt", 10 ],
       [ "kilt", 2 ],
       [ "nanoskirt", 10 ],
       [ "sleeveless_tunic", 5 ],
@@ -1659,8 +1643,7 @@
       [ "straw_hat", 5 ],
       [ "straw_fedora", 5 ],
       [ "cassock", 1 ],
-      [ "zucchetto", 1 ],
-      [ "cape_catholic", 1 ],
+      [ "priest_collar", 1 ],
       [ "nun_habit", 1 ],
       [ "nun_wimple", 1 ],
       [ "holy_symbol", 20 ],
@@ -1710,20 +1693,20 @@
       [ "mummy_dress", 1 ],
       [ "ninja_dress", 1 ],
       [ "ninja_dress_sleeveless", 1 ],
-      [ "sinister_dress", 1 ],
-      [ "sinister_dress_short", 1 ],
-      [ "sinister_gown", 1 ],
-      [ "witch_dress", 1 ],
+      { "item": "long_dress_sleeved", "variant": "sinister", "prob": 1 },
+      { "item": "short_dress", "variant": "sinister", "prob": 1 },
+      { "item": "gown_sleeved", "variant": "sinister", "prob": 1 },
       [ "mummy_dress", 1 ],
-      [ "witch_dress_long", 1 ],
-      [ "witch_dress_short", 1 ],
+      { "item": "dress_sleeved", "variant": "witch_black", "prob": 1 },
+      { "item": "long_dress_sleeved", "variant": "witch_black", "prob": 1 },
+      { "item": "short_dress_sleeved", "variant": "witch_black", "prob": 1 },
       [ "gloves_black", 5 ],
       [ "gloves_skeleton", 1 ],
       [ "gloves_claws", 1 ],
       [ "wizard_hat_costume", 1 ],
       [ "pointed_hat", 1 ],
       [ "hood_ninja", 1 ],
-      [ "balaclava_skull", 1 ],
+      { "item": "balclava", "variant": "skull", "prob": 1 },
       [ "mask_skull", 1 ],
       [ "zombie_mask", 2 ],
       [ "cheerleader_skirt", 5 ],
@@ -1745,7 +1728,8 @@
       [ "bodysuit_lycra", 5 ],
       { "group": "independence_all_clothing", "prob": 100, "event": "independence_day" },
       { "group": "christmas_all_clothing", "prob": 100, "event": "christmas" },
-      { "group": "costume_all_clothing", "prob": 100, "event": "halloween" }
+      { "group": "costume_all_clothing", "prob": 100, "event": "halloween" },
+      [ "cheongsam", 1 ]
     ]
   },
   {
@@ -1770,6 +1754,7 @@
       [ "boots_western", 10 ],
       [ "clogs", 1 ],
       [ "leathersandals", 10 ],
+      [ "espadrilles", 5 ],
       [ "rollerskates", 1 ],
       [ "roller_blades", 5 ],
       [ "roller_shoes_off", 1 ],
@@ -1787,7 +1772,7 @@
       [ "pants_checkered", 5 ],
       [ "shorts", 70 ],
       [ "shorts_denim", 35 ],
-      [ "pants_hiking", 2 ],
+      [ "pants_hiking", 5 ],
       { "item": "pants_tactical", "prob": 5 },
       [ "pants", 75 ],
       [ "leather_belt", 30 ],
@@ -1811,14 +1796,15 @@
       { "group": "costume_pants_skirts", "prob": 1 },
       { "item": "pants", "variant": "pants_flag", "prob": 100, "event": "independence_day" },
       { "group": "christmas_pants_male", "prob": 100, "event": "christmas" },
-      { "group": "costume_pants_skirts", "prob": 100, "event": "halloween" }
+      { "group": "costume_pants_skirts", "prob": 100, "event": "halloween" },
+      [ "cheongsam", 1 ]
     ]
   },
   {
     "type": "item_group",
     "id": "shirts",
     "items": [
-      [ "tshirt", 80 ],
+      [ "tshirt", 90 ],
       [ "tshirt_cropped", 8 ],
       [ "longshirt", 80 ],
       [ "polo_shirt", 65 ],
@@ -1841,11 +1827,10 @@
       [ "collarpin", 5 ],
       [ "postman_shirt", 5 ],
       [ "halter_top", 50 ],
-      [ "linuxtshirt", 10 ],
       [ "rashguard", 10 ],
       [ "sleeveless_tunic", 5 ],
       [ "poncho", 20 ],
-      { "item": "flag_shirt", "prob": 50, "event": "independence_day" },
+      { "item": "tshirt", "variant": "flag_shirt", "prob": 50, "event": "independence_day" },
       { "group": "costume_shirts", "prob": 70, "event": "halloween" }
     ]
   },
@@ -1861,7 +1846,6 @@
       [ "jacket_leather", 30 ],
       [ "tacjacket", 30 ],
       [ "leather_police_jacket", 8 ],
-      [ "gosling_jacket", 5 ],
       [ "coat_rain", 50 ],
       [ "trenchcoat", 12 ],
       [ "trenchcoat_steampunk", 1 ],
@@ -1928,6 +1912,7 @@
       [ "hat_fur", 15 ],
       [ "hat_faux_fur", 20 ],
       [ "pants_ski", 60 ],
+      [ "ski_bib", 40 ],
       [ "mask_ski", 15 ],
       [ "long_underpants", 40 ],
       [ "long_undertop", 40 ],
@@ -1935,7 +1920,7 @@
       [ "tights", 20 ],
       [ "arm_warmers", 20 ],
       [ "leg_warmers", 20 ],
-      [ "balclava", 15 ],
+      { "item": "balclava", "variant": "black", "prob": 15 },
       [ "santa_jacket", 1 ],
       [ "santa_jacket_short", 1 ],
       [ "santa_shorts", 1 ],
@@ -2032,7 +2017,7 @@
       [ "kufi", 10 ],
       [ "kippah", 30 ],
       [ "eboshi", 10 ],
-      [ "balclava", 20 ],
+      { "item": "balclava", "variant": "black", "prob": 20 },
       [ "porkpie", 30 ],
       { "group": "costume_hats_hoods", "prob": 450, "event": "halloween" },
       { "group": "christmas_hats", "prob": 450, "event": "christmas" }
@@ -2073,6 +2058,7 @@
       [ "boots_western", 60 ],
       [ "clogs", 60 ],
       [ "leathersandals", 100 ],
+      [ "espadrilles", 50 ],
       [ "rollerskates", 10 ],
       [ "roller_blades", 20 ],
       [ "roller_shoes_off", 10 ],
@@ -2092,20 +2078,15 @@
     "id": "bags",
     "subtype": "distribution",
     "entries": [
+      { "group": "small_bags", "prob": 92 },
       { "item": "backpack", "prob": 38 },
       { "item": "backpack_hiking", "prob": 3 },
       { "item": "backpack_hunting", "prob": 1 },
-      { "item": "petpack", "prob": 3 },
       { "item": "backpack_tactical_large", "prob": 1 },
       { "item": "bigback", "prob": 1 },
       { "item": "travelpack", "prob": 5 },
-      { "item": "purse", "prob": 40 },
-      { "item": "mbag", "prob": 20 },
-      { "item": "slingpack", "prob": 8 },
-      { "item": "rucksack", "prob": 20 },
-      { "item": "backpack_denim", "prob": 3 },
-      { "item": "backpack_leather", "prob": 8 },
-      { "item": "briefcase", "prob": 10 },
+      { "item": "rucksack", "prob": 1 },
+      { "group": "large_gym_bags", "prob": 5 },
       { "item": "leg_bag", "prob": 1 },
       { "item": "quiver_takedown_bow", "prob": 1 }
     ]
@@ -2122,9 +2103,11 @@
       { "item": "backpack_tactical_large", "prob": 1 },
       { "group": "molle_backpacks_and_accessories", "prob": 1 },
       { "item": "duffelbag", "prob": 5 },
+      { "group": "large_duffelbags", "prob": 5 },
+      { "group": "large_gym_bags", "prob": 10 },
       { "item": "bigback", "prob": 1 },
       { "item": "travelpack", "prob": 5 },
-      { "item": "rucksack", "prob": 20 }
+      { "item": "rucksack", "prob": 1 }
     ]
   },
   {
@@ -2136,10 +2119,35 @@
       { "item": "purse", "prob": 40 },
       { "item": "mbag", "prob": 20 },
       { "item": "slingpack", "prob": 8 },
+      { "group": "small_gym_bags", "prob": 10 },
+      { "item": "backpack_small", "prob": 10 },
       { "item": "backpack_denim", "prob": 3 },
       { "item": "backpack_leather", "prob": 8 },
       { "item": "briefcase", "prob": 10 }
     ]
+  },
+  {
+    "type": "item_group",
+    "id": "small_gym_bags",
+    "subtype": "distribution",
+    "entries": [
+      { "item": "duffelbag_gym_xxs", "prob": 2 },
+      { "item": "duffelbag_gym_xs", "prob": 5 },
+      { "item": "duffelbag_gym_s", "prob": 20 },
+      { "item": "duffelbag_gym_m", "prob": 25 }
+    ]
+  },
+  {
+    "type": "item_group",
+    "id": "large_gym_bags",
+    "subtype": "distribution",
+    "entries": [ { "item": "duffelbag_gym_l", "prob": 10 }, { "item": "duffelbag_gym_xl", "prob": 1 } ]
+  },
+  {
+    "type": "item_group",
+    "id": "gym_bags",
+    "subtype": "distribution",
+    "entries": [ { "group": "small_gym_bags", "prob": 5 }, { "group": "large_gym_bags", "prob": 1 } ]
   },
   {
     "type": "item_group",
@@ -2161,11 +2169,21 @@
   },
   {
     "type": "item_group",
+    "id": "large_duffelbags",
+    "subtype": "distribution",
+    "entries": [
+      { "group": "large_gym_bags", "prob": 100 },
+      { "item": "duffelbag_l_poly", "prob": 60 },
+      { "item": "duffelbag_xl_nylon", "prob": 30 }
+    ]
+  },
+  {
+    "type": "item_group",
     "id": "dresses",
     "items": [
-      [ "dress", 55 ],
+      [ "dress", 65 ],
       [ "sundress", 43 ],
-      [ "gown", 10 ],
+      [ "cheongsam", 4 ],
       [ "dress_wedding", 2 ],
       { "group": "costume_dresses", "prob": 1 },
       { "group": "costume_dresses", "prob": 15, "event": "halloween" },
@@ -2185,10 +2203,6 @@
       [ "sports_bra", 50 ],
       [ "camisole", 30 ],
       [ "halter_top", 30 ],
-      [ "bikini_top", 5 ],
-      [ "bikini_top_short", 1 ],
-      [ "bikini_top_leather", 3 ],
-      [ "bikini_top_fur", 2 ],
       { "item": "bikini_top", "variant": "flag_bikini_top", "prob": 70, "event": "independence_day" }
     ]
   },
@@ -2200,8 +2214,6 @@
       [ "boy_shorts", 50 ],
       { "item": "boy_shorts", "variant": "flag_boy_shorts", "prob": 2 },
       { "item": "boy_shorts", "variant": "flag_boy_shorts", "prob": 70, "event": "independence_day" },
-      [ "bikini_bottom", 9 ],
-      [ "bikini_bottom_short", 1 ],
       { "item": "bikini_bottom", "variant": "flag_bikini_bottom", "prob": 70, "event": "independence_day" }
     ]
   },
@@ -2227,10 +2239,7 @@
       [ "briefs", 30 ],
       [ "boxer_briefs", 50 ],
       [ "long_underpants", 20 ],
-      [ "under_armor_shorts", 20 ],
-      [ "trunks", 10 ],
-      [ "swim_briefs", 5 ],
-      [ "speedo", 1 ]
+      [ "under_armor_shorts", 20 ]
     ]
   },
   {
@@ -2261,7 +2270,7 @@
       { "item": "glasses_monocle", "prob": 2 },
       { "item": "pants_leather", "prob": 60 },
       { "item": "pants_cargo", "prob": 70 },
-      { "item": "pants_hiking", "prob": 2 },
+      { "item": "pants_hiking", "prob": 5 },
       { "item": "shorts_cargo", "prob": 50 },
       { "item": "skirt", "prob": 75 },
       { "item": "skirt_long", "prob": 55 },
@@ -2297,7 +2306,6 @@
       { "item": "jacket_light", "prob": 50 },
       { "item": "jacket_windbreaker", "prob": 25 },
       { "item": "jacket_varsity", "prob": 20 },
-      { "item": "gosling_jacket", "prob": 5 },
       { "item": "jacket_jean", "prob": 35 },
       { "item": "vest_jean", "prob": 20 },
       { "item": "blazer", "prob": 35 },
@@ -2305,6 +2313,7 @@
       { "item": "tacjacket", "prob": 30 },
       { "item": "leather_police_jacket", "prob": 10 },
       { "item": "coat_winter", "prob": 50 },
+      { "item": "coat_light_winter", "prob": 50 },
       { "item": "peacoat", "prob": 30 },
       { "item": "greatcoat", "prob": 15 },
       { "item": "gloves_light", "prob": 35 },
@@ -2338,8 +2347,9 @@
       { "item": "leggings", "prob": 20 },
       { "item": "garter_belt", "prob": 10 },
       { "item": "stockings", "prob": 20 },
-      { "item": "balclava", "prob": 15 },
+      { "item": "balclava", "variant": "black", "prob": 15 },
       { "item": "pants_ski", "prob": 60 },
+      { "item": "ski_bib", "prob": 40 },
       { "item": "long_underpants", "prob": 40 },
       { "item": "long_undertop", "prob": 40 },
       { "item": "union_suit", "prob": 5 },
@@ -2438,7 +2448,6 @@
       { "item": "maid_dress_short", "prob": 1 },
       { "item": "maid_hat", "prob": 1 },
       { "item": "halter_top", "prob": 50 },
-      { "item": "linuxtshirt", "prob": 20 },
       { "item": "kilt", "prob": 2 },
       { "item": "nanoskirt", "prob": 10 },
       { "item": "sleeveless_tunic", "prob": 5 },
@@ -2449,10 +2458,12 @@
       { "item": "kufi", "prob": 2 },
       { "item": "kippah", "prob": 2 },
       { "item": "thawb", "prob": 1 },
+      { "item": "hijab", "prob": 2 },
+      { "item": "niqab", "prob": 1 },
+      { "item": "abaya", "prob": 1 },
       { "item": "kittel", "prob": 1 },
       { "item": "cassock", "prob": 1 },
-      { "item": "zucchetto", "prob": 1 },
-      { "item": "cape_catholic", "prob": 1 },
+      { "item": "priest_collar", "prob": 1 },
       { "item": "nun_habit", "prob": 1 },
       { "item": "nun_wimple", "prob": 1 },
       { "item": "robe", "prob": 5 },
@@ -2486,20 +2497,20 @@
       { "item": "mummy_dress", "prob": 1 },
       { "item": "ninja_dress", "prob": 1 },
       { "item": "ninja_dress_sleeveless", "prob": 1 },
-      { "item": "sinister_dress", "prob": 1 },
-      { "item": "sinister_dress_short", "prob": 1 },
-      { "item": "sinister_gown", "prob": 1 },
+      { "item": "long_dress_sleeved", "variant": "sinister", "prob": 1 },
+      { "item": "short_dress", "variant": "sinister", "prob": 1 },
+      { "item": "gown_sleeved", "variant": "sinister", "prob": 1 },
       { "item": "witch_dress", "prob": 1 },
       { "item": "mummy_dress", "prob": 1 },
-      { "item": "witch_dress_long", "prob": 1 },
-      { "item": "witch_dress_short", "prob": 1 },
+      { "item": "long_dress_sleeved", "variant": "witch_black", "prob": 1 },
+      { "item": "short_dress_sleeved", "variant": "witch_black", "prob": 1 },
       { "item": "gloves_black", "prob": 5 },
       { "item": "gloves_skeleton", "prob": 1 },
       { "item": "gloves_claws", "prob": 1 },
       { "item": "wizard_hat_costume", "prob": 1 },
       { "item": "pointed_hat", "prob": 1 },
       { "item": "hood_ninja", "prob": 1 },
-      { "item": "balaclava_skull", "prob": 1 },
+      { "item": "balclava", "variant": "skull", "prob": 1 },
       { "item": "mask_skull", "prob": 1 },
       { "item": "zombie_mask", "prob": 1 },
       { "item": "cheerleader_skirt", "prob": 5 },
@@ -2513,7 +2524,8 @@
       { "item": "jumpsuit_skeleton", "prob": 1 },
       { "item": "mummy_jumpsuit", "prob": 1 },
       { "item": "bodysuit_lycra", "prob": 5 },
-      { "item": "flag_swimsuit", "prob": 10 }
+      { "item": "flag_swimsuit", "prob": 10 },
+      { "item": "cheongsam", "prob": 1 }
     ]
   },
   {
@@ -2561,7 +2573,7 @@
   {
     "type": "item_group",
     "id": "swimmer_glasses",
-    "items": [ [ "goggles_swim", 80 ], [ "fancy_sunglasses", 5 ], [ "fitover_sunglasses", 5 ], [ "sunglasses", 10 ] ]
+    "items": [ [ "goggles_swim", 80 ], [ "fitover_sunglasses", 5 ], [ "sunglasses", 10 ] ]
   },
   {
     "type": "item_group",
@@ -2593,11 +2605,9 @@
       { "item": "tank_top", "variant": "tank_top_camo", "prob": 6 },
       [ "tank_top", 6 ],
       [ "halter_top", 6 ],
-      [ "tshirt", 6 ],
-      [ "tshirt_text", 6 ],
-      [ "flag_shirt", 5 ],
+      [ "tshirt", 15 ],
       { "item": "rashguard", "variant": "flag_rashguard_shirt", "prob": 60, "event": "independence_day" },
-      { "item": "flag_shirt", "prob": 20, "event": "independence_day" },
+      { "item": "tshirt", "variant": "flag_shirt", "prob": 20, "event": "independence_day" },
       { "item": "bikini_top", "variant": "flag_bikini_top", "prob": 50, "event": "independence_day" }
     ]
   },
@@ -2616,11 +2626,9 @@
       { "item": "tank_top", "variant": "tank_top_camo", "prob": 6 },
       [ "tank_top", 6 ],
       [ "halter_top", 6 ],
-      [ "tshirt", 6 ],
-      [ "tshirt_text", 6 ],
-      [ "flag_shirt", 5 ],
+      [ "tshirt", 15 ],
       { "item": "rashguard", "variant": "flag_rashguard_shirt", "prob": 60, "event": "independence_day" },
-      { "item": "flag_shirt", "prob": 20, "event": "independence_day" }
+      { "item": "tshirt", "variant": "flag_shirt", "prob": 20, "event": "independence_day" }
     ]
   },
   {
@@ -2675,7 +2683,7 @@
       [ "wetsuit_booties_thick", 5 ],
       [ "bastsandals", 5 ],
       [ "straw_sandals", 5 ],
-      [ "leathersandals", 5 ]
+      [ "espadrilles", 5 ]
     ]
   },
   {
@@ -2935,7 +2943,7 @@
       [ "kevlar", 10 ],
       { "group": "military_ballistic_vest", "prob": 30 },
       [ "vest", 15 ],
-      { "item": "mask_gas", "prob": 10, "charges": [ 0, -1 ] },
+      { "group": "gasmask_bag_full", "prob": 10 },
       { "item": "goggles_nv", "prob": 1, "charges": [ 0, 100 ] },
       { "item": "goggles_ir", "prob": 1, "charges": [ 0, 100 ] },
       [ "backpack", 38 ],
@@ -2943,6 +2951,7 @@
       [ "tacvest", 10 ],
       { "group": "molle_backpacks_and_accessories", "prob": 8 },
       [ "duffelbag", 15 ],
+      { "group": "large_duffelbags", "prob": 5 },
       [ "dump_pouch", 20 ],
       [ "legrig", 10 ],
       [ "under_armor", 20 ],
@@ -2953,23 +2962,29 @@
       [ "chestguard_hard", 20 ],
       [ "armguard_hard", 20 ],
       [ "legguard_hard", 15 ],
+      { "group": "army_helmet_nvg", "prob": 1 },
       [ "helmet_army", 40 ],
       [ "helmet_liner", 10 ],
+      [ "mask_bal", 5 ],
       [ "beret", 50 ],
       [ "beret_wool", 40 ],
       [ "elbow_pads", 50 ],
       [ "knee_pads", 50 ],
-      [ "solarpack", 5 ]
+      [ "folding_solar_panel_v2", 5 ]
     ]
   },
   {
     "type": "item_group",
     "id": "mil_accessories",
     "items": [
-      { "item": "mask_gas", "prob": 10, "charges": [ 0, 100 ] },
+      { "group": "gasmask_bag_full", "prob": 10 },
       [ "duffelbag", 15 ],
+      { "group": "large_duffelbags", "prob": 5 },
       { "item": "goggles_nv", "prob": 1, "charges": [ 0, 100 ] },
       { "item": "goggles_ir", "prob": 1, "charges": [ 0, 100 ] },
+      { "item": "military_nvg", "prob": 1, "charges": [ 0, 100 ] },
+      { "item": "advanced_gpnvg", "prob": 1, "charges": [ 0, 100 ] },
+      { "item": "enhanced_nvg", "prob": 1, "charges": [ 0, 100 ] },
       [ "optical_cloak", 1 ],
       { "item": "holo_cloak", "prob": 1, "charges": [ 0, 1000 ] },
       { "item": "mess_kit", "prob": 9 },
@@ -2985,7 +3000,6 @@
       [ "knee_pads", 40 ],
       [ "mask_bal", 5 ],
       [ "e_tool", 10 ],
-      [ "waterproof_gunmod", 8 ],
       [ "grapnel", 3 ],
       [ "glasses_bal", 30 ],
       [ "sheath", 10 ],
@@ -2995,7 +3009,6 @@
       [ "shoulder_holster", 1 ],
       [ "bandolier_shotgun", 8 ],
       [ "torso_bandolier_grenade", 8 ],
-      [ "solarpack", 5 ],
       [ "chem_hexamine", 3 ],
       { "item": "esbit_stove", "prob": 6, "charges": [ 0, 50 ] },
       { "group": "full_survival_kit", "prob": 4 }
@@ -3102,7 +3115,15 @@
     "items": [
       { "item": "mask_bunker", "prob": 70, "charges": [ 0, -1 ] },
       [ "mask_dust", 30 ],
-      { "item": "mask_gas", "prob": 20, "charges": [ 0, -1 ] },
+      {
+        "distribution": [
+          { "item": "mask_gas", "charges": [ 0, -1 ], "prob": 50 },
+          { "item": "mask_gas", "charges": [ 0, -1 ], "contents-group": "gasmask_inserts_in_use", "prob": 25 },
+          { "group": "gasmask_bag_full", "prob": 50 }
+        ],
+        "prob": 20
+      },
+      { "item": "mask_gas_half", "prob": 20, "charges": [ 0, -1 ] },
       { "item": "mask_filter", "prob": 10, "charges": [ 0, -1 ] },
       { "item": "goggles_nv", "prob": 2, "charges": [ 0, 100 ] },
       { "item": "goggles_ir", "prob": 1, "charges": [ 0, 100 ] }
@@ -3134,7 +3155,14 @@
     "items": [
       [ "mask_dust", 80 ],
       { "item": "mask_filter", "prob": 20, "charges": [ 0, -1 ] },
-      { "item": "mask_gas", "prob": 10, "charges": [ 0, -1 ] }
+      {
+        "distribution": [
+          { "item": "mask_gas", "charges": [ 0, -1 ], "prob": 25 },
+          { "item": "mask_gas", "charges": [ 0, -1 ], "contents-group": "gasmask_inserts_in_use", "prob": 25 },
+          { "group": "gasmask_bag_full", "prob": 50 }
+        ],
+        "prob": 10
+      }
     ]
   },
   {
@@ -3151,7 +3179,6 @@
       [ "hsurvivor_jumpsuit", 6 ],
       [ "wsurvivor_jumpsuit", 6 ],
       [ "wsurvivor_jumpsuit_nofur", 4 ],
-      [ "h20survivor_jumpsuit", 2 ],
       [ "touring_suit", 16 ],
       [ "armor_larmor", 28 ],
       [ "armor_blarmor", 14 ],
@@ -3171,10 +3198,6 @@
     "type": "item_group",
     "id": "survivorzed_tops",
     "items": [
-      [ "trenchcoat_survivor", 5 ],
-      [ "sleeveless_trenchcoat_survivor", 2 ],
-      [ "duster_survivor", 5 ],
-      [ "sleeveless_duster_survivor", 2 ],
       [ "vest", 40 ],
       [ "kevlar", 16 ],
       [ "jacket_army", 5 ],
@@ -3200,14 +3223,12 @@
       [ "tireplate", 10 ],
       [ "ballistic_vest_esapi", 2 ],
       { "group": "military_ballistic_vest", "prob": 4 },
-      [ "dragonskin", 1 ],
       [ "corset", 1 ],
       [ "corset_waist", 1 ],
       [ "football_armor", 18 ],
       [ "jacket_leather", 12 ],
       [ "tacjacket", 30 ],
       [ "jacket_varsity", 6 ],
-      [ "gosling_jacket", 1 ],
       [ "leather_police_jacket", 12 ],
       [ "jacket_jean", 8 ],
       [ "jacket_flannel", 6 ],
@@ -3219,7 +3240,7 @@
     "type": "item_group",
     "id": "survivorzed_bottoms",
     "items": [
-      [ "pants_survivor", 10 ],
+      [ "pants_tactical", 15 ],
       [ "pants_hiking", 12 ],
       [ "pants_cargo", 40 ],
       [ "shorts_cargo", 22 ],
@@ -3236,12 +3257,8 @@
     "type": "item_group",
     "id": "survivorzed_gloves",
     "items": [
-      [ "gloves_lsurvivor", 10 ],
       [ "gloves_survivor", 8 ],
-      [ "gloves_hsurvivor", 4 ],
-      [ "gloves_wsurvivor", 4 ],
       [ "gloves_fsurvivor", 2 ],
-      [ "gloves_h20survivor", 1 ],
       [ "gloves_fingerless", 28 ],
       [ "gloves_fingerless_mod", 20 ],
       [ "gloves_tactical", 12 ],
@@ -3263,12 +3280,8 @@
     "type": "item_group",
     "id": "survivorzed_boots",
     "items": [
-      [ "boots_lsurvivor", 10 ],
       [ "boots_survivor", 8 ],
-      [ "boots_hsurvivor", 4 ],
       [ "boots_wsurvivor", 4 ],
-      [ "boots_fsurvivor", 2 ],
-      [ "boots_h20survivor", 1 ],
       [ "boots", 20 ],
       [ "boots_scrap", 12 ],
       [ "boots_steel", 28 ],
@@ -3287,11 +3300,8 @@
     "type": "item_group",
     "id": "survivorzed_head",
     "items": [
-      [ "hood_lsurvivor", 10 ],
       [ "hood_survivor", 8 ],
       [ "hood_wsurvivor", 4 ],
-      [ "hood_fsurvivor", 2 ],
-      [ "hood_h20survivor", 1 ],
       [ "helmet_army", 26 ],
       [ "tac_helmet", 22 ],
       [ "helmet_riot", 18 ],
@@ -3332,12 +3342,18 @@
       [ "purse", 14 ],
       [ "slingpack", 12 ],
       [ "rucksack", 12 ],
+      { "group": "gym_bags", "prob": 40 },
       [ "duffelbag", 8 ],
+      { "group": "large_duffelbags", "prob": 4 },
       [ "quiver_takedown_bow", 1 ],
-      [ "mask_h20survivor", 1 ],
       [ "mask_bal", 14 ],
       [ "mask_hockey", 26 ],
-      { "item": "mask_gas", "prob": 24, "charges": [ 0, 100 ] },
+      [ "throat_guard_nylon", 2 ],
+      [ "throat_guard_canvas", 2 ],
+      [ "throat_guard_plastic", 1 ],
+      [ "throat_guard_cut_resistant", 1 ],
+      { "group": "gasmask_bag_full", "prob": 24 },
+      { "item": "mask_gas_half", "prob": 24, "charges": [ 0, 100 ] },
       { "item": "mask_filter", "prob": 12, "charges": [ 0, 100 ] },
       [ "mask_bunker", 2 ],
       [ "mask_fsurvivor", 2 ],
@@ -3374,10 +3390,9 @@
       [ "hat_boonie", 16 ],
       [ "beret", 18 ],
       [ "beret_wool", 14 ],
-      [ "balclava", 12 ],
+      { "item": "balclava", "variant": "black", "prob": 12 },
       [ "mask_survivorxl", 2 ],
       [ "combatsaw_off", 1 ],
-      [ "bigun", 2 ],
       [ "ashot", 4 ],
       [ "pickaxe", 1 ],
       [ "makeshift_machete", 4 ],
@@ -3394,14 +3409,13 @@
       { "distribution": [ { "group": "full_survival_kit" }, { "group": "used_survival_kit" } ], "prob": 3 },
       { "group": "tools_toolbox", "prob": 1 },
       [ "survivor_belt_notools", 2 ],
-      [ "survivor_machete", 2 ],
-      [ "spear_survivor", 2 ],
-      [ "survivor_mess_kit", 6 ],
       [ "acetylene_cooker", 12 ],
       [ "survivor_shavingkit", 3 ],
       [ "survivor_hairtrimmer", 1 ],
       [ "survivor_scope", 1 ],
-      [ "survnote", 30 ]
+      [ "survnote", 30 ],
+      [ "gaiter_boot", 5 ],
+      [ "gaiter_boot_heavy", 5 ]
     ]
   },
   {
@@ -3414,8 +3428,8 @@
       { "item": "boots_plate", "prob": 60, "damage": [ 2, 4 ] },
       { "item": "armor_junk_lightplate", "prob": 45, "damage": [ 2, 4 ] },
       { "item": "cuirass_lightplate", "prob": 45, "damage": [ 2, 4 ] },
-      { "item": "armguard_lightplate", "prob": 30, "damage": [ 2, 4 ] },
-      { "item": "legguard_lightplate", "prob": 30, "damage": [ 2, 4 ] },
+      { "item": "armor_lc_armguard", "prob": 30, "damage": [ 2, 4 ] },
+      { "item": "armor_lc_leg_guard", "prob": 30, "damage": [ 2, 4 ] },
       { "item": "helmet_barbute", "prob": 50, "damage": [ 2, 4 ] },
       { "item": "helmet_conical", "prob": 30, "damage": [ 2, 4 ] },
       { "item": "armor_lamellar", "prob": 20, "damage": [ 2, 4 ] },
@@ -3453,7 +3467,7 @@
     "type": "item_group",
     "id": "museum_armor_legs",
     "items": [
-      { "item": "legguard_lightplate", "prob": 30, "damage": [ 2, 4 ] },
+      { "item": "armor_lc_leg_guard", "prob": 30, "damage": [ 2, 4 ] },
       { "item": "legguard_metal", "prob": 10, "damage": [ 2, 4 ] },
       { "item": "legguard_bronze", "prob": 20, "damage": [ 2, 4 ] },
       { "item": "chainmail_junk_legs", "prob": 10, "damage": [ 2, 4 ] }
@@ -3483,7 +3497,7 @@
     "type": "item_group",
     "id": "museum_armor_arms",
     "items": [
-      { "item": "armguard_lightplate", "prob": 30, "damage": [ 2, 4 ] },
+      { "item": "armor_lc_armguard", "prob": 30, "damage": [ 2, 4 ] },
       { "item": "gloves_plate", "prob": 60, "damage": [ 2, 4 ] },
       { "item": "chainmail_junk_arms", "prob": 30, "damage": [ 2, 4 ] },
       { "item": "chainmail_junk_hands", "prob": 30, "damage": [ 2, 4 ] }
@@ -3501,7 +3515,6 @@
       { "item": "blazer", "prob": 35 },
       { "item": "jacket_leather", "prob": 30 },
       { "item": "leather_police_jacket", "prob": 10 },
-      { "item": "gosling_jacket", "prob": 5 },
       { "item": "coat_rain", "prob": 50 },
       { "item": "trenchcoat", "prob": 10 },
       { "item": "duster", "prob": 15 },
@@ -3569,7 +3582,6 @@
       [ "jacket_light", 50 ],
       [ "jacket_windbreaker", 25 ],
       [ "jacket_varsity", 20 ],
-      [ "gosling_jacket", 5 ],
       [ "jacket_jean", 35 ],
       [ "vest_jean", 20 ],
       [ "blazer", 35 ],
@@ -3585,6 +3597,7 @@
       [ "hat_newsboy", 20 ],
       [ "under_armor", 20 ],
       [ "under_armor_shorts", 20 ],
+      [ "dress", 20 ],
       [ "tights", 20 ],
       [ "leggings", 20 ],
       [ "stockings", 20 ],
@@ -3600,7 +3613,6 @@
       [ "pants_army", 10 ],
       { "item": "tank_top", "variant": "tank_top_camo", "prob": 20 },
       [ "tux", 1 ],
-      [ "gown", 1 ],
       [ "kasaya", 1 ],
       [ "antarvasa", 1 ],
       [ "uttarasanga", 1 ],
@@ -3609,7 +3621,6 @@
       [ "maid_dress", 1 ],
       [ "maid_dress_short", 1 ],
       [ "halter_top", 50 ],
-      [ "linuxtshirt", 20 ],
       [ "kilt", 2 ],
       [ "nanoskirt", 10 ],
       [ "robe", 50 ],
@@ -3637,13 +3648,13 @@
       [ "mummy_dress", 1 ],
       [ "ninja_dress", 1 ],
       [ "ninja_dress_sleeveless", 1 ],
-      [ "sinister_dress", 1 ],
-      [ "sinister_dress_short", 1 ],
-      [ "sinister_gown", 1 ],
+      { "item": "long_dress_sleeved", "variant": "sinister", "prob": 1 },
+      { "item": "short_dress", "variant": "sinister", "prob": 1 },
+      { "item": "gown_sleeved", "variant": "sinister", "prob": 1 },
       [ "witch_dress", 1 ],
       [ "mummy_dress", 1 ],
-      [ "witch_dress_long", 1 ],
-      [ "witch_dress_short", 1 ],
+      { "item": "long_dress_sleeved", "variant": "witch_black", "prob": 1 },
+      { "item": "short_dress_sleeved", "variant": "witch_black", "prob": 1 },
       [ "nun_habit", 1 ],
       [ "nun_wimple", 1 ],
       [ "gloves_black", 5 ],
@@ -3652,7 +3663,7 @@
       [ "wizard_hat_costume", 1 ],
       [ "pointed_hat", 1 ],
       [ "hood_ninja", 1 ],
-      [ "balaclava_skull", 1 ],
+      { "item": "balclava", "variant": "skull", "prob": 1 },
       [ "mask_skull", 1 ],
       [ "zombie_mask", 1 ],
       [ "cheerleader_skirt", 5 ],
@@ -3665,7 +3676,8 @@
       [ "jumpsuit_skeleton", 1 ],
       [ "mummy_jumpsuit", 1 ],
       [ "bodysuit_lycra", 3 ],
-      [ "flag_swimsuit", 2 ]
+      [ "flag_swimsuit", 2 ],
+      [ "cheongsam", 1 ]
     ]
   },
   {
@@ -3805,7 +3817,7 @@
     "items": [
       { "item": "bondage_mask", "prob": 5 },
       { "item": "mask_dust", "prob": 15 },
-      { "item": "mask_guy_fawkes", "prob": 1 },
+      { "item": "mask_skull", "variant": "guy_fawkes", "prob": 1 },
       { "item": "mask_hockey", "prob": 10 },
       { "item": "mouthpiece", "prob": 5 },
       { "item": "mask_filter", "prob": 5, "charges": [ 0, 100 ] },
@@ -3823,7 +3835,7 @@
       { "item": "socks", "prob": 70 },
       { "item": "socks_ankle", "prob": 50 },
       { "item": "socks_wool", "prob": 30 },
-      { "item": "thermal_socks", "prob": 10 }
+      { "item": "thermal_socks", "prob": 1 }
     ]
   },
   {
@@ -3833,7 +3845,7 @@
     "subtype": "distribution",
     "items": [
       { "item": "bandana", "prob": 90 },
-      { "item": "balclava", "prob": 50 },
+      { "item": "balclava", "variant": "black", "prob": 50 },
       { "item": "headscarf", "prob": 50 },
       { "item": "scarf_fur_long", "prob": 10 },
       { "item": "scarf_fur", "prob": 20 },
@@ -3843,8 +3855,7 @@
       { "item": "knit_scarf", "prob": 80 },
       { "item": "keffiyeh", "prob": 30 },
       { "item": "mask_ski", "prob": 30 },
-      { "item": "thermal_mask", "prob": 5 },
-      { "item": "blindfold", "prob": 5 }
+      { "item": "thermal_mask", "prob": 5 }
     ]
   },
   {
@@ -3856,11 +3867,10 @@
       { "item": "longshirt", "prob": 70 },
       { "item": "arm_warmers", "prob": 20 },
       { "item": "armguard_soft", "prob": 10 },
+      { "item": "armguard_hard", "prob": 3 },
       { "item": "dress_shirt", "prob": 50 },
       { "item": "denim_shirt", "prob": 15 },
-      { "item": "flag_shirt", "prob": 15 },
       { "item": "jersey", "prob": 30 },
-      { "item": "linuxtshirt", "prob": 10 },
       { "item": "polo_shirt", "prob": 30 },
       { "item": "thermal_shirt", "prob": 20 },
       { "item": "sleeveless_tunic", "prob": 10 },
@@ -3869,28 +3879,23 @@
       { "item": "turtleneck_shirt", "prob": 15 },
       { "item": "sweatshirt", "prob": 50 },
       { "item": "tank_top", "prob": 30 },
-      { "item": "tshirt", "prob": 80 },
-      { "item": "tshirt_text", "prob": 50 },
+      { "item": "tshirt", "prob": 85 },
       { "item": "rashguard", "prob": 20 },
       { "item": "tunic", "prob": 10 },
       { "item": "waistcoat", "prob": 10 },
       { "item": "wool_hoodie", "prob": 10 },
       { "item": "hoodie", "prob": 40 },
       { "item": "hoodie_cropped", "prob": 4 },
-      { "item": "flag_shirt", "prob": 50, "event": "independence_day" },
+      { "item": "tshirt", "variant": "flag_shirt", "prob": 50, "event": "independence_day" },
       { "group": "costume_shirts", "prob": 50, "event": "halloween" }
     ]
   },
   {
     "id": "shirts_womens",
     "type": "item_group",
-    "//": "womens shirts",
+    "//": "women's shirts",
     "subtype": "distribution",
-    "items": [
-      { "item": "halter_top", "prob": 30 },
-      { "item": "tank_top", "variant": "tank_top_cheerleader", "prob": 1 },
-      { "item": "cheerleader_top_short", "prob": 1 }
-    ]
+    "items": [ { "item": "halter_top", "prob": 30 }, { "item": "tank_top", "prob": 15 }, { "item": "camisole", "prob": 15 } ]
   },
   {
     "id": "underwear_unisex",
@@ -3898,8 +3903,8 @@
     "//": "unisex underwear",
     "subtype": "distribution",
     "items": [
-      { "item": "thermal_suit", "prob": 15 },
-      { "item": "thermal_outfit", "prob": 5 },
+      { "item": "thermal_suit", "prob": 1 },
+      { "item": "thermal_outfit", "prob": 1 },
       { "item": "long_undertop", "prob": 30 },
       { "item": "under_armor", "prob": 10 },
       { "item": "undershirt", "prob": 40 },
@@ -3910,7 +3915,7 @@
   {
     "id": "underwear_womens",
     "type": "item_group",
-    "//": "womens underwear.",
+    "//": "women's underwear.",
     "subtype": "distribution",
     "items": [
       { "item": "boy_shorts", "prob": 30 },
@@ -3934,7 +3939,7 @@
   {
     "id": "underwear_mens",
     "type": "item_group",
-    "//": "mens underwear.",
+    "//": "men's underwear.",
     "subtype": "distribution",
     "items": [
       { "item": "boxer_briefs", "prob": 30 },
@@ -3976,7 +3981,6 @@
       { "item": "jeans", "prob": 80 },
       { "item": "jeans_ripped", "prob": 7 },
       { "item": "jeans_skinny", "prob": 15 },
-      { "item": "jeans_red", "prob": 20 },
       { "item": "leg_warmers", "prob": 20 },
       { "item": "leggings", "prob": 30 },
       { "item": "legguard_hard", "prob": 3 },
@@ -3992,10 +3996,10 @@
   {
     "id": "pants_womens",
     "type": "item_group",
-    "//": "womens pants and leg coverings for domestic locations.",
+    "//": "women's pants and leg coverings for domestic locations.",
     "subtype": "distribution",
     "items": [
-      { "item": "nanoskirt", "prob": 10 },
+      { "item": "nanoskirt", "prob": 1 },
       { "item": "skirt", "prob": 50 },
       { "item": "skirt_long", "prob": 40 },
       { "item": "skirt_denim", "prob": 20 },
@@ -4005,7 +4009,7 @@
   {
     "id": "pants_mens",
     "type": "item_group",
-    "//": "mens pants and leg coverings for domestic locations.",
+    "//": "men's pants and leg coverings for domestic locations.",
     "subtype": "distribution",
     "items": [ { "item": "kilt", "prob": 50 }, { "item": "kilt_leather", "prob": 25 } ]
   },
@@ -4038,7 +4042,7 @@
   {
     "id": "gloves_womens",
     "type": "item_group",
-    "//": "womens gloves and mittens for domestic locations.",
+    "//": "women's gloves and mittens for domestic locations.",
     "subtype": "distribution",
     "items": [ { "item": "long_glove_white", "prob": 5 } ]
   },
@@ -4049,12 +4053,7 @@
     "subtype": "distribution",
     "items": [
       {
-        "distribution": [
-          { "item": "basket_laundry", "prob": 60 },
-          { "item": "straw_basket", "prob": 35 },
-          { "item": "suitcase_l", "prob": 15 },
-          { "item": "suitcase_m", "prob": 25 }
-        ],
+        "distribution": [ { "item": "straw_basket", "prob": 35 }, { "item": "suitcase_l", "prob": 15 }, { "item": "suitcase_m", "prob": 25 } ],
         "prob": 20
       },
       {
@@ -4069,7 +4068,7 @@
           { "item": "slingpack", "prob": 65 },
           { "item": "purse", "prob": 70 },
           { "item": "briefcase", "prob": 40 },
-          { "item": "hk_briefcase", "prob": 1 },
+          { "item": "duffelbag", "prob": 20 },
           { "item": "leg_bag", "prob": 1 },
           { "item": "leg_small_bag", "prob": 1 },
           { "item": "armrig", "prob": 1 }
@@ -4085,7 +4084,6 @@
           { "item": "nylon_quiver", "prob": 12 },
           { "item": "quiver", "prob": 8 },
           { "item": "quiver_large", "prob": 15 },
-          { "item": "solarpack", "prob": 5 },
           { "item": "ammo_satchel", "prob": 10 },
           { "item": "ammo_pouch", "prob": 10 },
           { "item": "chestrig", "prob": 20 },
@@ -4105,8 +4103,66 @@
           { "item": "backpack", "prob": 85 },
           { "item": "backpack_denim", "prob": 5 },
           { "item": "backpack_hiking", "prob": 25 },
+          { "group": "gym_bags", "prob": 80 },
           { "item": "duffelbag", "prob": 80 },
+          { "group": "large_duffelbags", "prob": 10 },
           { "item": "travelpack", "prob": 25 },
+          { "item": "gobag", "prob": 1 }
+        ],
+        "prob": 80
+      }
+    ]
+  },
+  {
+    "id": "bags_unisex_small",
+    "type": "item_group",
+    "//": "worn bags of all sorts for domestic buildings",
+    "subtype": "distribution",
+    "items": [
+      {
+        "distribution": [ { "item": "2lcanteen", "prob": 50 }, { "item": "camelbak", "prob": 25 }, { "item": "canteen", "prob": 70 } ],
+        "prob": 5
+      },
+      {
+        "distribution": [
+          { "item": "fanny", "prob": 60 },
+          { "item": "mbag", "prob": 35 },
+          { "item": "runner_bag", "prob": 45 },
+          { "item": "slingpack", "prob": 65 },
+          { "item": "purse", "prob": 70 },
+          { "item": "leg_bag", "prob": 1 },
+          { "item": "leg_small_bag", "prob": 1 },
+          { "item": "armrig", "prob": 1 }
+        ],
+        "prob": 60
+      },
+      {
+        "distribution": [
+          { "item": "case_violin", "prob": 5 },
+          { "item": "bookstrap", "prob": 5 },
+          { "item": "camera_bag", "prob": 20 },
+          { "item": "quiver_takedown_bow", "prob": 2 },
+          { "item": "nylon_quiver", "prob": 12 },
+          { "item": "quiver", "prob": 8 },
+          { "item": "quiver_large", "prob": 15 },
+          { "item": "ammo_satchel", "prob": 10 },
+          { "item": "ammo_pouch", "prob": 10 },
+          { "item": "chestrig", "prob": 20 },
+          { "item": "chestrig", "variant": "flag_chestrig", "prob": 2 },
+          { "item": "dive_bag", "prob": 25 },
+          { "item": "dry_bag", "prob": 25 },
+          { "item": "chestrig", "variant": "flag_chestrig", "prob": 70, "event": "independence_day" }
+        ],
+        "prob": 30
+      },
+      {
+        "distribution": [
+          { "item": "daypack", "prob": 25 },
+          { "item": "backpack_leather", "prob": 40 },
+          { "item": "backpack", "prob": 85 },
+          { "item": "backpack_denim", "prob": 5 },
+          { "item": "travelpack", "prob": 25 },
+          { "group": "small_gym_bags", "prob": 40 },
           { "item": "gobag", "prob": 1 }
         ],
         "prob": 80
@@ -4140,9 +4196,9 @@
     "id": "dresses_womens",
     "subtype": "distribution",
     "entries": [
-      { "item": "dress", "prob": 10 },
+      { "item": "dress", "prob": 14 },
       { "item": "sundress", "prob": 10 },
-      { "item": "gown", "prob": 4 },
+      { "item": "cheongsam", "prob": 4 },
       { "item": "dress_wedding", "prob": 2 },
       { "group": "costume_dresses", "prob": 1 },
       { "group": "costume_dresses", "prob": 15, "event": "halloween" },
@@ -4157,17 +4213,14 @@
     "items": [
       { "item": "bondage_suit", "prob": 10 },
       { "item": "bodysuit_lycra", "prob": 10 },
-      { "item": "dinosuit", "prob": 5 },
-      { "item": "sharksuit", "prob": 5 },
       { "item": "yukata", "prob": 20 },
       { "item": "leotard", "prob": 40 },
       { "item": "motorbike_armor", "prob": 15 },
       { "item": "suit", "prob": 70 },
       { "item": "touring_suit", "prob": 20 },
-      { "item": "wolfsuit", "prob": 3 },
-      { "item": "felinesuit", "prob": 3 },
-      { "item": "dragonsuit", "prob": 1 },
+      { "item": "fursuit", "prob": 3 },
       { "item": "wool_suit", "prob": 40 },
+      { "item": "wool_suit_devil", "prob": 15 },
       { "item": "unitard", "prob": 60 },
       { "item": "zentai", "prob": 5 },
       { "item": "wetsuit", "prob": 2 },
@@ -4195,13 +4248,13 @@
     "items": [
       { "item": "dress_wedding", "prob": 5 },
       { "item": "sundress", "prob": 60 },
-      { "item": "gown", "prob": 20 },
-      { "item": "dress", "prob": 60 },
+      { "item": "cheongsam", "prob": 10 },
+      { "item": "dress", "prob": 80 },
       { "item": "veil_wedding", "prob": 5 },
       { "item": "santa_dress_long", "prob": 1 },
-      { "item": "sinister_dress", "prob": 1 },
-      { "item": "sinister_gown", "prob": 1 },
-      { "item": "witch_dress_long", "prob": 1 },
+      { "item": "long_dress_sleeved", "variant": "sinister", "prob": 1 },
+      { "item": "gown_sleeved", "variant": "sinister", "prob": 1 },
+      { "item": "long_dress_sleeved", "variant": "witch_black", "prob": 1 },
       { "group": "costume_dresses", "prob": 50, "event": "halloween" },
       { "group": "christmas_dresses", "prob": 50, "event": "christmas" }
     ]
@@ -4272,11 +4325,9 @@
           { "item": "tacjacket", "prob": 50 },
           { "item": "jacket_army", "prob": 30 },
           { "item": "leather_police_jacket", "prob": 10 },
-          { "item": "jacket_leather_red", "prob": 25 },
           { "item": "jacket_light", "prob": 60 },
           { "item": "jacket_windbreaker", "prob": 70 },
           { "item": "jacket_varsity", "prob": 30 },
-          { "item": "gosling_jacket", "prob": 5 },
           { "item": "poncho", "prob": 30 },
           { "item": "ski_jacket", "prob": 25 },
           { "group": "costume_jackets", "prob": 1 },
@@ -4307,68 +4358,68 @@
     "subtype": "distribution",
     "items": [
       {
-        "distribution": [
-          { "item": "boots", "prob": 80 },
-          { "item": "boots_hiking", "prob": 50 },
-          { "item": "boots_steel", "prob": 50 },
-          { "item": "sneakers_steel", "prob": 35 },
-          { "item": "boots_combat", "prob": 45 },
-          { "item": "boots_fur", "prob": 10 },
-          { "item": "boots_western", "prob": 40 },
-          { "item": "boots_winter", "prob": 30 },
-          { "item": "knee_high_boots", "prob": 15 },
-          { "item": "motorbike_boots", "prob": 35 },
-          { "item": "thigh_high_boots", "prob": 5 },
-          { "item": "boots_denim", "prob": 5 }
-        ],
-        "prob": 60
+        "distribution": [ { "item": "sneakers", "prob": 3 }, { "item": "boots", "prob": 2 }, { "item": "dress_shoes", "prob": 1 } ],
+        "prob": 90
       },
       {
         "distribution": [
-          { "item": "bastsandals", "prob": 20 },
-          { "item": "straw_sandals", "prob": 20 },
-          { "item": "flip_flops", "prob": 40 },
-          { "item": "flip_flops_exp", "prob": 5 },
-          { "item": "leathersandals", "prob": 35 }
+          { "item": "slippers", "prob": 8 },
+          { "item": "flip_flops", "prob": 8 },
+          { "item": "flip_flops_exp", "prob": 3 },
+          { "item": "straw_sandals", "prob": 3 },
+          { "item": "bastsandals", "prob": 3 },
+          { "item": "leathersandals", "prob": 3 },
+          { "item": "espadrilles", "prob": 3 },
+          { "item": "mocassins", "prob": 3 },
+          { "item": "clogs", "prob": 1 },
+          { "item": "geta", "prob": 1 }
         ],
-        "prob": 60
+        "prob": 50
+      },
+      {
+        "distribution": [ { "item": "boots_steel", "prob": 4 }, { "item": "sneakers_steel", "prob": 3 }, { "item": "boots_rubber", "prob": 1 } ],
+        "prob": 30
       },
       {
         "distribution": [
-          { "item": "cleats", "prob": 20 },
-          { "item": "golf_shoes", "prob": 20 },
-          { "item": "dance_shoes", "prob": 30 },
-          { "item": "roller_blades", "prob": 35 },
-          { "item": "rollerskates", "prob": 35 },
-          { "item": "roller_shoes_off", "prob": 45 }
+          { "item": "boots_hiking", "prob": 5 },
+          { "item": "motorbike_boots", "prob": 3 },
+          { "item": "boots_combat", "prob": 2 }
+        ],
+        "prob": 30
+      },
+      {
+        "distribution": [
+          { "item": "lowtops", "prob": 3 },
+          { "item": "golf_shoes", "prob": 3 },
+          { "item": "dance_shoes", "prob": 3 },
+          { "item": "cleats", "prob": 2 },
+          { "item": "rollerskates", "prob": 4 },
+          { "item": "roller_shoes_off", "prob": 4 },
+          { "item": "roller_blades", "prob": 2 }
         ],
         "prob": 20
       },
       {
-        "distribution": [
-          { "item": "dress_shoes", "prob": 50 },
-          { "item": "lowtops", "prob": 30 },
-          { "item": "mocassins", "prob": 10 },
-          { "item": "sneakers", "prob": 35 },
-          { "item": "shoes_denim", "prob": 5 }
-        ],
-        "prob": 70
+        "distribution": [ { "item": "boots_fur", "prob": 1 }, { "item": "boots_faux_fur", "prob": 1 }, { "item": "boots_winter", "prob": 2 } ],
+        "prob": 20
       },
       {
         "distribution": [
-          { "item": "boots_rubber", "prob": 50 },
-          { "item": "clogs", "prob": 20 },
-          { "item": "geta", "prob": 10 },
-          { "item": "slippers", "prob": 75 }
+          { "item": "knee_high_boots", "prob": 5 },
+          { "item": "thigh_high_boots", "prob": 1 },
+          { "item": "boots_western", "prob": 3 },
+          { "item": "shoes_denim", "prob": 2 },
+          { "item": "boots_denim", "prob": 2 }
         ],
-        "prob": 70
+        "prob": 10
       }
     ]
   },
   {
     "id": "shoes_womens",
     "type": "item_group",
-    "//": "womens only shoes",
+    "//": "women's only shoes",
     "subtype": "distribution",
     "items": [ { "item": "heels", "prob": 100 } ]
   },
@@ -4378,7 +4429,6 @@
     "//": "decorative finger rings worn by people.",
     "subtype": "distribution",
     "items": [
-      { "item": "ring_wedding", "prob": 50, "count": [ 1, 2 ] },
       { "item": "copper_ring", "prob": 80, "count": [ 1, 3 ] },
       { "item": "silver_ring", "prob": 50, "count": [ 1, 3 ] },
       { "item": "gold_ring", "prob": 40, "count": [ 1, 3 ] },
@@ -4509,13 +4559,13 @@
       { "group": "accessory_cat", "prob": 1 },
       { "group": "accessory_weaponcarry", "prob": 5 },
       { "group": "accessory_sportsgear", "prob": 5 },
-      { "item": "ring_wedding", "prob": 1 },
       { "item": "american_flag", "prob": 1 },
       { "item": "pride_flag", "prob": 1 },
       { "item": "national_flag", "prob": 1 },
       { "item": "state_flag", "prob": 1 },
       { "item": "tool_belt", "prob": 2 },
-      { "group": "flask_liquor", "prob": 3 }
+      { "group": "flask_liquor", "prob": 3 },
+      { "item": "pin_badge", "prob": 6 }
     ]
   },
   {
@@ -4526,11 +4576,7 @@
     "items": [
       { "group": "clothing_glasses", "prob": 50 },
       { "group": "clothing_watch", "prob": 15 },
-      { "item": "copper_ring", "prob": 6, "count": [ 1, 3 ] },
-      { "item": "silver_ring", "prob": 4, "count": [ 1, 3 ] },
-      { "item": "gold_ring", "prob": 3, "count": [ 1, 3 ] },
-      { "item": "diamond_ring", "prob": 1 },
-      { "item": "platinum_ring", "prob": 1 },
+      { "group": "accessory_ring", "prob": 15 },
       { "group": "accessory_earring", "prob": 15 },
       { "group": "accessory_bracelet", "prob": 15 },
       { "group": "accessory_teeth", "prob": 2 },
@@ -4551,18 +4597,26 @@
   {
     "id": "accesories_personal_womens",
     "type": "item_group",
-    "//": "womens personal accessories",
+    "//": "women's personal accessories",
     "subtype": "distribution",
     "items": [
       { "group": "accesories_personal_womens_child", "prob": 380 },
       { "item": "ring_engagement", "prob": 5 },
-      { "item": "ring_purity", "prob": 10 }
+      { "item": "ring_purity", "prob": 10 },
+      { "item": "gold_lip_ring_loop", "prob": 2 },
+      { "item": "silver_lip_ring_stud", "prob": 3 },
+      { "item": "silver_lip_ring_loop", "prob": 3 },
+      { "item": "gold_lip_ring_stud", "prob": 2 },
+      { "item": "gold_nose_ring_loop", "prob": 2 },
+      { "item": "gold_nose_ring_stud", "prob": 2 },
+      { "item": "silver_nose_ring_loop", "prob": 3 },
+      { "item": "silver_nose_ring_stud", "prob": 3 }
     ]
   },
   {
     "id": "accesories_personal_womens_child",
     "type": "item_group",
-    "//": "womens personal accessories that do not contain the adult-specific ones",
+    "//": "women's personal accessories that do not contain the adult-specific ones",
     "subtype": "distribution",
     "items": [
       { "item": "hairpin", "prob": 90 },
@@ -4573,7 +4627,14 @@
       { "item": "platinum_hairpin", "prob": 10 },
       { "item": "barrette", "prob": 60 },
       { "item": "pearl_collar", "prob": 5 },
-      { "item": "jade_brooch", "prob": 5 }
+      { "item": "jade_brooch", "prob": 5 },
+      { "item": "gold_anklet", "prob": 30 },
+      { "item": "silver_anklet", "prob": 50 },
+      { "item": "gold_toe_ring", "prob": 30 },
+      { "item": "silver_toe_ring", "prob": 50 },
+      { "item": "woven_anklet", "prob": 30 },
+      { "item": "bat_anklet", "prob": 30 },
+      { "item": "flower_anklet", "prob": 30 }
     ]
   },
   {
@@ -4629,7 +4690,6 @@
     "type": "item_group",
     "id": "antifungal_bottle_plastic_pill_prescription_0_10",
     "subtype": "collection",
-    "//": "This group was created automatically and may contain errors.",
     "container-item": "bottle_plastic_pill_prescription",
     "entries": [ { "item": "antifungal", "container-item": "null", "count": [ 0, 10 ] } ]
   },
@@ -4637,7 +4697,6 @@
     "type": "item_group",
     "id": "antiparasitic_bottle_plastic_pill_prescription_0_10",
     "subtype": "collection",
-    "//": "This group was created automatically and may contain errors.",
     "container-item": "bottle_plastic_pill_prescription",
     "entries": [ { "item": "antiparasitic", "container-item": "null", "count": [ 0, 10 ] } ]
   },
@@ -4645,7 +4704,6 @@
     "type": "item_group",
     "id": "diazepam_bottle_plastic_pill_prescription_0_10",
     "subtype": "collection",
-    "//": "This group was created automatically and may contain errors.",
     "container-item": "bottle_plastic_pill_prescription",
     "entries": [ { "item": "diazepam", "container-item": "null", "count": [ 0, 10 ] } ]
   }

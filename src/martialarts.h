@@ -3,28 +3,29 @@
 #define CATA_SRC_MARTIALARTS_H
 
 #include <cstddef>
-#include <iosfwd>
+#include <functional>
 #include <set>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "bonuses.h"
-#include "effect_on_condition.h"
 #include "calendar.h"
 #include "flat_set.h"
-#include "translations.h"
+#include "translation.h"
 #include "type_id.h"
-#include "ui.h"
-
-class input_context;
-struct input_event;
+#include "uilist.h"
 
 class Character;
 class JsonObject;
 class effect;
 class item;
+class item_location;
+struct const_dialogue;
 struct itype;
+template <typename T> class generic_factory;
+enum class bp_type;
 
 const matec_id tec_none( "tec_none" );
 
@@ -33,6 +34,7 @@ class weapon_category
     public:
         static void load_weapon_categories( const JsonObject &jo, const std::string &src );
         static void verify_weapon_categories();
+        static void finalize_all();
         static void reset();
 
         void load( const JsonObject &jo, std::string_view src );
@@ -79,7 +81,7 @@ struct attack_vector {
     // The actual contact area for unarmed damage calcs
     std::vector<sub_bodypart_str_id> contact_area;
     // If we have any bodypart count restrictions
-    std::vector<std::pair<body_part_type::type, int>> limb_req;
+    std::vector<std::pair<bp_type, int>> limb_req;
     // Do we care about armor damage bonuses
     bool armor_bonus = true;
 
@@ -163,8 +165,9 @@ class ma_technique
     public:
         ma_technique();
 
-        void load( const JsonObject &jo, const std::string &src );
+        void load( const JsonObject &jo, std::string_view src );
         static void verify_ma_techniques();
+        static void finalize_all();
         void check() const;
 
         matec_id id;
@@ -225,7 +228,7 @@ class ma_technique
         bool needs_ammo = false;    // technique only works if the item is loaded with ammo
 
         // Dialogue conditions of the attack
-        std::function<bool( dialogue & )> condition;
+        std::function<bool( const_dialogue const & )> condition;
         std::string condition_desc;
         bool has_condition = false;
 
@@ -307,6 +310,7 @@ class ma_buff
         bool persists = false; // prevent buff removal when switching styles
 
         int dodges_bonus = 0; // extra dodges, like karate
+        int free_dodges = 0; // number of dodges that won't consume stamina
         int blocks_bonus = 0; // extra blocks, like karate
 
         /** All kinds of bonuses by types to damage, hit, armor etc. */
@@ -319,6 +323,7 @@ class ma_buff
         bool stealthy = false; // do we make less noise when moving?
 
         void load( const JsonObject &jo, std::string_view src );
+        static void finalize_all();
 };
 
 class martialart
@@ -326,7 +331,9 @@ class martialart
     public:
         martialart();
 
-        void load( const JsonObject &jo, const std::string &src );
+        static void finalize_all();
+
+        void load( const JsonObject &jo, std::string_view src );
 
         void remove_all_buffs( Character &u ) const;
 

@@ -130,7 +130,6 @@
     "specific_heat_liquid": 4,
     "specific_heat_solid": 2,
     "latent_heat": 310,
-    "edible": true,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -182,7 +181,6 @@
     "specific_heat_solid": 2.3,
     "latent_heat": 666,
     "freezing_point": -89,
-    "edible": false,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -259,12 +257,10 @@
     "specific_heat_liquid": 1.2,
     "specific_heat_solid": 1.2,
     "latent_heat": 200,
-    "edible": true,
     "rotting": true,
     "chip_resist": 8,
     "wind_resist": 90,
     "repaired_with": "bone",
-    "salvaged_into": "skewer_bone",
     "dmg_adj": [ "scratched", "cut", "cracked", "shattered" ],
     "bash_dmg_verb": "cracked",
     "cut_dmg_verb": "chipped",
@@ -278,6 +274,16 @@
     "burn_products": [ [ "corpse_ash", 0.035 ] ],
     "resist": { "bash": 2, "cut": 3, "acid": 7, "heat": 1, "bullet": 1 },
     "repair_difficulty": 3
+  },
+  {
+    "type": "material",
+    "id": "cyber_bone",
+    "name": "Bone-like material",
+    "copy-from": "bone",
+    "//": "A netherum copy of bone that has been confused with metal or military ceramic, and is something in between",
+    "density": 5,
+    "resist": { "bash": 8, "cut": 11, "acid": 7, "heat": 2, "bullet": 8 },
+    "repair_difficulty": 9
   },
   {
     "type": "material",
@@ -475,7 +481,7 @@
       { "fuel": 0.35, "smoke": 5, "burn": 0.015, "volume_per_turn": "200 ml" }
     ],
     "burn_products": [ [ "corpse_ash", 0.035 ] ],
-    "resist": { "bash": 2.5, "cut": 4, "acid": 6, "heat": 2.5, "bullet": 1.4 },
+    "resist": { "bash": 2.5, "cut": 3, "acid": 6, "heat": 2.5, "bullet": 1.4 },
     "repair_difficulty": 5
   },
   {
@@ -533,6 +539,16 @@
     "chip_resist": 18,
     "breathability": "AVERAGE",
     "resist": { "bash": 4, "cut": 6, "acid": 8, "heat": 2, "bullet": 1.8 }
+  },
+  {
+    "type": "material",
+    "id": "hair",
+    "name": "Hair",
+    "density": 1.4,
+    "copy-from": "sclerotin_light",
+    "chip_resist": 11,
+    "breathability": "GOOD",
+    "soft": true
   },
   {
     "type": "material",
@@ -594,8 +610,8 @@
   {
     "type": "material",
     "id": "cotton",
-    "name": "Cotton",
-    "density": 1.6,
+    "name": "Cotton Blend",
+    "density": 0.5,
     "specific_heat_liquid": 0.02,
     "specific_heat_solid": 0.02,
     "latent_heat": 205,
@@ -609,9 +625,9 @@
     "bash_dmg_verb": "ripped",
     "cut_dmg_verb": "cut",
     "burn_data": [
-      { "fuel": 1, "smoke": 1, "burn": 0.02 },
-      { "fuel": 2, "smoke": 1, "burn": 0.04 },
-      { "fuel": 3, "smoke": 1, "burn": 0.06 }
+      { "fuel": 0.05, "smoke": 1, "burn": 0.015 },
+      { "fuel": 0.1, "smoke": 1, "burn": 0.04 },
+      { "fuel": 0.2, "smoke": 1, "burn": 0.06 }
     ],
     "resist": { "bash": 1, "cut": 1, "acid": 3, "heat": 0, "bullet": 1 },
     "repair_difficulty": 1
@@ -625,14 +641,6 @@
     "repaired_with": "null",
     "wind_resist": 75,
     "resist": { "bash": 2, "cut": 2, "acid": 3, "heat": 0, "bullet": 1.5 }
-  },
-  {
-    "type": "material",
-    "id": "cotton_salted",
-    "name": "Salt Hardened Cotton",
-    "copy-from": "cotton",
-    "repaired_with": "null",
-    "resist": { "bash": 2, "cut": 2, "acid": 5, "heat": 10, "bullet": 1.5 }
   },
   {
     "type": "material",
@@ -748,7 +756,6 @@
     "specific_heat_liquid": 3.63,
     "specific_heat_solid": 1.95,
     "latent_heat": 252,
-    "edible": true,
     "conductive": true,
     "chip_resist": 1,
     "dmg_adj": [ "scratched", "damaged", "smashed", "crushed" ],
@@ -771,7 +778,6 @@
     "specific_heat_liquid": 3.7,
     "specific_heat_solid": 2.15,
     "latent_heat": 260,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -793,7 +799,8 @@
     "type": "material",
     "id": "drug_filler",
     "name": "Drug filler",
-    "copy-from": "flesh",
+    "copy-from": "powder",
+    "vitamins": [  ],
     "//": "Assumed a gelatine capsule that contain the drug, but can be any another drug filler like glucose, lactose, sucrose and the like.  Created so we don't need to specify three billion chemicals used in pills.",
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ]
   },
@@ -844,7 +851,6 @@
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 1,
@@ -881,7 +887,7 @@
       { "fuel": 1, "smoke": 1, "burn": 0.06 }
     ],
     "burn_products": [ [ "corpse_ash", 0.035 ] ],
-    "resist": { "bash": 2, "cut": 1.25, "acid": 3, "heat": 1, "bullet": 1 },
+    "resist": { "bash": 2, "cut": 2, "acid": 3, "heat": 1, "bullet": 1 },
     "repair_difficulty": 3
   },
   {
@@ -905,7 +911,7 @@
       { "fuel": 1, "smoke": 1, "burn": 0.04 },
       { "fuel": 1, "smoke": 1, "burn": 0.06 }
     ],
-    "resist": { "bash": 2, "cut": 2, "acid": 4, "heat": 1, "bullet": 2 },
+    "resist": { "bash": 2, "cut": 2, "acid": 4, "heat": 1, "bullet": 1 },
     "repair_difficulty": 3
   },
   {
@@ -998,7 +1004,6 @@
     "specific_heat_liquid": 3.7,
     "specific_heat_solid": 2.15,
     "latent_heat": 260,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -1023,7 +1028,6 @@
     "specific_heat_liquid": 2.03,
     "specific_heat_solid": 2.03,
     "latent_heat": 57,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 0,
@@ -1177,13 +1181,23 @@
   },
   {
     "type": "material",
+    "id": "crude_oil",
+    "density": 0.8,
+    "name": "Crude oil",
+    "copy-from": "hydrocarbons",
+    "fuel_data": {
+      "energy": "38000 kJ",
+      "explosion_data": { "chance_hot": 5, "chance_cold": 10, "factor": 0.2, "fiery": true, "size_factor": 0.1 }
+    }
+  },
+  {
+    "type": "material",
     "id": "iflesh",
     "name": "Insect Flesh",
     "density": 1.1,
     "specific_heat_liquid": 3.7,
     "specific_heat_solid": 2.15,
     "latent_heat": 260,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -1225,7 +1239,6 @@
     "specific_heat_liquid": 3.3,
     "specific_heat_solid": 2.05,
     "latent_heat": 220,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -1248,7 +1261,6 @@
     "specific_heat_liquid": 3.3,
     "specific_heat_solid": 2.05,
     "latent_heat": 220,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 0,
@@ -1284,7 +1296,7 @@
     "dmg_adj": [ "ripped", "torn", "shredded", "tattered" ],
     "bash_dmg_verb": "ripped",
     "cut_dmg_verb": "cut",
-    "resist": { "bash": 1, "cut": 3, "acid": 5, "heat": 1, "bullet": 2, "stab": 5 },
+    "resist": { "bash": 1, "cut": 3, "acid": 5, "heat": 2, "bullet": 2, "stab": 5 },
     "repair_difficulty": 4
   },
   {
@@ -1449,7 +1461,6 @@
     "specific_heat_liquid": 3.89,
     "specific_heat_solid": 1.81,
     "latent_heat": 293,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 0,
@@ -1485,7 +1496,7 @@
       { "fuel": 0.001, "smoke": 3, "burn": 0.002, "volume_per_turn": "5 ml" },
       { "fuel": 0.003, "smoke": 3, "burn": 0.005 }
     ],
-    "resist": { "bash": 3, "cut": 1, "acid": 4, "heat": 3, "bullet": 1 },
+    "resist": { "bash": 1.5, "cut": 1, "acid": 4, "heat": 3, "bullet": 1 },
     "repair_difficulty": 3
   },
   {
@@ -1532,7 +1543,6 @@
     "specific_heat_liquid": 2,
     "specific_heat_solid": 1.8,
     "latent_heat": 200,
-    "edible": true,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -1554,7 +1564,6 @@
     "specific_heat_liquid": 2.9,
     "specific_heat_solid": 3.7,
     "latent_heat": 210,
-    "edible": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
     "repaired_with": "wax",
@@ -1666,6 +1675,7 @@
     "copy-from": "plastic",
     "name": "Transparent Impact Resistant Plastic",
     "//2": "This one represents various transparent impact-resistant plastics, like polycarbonate.  Prime material for visors and safety goggles.",
+    "density": 1.2,
     "resist": { "bash": 4, "cut": 3, "acid": 9, "heat": 1, "bullet": 1.5 },
     "repair_difficulty": 4
   },
@@ -1843,6 +1853,19 @@
   },
   {
     "type": "material",
+    "id": "butyl_rubber",
+    "copy-from": "rubber",
+    "name": "malleable rubber",
+    "density": 1.2,
+    "soft": true,
+    "chip_resist": 5,
+    "repaired_with": "chunk_rubber",
+    "dmg_adj": [ "compromised", "mangled", "shredded", "ruined" ],
+    "bash_dmg_verb": "mangled",
+    "cut_dmg_verb": "sliced"
+  },
+  {
+    "type": "material",
     "id": "vinyl",
     "name": "Vinyl",
     "//1": "Can be several synthetic polymers such as silicone or pvc, in a soft and very flexible form suitable for making a raincoat or a hazmat suit",
@@ -1972,6 +1995,25 @@
     "burn_products": [ [ "scrap", 0.5 ] ],
     "resist": { "bash": 11, "cut": 11, "acid": 7, "heat": 3, "bullet": 7.5 },
     "repair_difficulty": 7
+  },
+  {
+    "type": "material",
+    "id": "exodii_ceramic",
+    "name": "Exodii Ceramic",
+    "//": "Exodii-produced ceramic made with carbon nanotubes lined with boron. Should always be used in combination with a rigid material. Reference https://link.springer.com/article/10.1007/s10853-021-06760-x",
+    "density": 6.5,
+    "specific_heat_liquid": 0.6,
+    "specific_heat_solid": 0.4,
+    "latent_heat": 273,
+    "conductive": false,
+    "chip_resist": 15,
+    "repaired_with": "exodii_ceramic_patch",
+    "dmg_adj": [ "chipped", "cracked", "smashed", "shattered" ],
+    "bash_dmg_verb": "chipped",
+    "cut_dmg_verb": "chipped",
+    "burn_products": [ [ "scrap", 0.5 ] ],
+    "resist": { "bash": 15, "cut": 20, "acid": 12, "heat": 5, "bullet": 12 },
+    "repair_difficulty": 10
   },
   {
     "type": "material",
@@ -2146,6 +2188,21 @@
   },
   {
     "type": "material",
+    "id": "plutonium",
+    "name": "Plutonium",
+    "density": 19.84,
+    "specific_heat_liquid": 0.13,
+    "specific_heat_solid": 0.13,
+    "latent_heat": 273,
+    "conductive": true,
+    "chip_resist": 1,
+    "dmg_adj": [ "marked", "dented", "smashed", "shattered" ],
+    "resist": { "bash": 0, "cut": 0, "acid": 0, "heat": 0, "bullet": 0 },
+    "bash_dmg_verb": "dented",
+    "cut_dmg_verb": "scratched"
+  },
+  {
+    "type": "material",
     "id": "uran_cell",
     "name": "Uranium cell",
     "density": 19.0,
@@ -2180,6 +2237,39 @@
       "explosion_data": { "chance_hot": 2, "chance_cold": 2, "factor": 1, "fiery": true, "size_factor": 0.15 }
     },
     "resist": { "bash": 6, "cut": 6, "acid": 7, "heat": 3, "bullet": 3 }
+  },
+  {
+    "type": "material",
+    "id": "gas",
+    "name": "Gas",
+    "density": 30,
+    "specific_heat_liquid": 0.82,
+    "specific_heat_solid": 0.45,
+    "latent_heat": 273,
+    "chip_resist": 0,
+    "repaired_with": "null",
+    "resist": { "bash": 0, "cut": 0, "acid": 0, "heat": 0, "bullet": 0 },
+    "dmg_adj": [ "agitated", "thinned", "culled", "eradicated" ],
+    "bash_dmg_verb": "ripples",
+    "cut_dmg_verb": "passed through"
+  },
+  {
+    "type": "material",
+    "id": "nitrogen",
+    "name": "Nitrogen",
+    "copy-from": "gas"
+  },
+  {
+    "type": "material",
+    "id": "oxygen",
+    "name": "Oxygen",
+    "copy-from": "gas"
+  },
+  {
+    "type": "material",
+    "id": "hydrogen",
+    "name": "Hydrogen",
+    "copy-from": "gas"
   },
   {
     "type": "material",
@@ -2241,10 +2331,25 @@
     "specific_heat_solid": 0.52,
     "latent_heat": 5200,
     "chip_resist": 100,
-    "dmg_adj": [ "resonating", "cascading", "unravelling", "fractal" ],
+    "dmg_adj": [ "resonating", "cascading", "unraveling", "fractal" ],
     "bash_dmg_verb": "agitated",
     "cut_dmg_verb": "agitated",
     "resist": { "bash": 160, "cut": 200, "acid": 100, "heat": 100, "bullet": 160 }
+  },
+  {
+    "type": "material",
+    "id": "ballistic_shield",
+    "name": "Ballistic Barrier",
+    "density": 1,
+    "specific_heat_liquid": 0.52,
+    "specific_heat_solid": 0.52,
+    "latent_heat": 5200,
+    "chip_resist": 100,
+    "breathability": "SECOND_SKIN",
+    "dmg_adj": [ "resonating", "cascading", "unraveling", "fractal" ],
+    "bash_dmg_verb": "agitated",
+    "cut_dmg_verb": "agitated",
+    "resist": { "bash": 0, "cut": 0, "acid": 0, "heat": 0, "bullet": 100 }
   },
   {
     "type": "material",
@@ -2255,7 +2360,7 @@
     "specific_heat_solid": 0.52,
     "latent_heat": 5200,
     "chip_resist": 100,
-    "dmg_adj": [ "resonating", "cascading", "unravelling", "fractal" ],
+    "dmg_adj": [ "resonating", "cascading", "unraveling", "fractal" ],
     "bash_dmg_verb": "agitated",
     "cut_dmg_verb": "agitated",
     "burn_products": [ [ "pebble", 1 ] ],
@@ -2411,12 +2516,11 @@
   {
     "type": "material",
     "id": "veggy",
-    "name": "Vegetable Matter",
+    "name": "Plant Matter",
     "density": 1.1,
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2440,7 +2544,6 @@
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2463,7 +2566,6 @@
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2486,7 +2588,6 @@
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2509,7 +2610,6 @@
     "specific_heat_liquid": 2.2,
     "specific_heat_solid": 2.2,
     "latent_heat": 20,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2532,7 +2632,6 @@
     "specific_heat_liquid": 3.9,
     "specific_heat_solid": 1.9,
     "latent_heat": 290,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2567,7 +2666,6 @@
     "specific_heat_liquid": 4.186,
     "specific_heat_solid": 2.108,
     "latent_heat": 333,
-    "edible": true,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -2602,7 +2700,6 @@
     "specific_heat_liquid": 2.14,
     "specific_heat_solid": 2.14,
     "latent_heat": 50,
-    "edible": false,
     "conductive": false,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -2629,7 +2726,6 @@
     "specific_heat_liquid": 1.38,
     "specific_heat_solid": 1.38,
     "latent_heat": 451,
-    "edible": false,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -2645,7 +2741,6 @@
     "specific_heat_liquid": 2,
     "specific_heat_solid": 2,
     "latent_heat": 150,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 1,
@@ -2793,7 +2888,6 @@
     "specific_heat_liquid": 2.5,
     "specific_heat_solid": 3.5,
     "latent_heat": 100,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 1,
@@ -2816,7 +2910,6 @@
     "specific_heat_liquid": 3.16,
     "specific_heat_solid": 2.31,
     "latent_heat": 190,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2839,7 +2932,6 @@
     "specific_heat_liquid": 3,
     "specific_heat_solid": 2,
     "latent_heat": 190,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 2,
@@ -2861,7 +2953,6 @@
     "specific_heat_liquid": 3,
     "specific_heat_solid": 2.7,
     "latent_heat": 160,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 0,
@@ -2884,7 +2975,6 @@
     "specific_heat_liquid": 3.15,
     "specific_heat_solid": 2.74,
     "latent_heat": 200,
-    "edible": true,
     "rotting": true,
     "conductive": true,
     "chip_resist": 0,
@@ -3002,7 +3092,6 @@
     "specific_heat_liquid": 1.72,
     "specific_heat_solid": 1.8,
     "latent_heat": 293,
-    "edible": false,
     "conductive": true,
     "chip_resist": 0,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -3045,7 +3134,6 @@
     "specific_heat_liquid": 0.837,
     "specific_heat_solid": 0.837,
     "latent_heat": 500,
-    "edible": false,
     "conductive": false,
     "chip_resist": 5,
     "dmg_adj": [ "lightly damaged", "damaged", "very damaged", "thoroughly damaged" ],
@@ -3128,7 +3216,6 @@
     "specific_heat_liquid": 1.2,
     "specific_heat_solid": 1.2,
     "latent_heat": 200,
-    "edible": true,
     "rotting": true,
     "chip_resist": 8,
     "wind_resist": 90,
@@ -3171,15 +3258,13 @@
     "type": "material",
     "id": "mi-go_flesh",
     "name": "Mi-go Flesh",
-    "copy-from": "flesh",
-    "edible": false
+    "copy-from": "flesh"
   },
   {
     "type": "material",
     "id": "mi-go_blood",
     "name": "Mi-go Ichor",
-    "copy-from": "water",
-    "edible": false
+    "copy-from": "water"
   },
   {
     "type": "material",
@@ -3189,7 +3274,6 @@
     "specific_heat_liquid": 1.2,
     "specific_heat_solid": 1.2,
     "latent_heat": 200,
-    "edible": false,
     "rotting": true,
     "chip_resist": 12,
     "wind_resist": 90,
@@ -3199,5 +3283,30 @@
     "cut_dmg_verb": "chipped",
     "resist": { "bash": 3, "cut": 4, "acid": 10, "heat": 2, "bullet": 2 },
     "repair_difficulty": 7
+  },
+  {
+    "type": "material",
+    "id": "down_feathers",
+    "name": "Down Feathers",
+    "density": 0.01,
+    "specific_heat_liquid": 0.02,
+    "specific_heat_solid": 0.02,
+    "latent_heat": 250,
+    "soft": true,
+    "chip_resist": 4,
+    "breathability": "GOOD",
+    "wind_resist": 80,
+    "repaired_with": "down_feather",
+    "salvaged_into": "down_feather",
+    "dmg_adj": [ "ripped", "torn", "shredded", "tattered" ],
+    "bash_dmg_verb": "ripped",
+    "cut_dmg_verb": "cut",
+    "burn_data": [
+      { "fuel": 0.6, "smoke": 1, "burn": 0.025, "volume_per_turn": "200 ml" },
+      { "fuel": 1.2, "smoke": 1, "burn": 0.05, "volume_per_turn": "825 ml" },
+      { "fuel": 1.8, "smoke": 1, "burn": 0.075 }
+    ],
+    "resist": { "bash": 0.5, "cut": 0.1, "acid": 4, "heat": 0, "bullet": 0 },
+    "repair_difficulty": 4
   }
 ]

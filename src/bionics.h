@@ -18,7 +18,6 @@
 #include "flat_set.h"
 #include "item.h"
 #include "magic.h"
-#include "npc.h"
 #include "translation.h"
 #include "type_id.h"
 #include "units.h"
@@ -27,8 +26,6 @@
 class Character;
 class JsonObject;
 class JsonOut;
-
-enum class character_stat : char;
 
 struct bionic_data {
     bionic_data();
@@ -164,6 +161,8 @@ struct bionic_data {
     * If true, this bionic is included with another.
     */
     bool included = false;
+    /** When true, activating this bionic from the bionics menu will instantly remove the CBM with no chance of failure. */
+    bool activate_remove_cbm = false;
     /**This bionic draws power through a cable*/
     bool is_remote_fueled = false;
     /**If true this bionic emits heat when producing power*/
@@ -184,7 +183,7 @@ struct bionic_data {
 
     itype_id itype() const;
 
-    void load( const JsonObject &obj, const std::string &src );
+    void load( const JsonObject &obj, std::string_view src );
     void finalize();
     static void load_bionic( const JsonObject &jo, const std::string &src );
     static void finalize_bionic();
@@ -204,6 +203,7 @@ struct bionic {
         char        invlet  = 'a';
         bool        powered = false;
         bool        show_sprite = true;
+        bool        auto_shutdown = true;
         /* An amount of time during which this bionic has been rendered inoperative. */
         time_duration        incapacitated_time;
 

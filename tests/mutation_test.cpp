@@ -1,18 +1,31 @@
+#include <algorithm>
 #include <map>
+#include <memory>
+#include <set>
 #include <sstream>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "calendar.h"
 #include "cata_catch.h"
 #include "character.h"
+#include "creature.h"
+#include "dialogue.h"
 #include "effect_on_condition.h"
+#include "enum_conversions.h"
+#include "magic_enchantment.h"
 #include "mutation.h"
 #include "npc.h"
+#include "pimpl.h"
 #include "player_helpers.h"
+#include "talker.h"
 #include "type_id.h"
 
 static const effect_on_condition_id effect_on_condition_changing_mutate2( "changing_mutate2" );
+
+static const itype_id itype_integrated_lupine_fur( "integrated_lupine_fur" );
 
 static const morale_type morale_perm_debug( "morale_perm_debug" );
 
@@ -32,6 +45,7 @@ static const trait_id trait_BEAK_PECK( "BEAK_PECK" );
 static const trait_id trait_EAGLEEYED( "EAGLEEYED" );
 static const trait_id trait_FELINE_EARS( "FELINE_EARS" );
 static const trait_id trait_GOURMAND( "GOURMAND" );
+static const trait_id trait_LUPINE_FUR( "LUPINE_FUR" );
 static const trait_id trait_MYOPIC( "MYOPIC" );
 static const trait_id trait_QUICK( "QUICK" );
 static const trait_id trait_SMELLY( "SMELLY" );
@@ -210,7 +224,6 @@ TEST_CASE( "Having_all_mutations_give_correct_highest_category", "[mutations][st
 // If a category breach power falls below 55, it suggests that category lacks enough pre-threshold mutations
 // to comfortably cross the Threshold
 //
-// Alpha threshold is intentionally meant to be harder to breach, so the permitted range is 35-60
 //
 // When creating or editing a category, remember that 55 is a limit, not suggestion
 // 65+ is the suggested range
@@ -239,14 +252,7 @@ TEST_CASE( "Having_all_pre-threshold_mutations_gives_a_sensible_threshold_breach
             dummy.give_all_mutations( cur_cat, false );
 
             const int breach_chance = dummy.mutation_category_level[cat_id];
-            if( cat_id == mutation_category_ALPHA ) {
-                THEN( "Alpha Threshold breach power is between 35 and 60" ) {
-                    INFO( "MUTATIONS: " << get_mutations_as_string( dummy ) );
-                    CHECK( breach_chance >= 35 );
-                    CHECK( breach_chance <= 60 );
-                }
-                continue;
-            } else if( cat_id == mutation_category_CHIMERA ) {
+            if( cat_id == mutation_category_CHIMERA ) {
                 THEN( "Chimera Threshold breach power is 100+" ) {
                     INFO( "MUTATIONS: " << get_mutations_as_string( dummy ) );
                     CHECK( breach_chance >= 100 );
@@ -357,33 +363,68 @@ TEST_CASE( "OVERMAP_SIGHT_enchantment_affect_overmap_sight_range", "[mutations][
 
     WHEN( "character has no traits, that change overmap sight range" ) {
         THEN( "unchanged sight range" ) {
-            CHECK( dummy.overmap_sight_range( 100.0f ) == 10.0 );
+            CHECK( dummy.overmap_modified_sight_range( 100.0f ) == 10.0 );
         }
     }
 
     WHEN( "character has TEST_OVERMAP_SIGHT_5" ) {
         dummy.toggle_trait( trait_TEST_OVERMAP_SIGHT_5 );
         THEN( "they have increased overmap sight range" ) {
-            CHECK( dummy.overmap_sight_range( 100.0f ) == 15.0 );
+            CHECK( dummy.overmap_modified_sight_range( 100.0f ) == 15.0 );
         }
         // Regression test for #42853
         THEN( "having another trait does not cancel the TEST_OVERMAP_SIGHT_5 trait" ) {
             dummy.toggle_trait( trait_SMELLY );
-            CHECK( dummy.overmap_sight_range( 100.0f ) == 15.0 );
+            CHECK( dummy.overmap_modified_sight_range( 100.0f ) == 15.0 );
         }
     }
 
     WHEN( "character has TEST_OVERMAP_SIGHT_MINUS_10 trait" ) {
         dummy.toggle_trait( trait_TEST_OVERMAP_SIGHT_MINUS_10 );
         THEN( "they have reduced overmap sight range" ) {
-            CHECK( dummy.overmap_sight_range( 100.0f ) == 3.0 );
+            CHECK( dummy.overmap_modified_sight_range( 100.0f ) == 3.0 );
         }
         // Regression test for #42853
         THEN( "having another trait does not cancel the TEST_OVERMAP_SIGHT_MINUS_10 trait" ) {
             dummy.toggle_trait( trait_SMELLY );
-            CHECK( dummy.overmap_sight_range( 100.0f ) == 3.0 );
+            CHECK( dummy.overmap_modified_sight_range( 100.0f ) == 3.0 );
         }
     }
+}
+
+TEST_CASE( "update_cached_mutations_does_not_reapply_cached_traits", "[mutations][regression]" )
+{
+    Character &dummy = get_player_character();
+    clear_avatar();
+
+    dummy.set_mutation( trait_LUPINE_FUR );
+    REQUIRE( dummy.has_trait( trait_LUPINE_FUR ) );
+    REQUIRE( dummy.amount_worn( itype_integrated_lupine_fur ) == 1 );
+
+    // Non-empty old cache triggers the add-path that diffs old vs new.
+    // LUPINE_FUR appears in new but not old, so without the cached_mutations
+    // guard it would call mutation_effect again and wear a duplicate.
+    dummy.old_mutation_cache->mutations = { trait_GOURMAND };
+    dummy.new_mutation_cache->mutations = { trait_LUPINE_FUR };
+
+    dummy.update_cached_mutations();
+
+    CHECK( dummy.amount_worn( itype_integrated_lupine_fur ) == 1 );
+}
+
+TEST_CASE( "mutation_effect_does_not_stack_integrated_armor", "[mutations][regression]" )
+{
+    Character &dummy = get_player_character();
+    clear_avatar();
+
+    dummy.set_mutation( trait_LUPINE_FUR );
+    REQUIRE( dummy.amount_worn( itype_integrated_lupine_fur ) == 1 );
+
+    dummy.mutation_effect( trait_LUPINE_FUR, true );
+    CHECK( dummy.amount_worn( itype_integrated_lupine_fur ) == 1 );
+
+    dummy.mutation_effect( trait_LUPINE_FUR, true );
+    CHECK( dummy.amount_worn( itype_integrated_lupine_fur ) == 1 );
 }
 
 static void check_test_mutation_is_triggered( const Character &dummy, bool trigger_on )
@@ -769,4 +810,3 @@ TEST_CASE( "Threshold_substitutions", "[mutations]" )
     CHECK( !dummy.has_trait( trait_WINGS_BIRD ) );
     CHECK( !dummy.has_trait( trait_STR_ALPHA ) );
 }
-

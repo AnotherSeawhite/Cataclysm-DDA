@@ -2,34 +2,32 @@
 #ifndef CATA_SRC_FIELD_TYPE_H
 #define CATA_SRC_FIELD_TYPE_H
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
-#include <iosfwd>
+#include <optional>
 #include <set>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "bodypart.h"
 #include "calendar.h"
 #include "catacharset.h"
 #include "color.h"
 #include "effect.h"
 #include "effect_source.h"
 #include "enums.h"
-#include "mapdata.h"
 #include "map_field.h"
-#include "translations.h"
+#include "mapdata.h"
+#include "translation.h"
 #include "type_id.h"
 
 class JsonObject;
+struct field_type;
 template <typename E> struct enum_traits;
-
-class field_entry;
-struct field_proc_data;
+template <typename T> class generic_factory;
 
 enum class description_affix : int {
     DESCRIPTION_AFFIX_IN,
@@ -59,14 +57,14 @@ generic_factory<field_type> &get_all_field_types();
 
 struct field_immunity_data {
     std::vector<json_character_flag> immunity_data_flags;
-    std::vector<std::pair<body_part_type::type, int>> immunity_data_body_part_env_resistance;
-    std::vector < std::pair<body_part_type::type, flag_id>> immunity_data_part_item_flags;
-    std::vector < std::pair<body_part_type::type, flag_id>> immunity_data_part_item_flags_any;
+    std::vector<std::pair<bp_type, int>> immunity_data_body_part_env_resistance;
+    std::vector < std::pair<bp_type, flag_id>> immunity_data_part_item_flags;
+    std::vector < std::pair<bp_type, flag_id>> immunity_data_part_item_flags_any;
 };
 
 struct field_effect {
     efftype_id id;
-    std::vector<std::pair<efftype_id, mod_id>> src;
+    std::vector<std::pair<efftype_id, mod_id>> src; // NOLINT(cata-serialize)
     time_duration min_duration = 0_seconds;
     time_duration max_duration = 0_seconds;
     int intensity = 0;
@@ -95,6 +93,8 @@ struct field_effect {
         return effect( effect_source::empty(), &id.obj(), get_duration(), bp, false, intensity,
                        start_time );
     }
+
+    void deserialize( const JsonObject &jo );
 };
 
 struct field_intensity_level {
@@ -143,7 +143,7 @@ extern const field_type_str_id fd_dazzling;
 extern const field_type_str_id fd_electricity;
 extern const field_type_str_id fd_electricity_unlit;
 extern const field_type_str_id fd_extinguisher;
-extern const field_type_str_id fd_reality_tear;
+extern const field_type_str_id fd_fatigue;
 extern const field_type_str_id fd_fire;
 extern const field_type_str_id fd_fire_vent;
 extern const field_type_str_id fd_flame_burst;
@@ -177,8 +177,6 @@ extern const field_type_str_id fd_tindalos_rift;
 extern const field_type_str_id fd_toxic_gas;
 extern const field_type_str_id fd_web;
 
-struct field_type;
-
 struct field_type {
     public:
         void load( const JsonObject &jo, std::string_view src );
@@ -206,8 +204,9 @@ struct field_type {
         bool has_acid = false;
         bool has_elec = false;
         bool has_fume = false;
+        bool moppable = false;
         description_affix desc_affix = description_affix::DESCRIPTION_AFFIX_NUM;
-        map_bash_info bash_info;
+        std::optional<map_fd_bash_info> bash_info;
 
         // chance, issue, duration, speech
         std::tuple<int, std::string, time_duration, translation> npc_complain_data;
@@ -222,6 +221,8 @@ struct field_type {
         bool display_items = true;
         bool display_field = false;
         bool legacy_make_rubble = false;
+        bool linear_half_life = false;
+        bool indestructible = false;
         field_type_str_id wandering_field;
         std::string looks_like;
 
