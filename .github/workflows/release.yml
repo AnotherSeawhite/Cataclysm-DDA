@@ -3,7 +3,7 @@ concurrency: release-candidate
 on:
   push:
     branches:
-      - 0.H-branch
+      - 0.H-backport
     paths:
       - '.github/workflows/release.yml'
       - 'android/**'
@@ -41,11 +41,6 @@ jobs:
           echo "tag_name=cdda-0.H-${{ steps.get-timestamp.outputs.time }}" >> $GITHUB_OUTPUT
           echo "release_name=Cataclysm-DDA 0.H release candidate ${{ steps.get-timestamp.outputs.time }}" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v3
-      - name: Generate Release Notes
-        id: generate-release-notes
-        run: |
-          npm install @actions/github
-          node build-scripts/generate-release-notes.js '${{ secrets.GITHUB_TOKEN }}' '${{ steps.generate_env_vars.outputs.tag_name }}' "$(git log -1 --format='%H')" > notes.txt
       - run: |
           gh release create ${{ steps.generate_env_vars.outputs.tag_name }} --notes-file notes.txt --prerelease --title "${{ steps.generate_env_vars.outputs.release_name }}" --target "$(git log -1 --format='%H')"
 
