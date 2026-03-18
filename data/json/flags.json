@@ -1280,6 +1280,11 @@
     "//": "Applies robust genetic bonus - mutations give only 1 unit of instability for all traits instead of 1 unit for your current tree, and 2 for any outer tree."
   },
   {
+    "id": "CANNOT_USE_COMPUTERS",
+    "type": "json_flag",
+    "//": "For some reason you're unable to use a computer terminal."
+  },
+  {
     "id": "SKIP_HEALTH",
     "type": "json_flag",
     "//": "If food gives any health bonus or penalty, having this flag would prevent you from receiving such."
@@ -2084,6 +2089,11 @@
   },
   {
     "id": "ACT_ON_RANGED_HIT",
+    "type": "json_flag"
+  },
+  {
+    "id": "NO_MANUAL_ACTIVATION",
+    "//": "This item cannot be activated by player or NPC, only by some internal game means like by throwing",
     "type": "json_flag"
   },
   {

@@ -360,6 +360,7 @@ Character flags can be `trait_id`, `json_flag_id` or `flag_id`.  Some of these a
 - ```CANNOT_GAIN_EFFECTS``` A creature with this effect flag cannot gain effects.
 - ```CANNOT_MOVE``` A creature with this flag cannot move.
 - ```CANNOT_TAKE_DAMAGE``` A creature with this flag cannot take any damage.
+- ```CANNOT_USE_COMPUTERS``` A creature with this flag cannot activate a computer terminal or use various computer functions (e.g. saving ebooks or reading efiles).
 - ```CBQ_LEARN_BONUS``` You learn CBQ from the bionic bio_cqb faster.
 - ```CHANGING```This flag is silently given to player to detect it can mutate.
 - ```CLAIRVOYANCE_PLUS``` Gives a clairvoyance effect, used for debug purposes.
@@ -1542,6 +1543,7 @@ Techniques may be used by tools, armors, weapons and anything else that can be w
 - ```WET``` Item is wet and will slowly dry off (e.g. towel).
 - ```WIND_EXTINGUISH``` This item will be extinguished by the wind.
 - ```WRITE_MESSAGE``` This item could be used to write messages on signs.
+- ```NO_MANUAL_ACTIVATION``` Prevents item from being activated by player/NPCs. Currently used for items that should be activated by throwing, like Molotovs
 
 
 ### `use_action`
