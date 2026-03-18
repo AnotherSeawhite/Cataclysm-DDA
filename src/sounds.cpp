@@ -1370,6 +1370,7 @@ struct sound_thread {
     bool targ_mon;
     std::string material;
 
+    itype_id weapon_id;
     skill_id weapon_skill;
     int weapon_volume;
     // volume and angle for calls to play_variant_sound
@@ -1431,8 +1432,9 @@ sfx::sound_thread::sound_thread( const tripoint_bub_ms &source, const tripoint_b
         vol_src = std::max( heard_volume - 30, 0 );
         vol_targ = std::max( heard_volume - 20, 0 );
     }
-    const item_location weapon = you.get_wielded_item();
+    const item_location weapon = you.used_weapon();
     ang_targ = get_heard_angle( target );
+    weapon_id = weapon ? weapon->typeId() : weapon_id::NULL_ID();
     weapon_skill = weapon ? weapon->melee_skill() : skill_id::NULL_ID();
     weapon_volume = weapon ? weapon->volume() / 250_ml : 0;
 }
@@ -1450,29 +1452,28 @@ void sfx::sound_thread::operator()() const
     const bool indoors = !is_creature_outside( get_player_character() );
     const bool night = is_night( calendar::turn );
 
-    if( weapon_skill == skill_bashing && weapon_volume <= 8 ) {
+    if( !weapon.is_null() && has_variant_sound( "melee_swing", weapon_id.str(), seas_str, indoors, night ) {
+        variant_used = weapon_id.str();
+    } else if( weapon_skill == skill_bashing && weapon_volume <= 8 ) {
         variant_used = "small_bash";
-        play_variant_sound( "melee_swing", "small_bash", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
-    } else if( weapon_skill == skill_bashing && weapon_volume >= 9 ) {
+    } else if( weapon_skill == skill_bashing && weapon_volume > 8 ) {
         variant_used = "big_bash";
-        play_variant_sound( "melee_swing", "big_bash", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
     } else if( ( weapon_skill == skill_cutting || weapon_skill == skill_stabbing ) &&
                weapon_volume <= 6 ) {
         variant_used = "small_cutting";
-        play_variant_sound( "melee_swing", "small_cutting", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
     } else if( ( weapon_skill == skill_cutting || weapon_skill == skill_stabbing ) &&
-               weapon_volume >= 7 ) {
+               weapon_volume > 6 ) {
         variant_used = "big_cutting";
-        play_variant_sound( "melee_swing", "big_cutting", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
+    } else if( weapon_skill == skill_stabbing && weapon_volume <= 6 ) {
+        variant_used = "small_stabbing";
+    } else if( weapon_skill == skill_stabbing && weapon_volume > 6 ) {
+        variant_used = "big_stabbing";
     } else {
         variant_used = "default";
-        play_variant_sound( "melee_swing", "default", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
     }
+    play_variant_sound( "melee_swing", variant_used, seas_str, indoors, night,
+                        vol_src, ang_src, 0.8, 1.2 );
+        
     if( hit ) {
         if( targ_mon ) {
             if( material == "steel" ) {
