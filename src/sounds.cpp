@@ -105,6 +105,7 @@ static const material_id material_veggy( "veggy" );
 static const skill_id skill_bashing( "bashing" );
 static const skill_id skill_cutting( "cutting" );
 static const skill_id skill_stabbing( "stabbing" );
+static const skill_id skill_unarmed( "unarmed" );
 
 static const ter_str_id ter_t_bridge( "t_bridge" );
 static const ter_str_id ter_t_chainfence( "t_chainfence" );
@@ -1370,6 +1371,7 @@ struct sound_thread {
     bool targ_mon;
     std::string material;
 
+    itype_id weapon_id;
     skill_id weapon_skill;
     int weapon_volume;
     // volume and angle for calls to play_variant_sound
@@ -1431,8 +1433,9 @@ sfx::sound_thread::sound_thread( const tripoint_bub_ms &source, const tripoint_b
         vol_src = std::max( heard_volume - 30, 0 );
         vol_targ = std::max( heard_volume - 20, 0 );
     }
-    const item_location weapon = you.get_wielded_item();
+    const item_location weapon = you.used_weapon();
     ang_targ = get_heard_angle( target );
+    weapon_id = weapon ? weapon->typeId() : itype_id::NULL_ID();
     weapon_skill = weapon ? weapon->melee_skill() : skill_id::NULL_ID();
     weapon_volume = weapon ? weapon->volume() / 250_ml : 0;
 }
@@ -1444,52 +1447,45 @@ void sfx::sound_thread::operator()() const
     // that might change (e.g. g->u.weapon, the character could switch weapons while this thread
     // runs).
     std::this_thread::sleep_for( std::chrono::milliseconds( rng( 1, 2 ) ) );
-    std::string variant_used;
     const season_type seas = season_of_year( calendar::turn );
     const std::string seas_str = season_str( seas );
     const bool indoors = !is_creature_outside( get_player_character() );
     const bool night = is_night( calendar::turn );
 
-    if( weapon_skill == skill_bashing && weapon_volume <= 8 ) {
-        variant_used = "small_bash";
-        play_variant_sound( "melee_swing", "small_bash", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
-    } else if( weapon_skill == skill_bashing && weapon_volume >= 9 ) {
-        variant_used = "big_bash";
-        play_variant_sound( "melee_swing", "big_bash", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
-    } else if( ( weapon_skill == skill_cutting || weapon_skill == skill_stabbing ) &&
-               weapon_volume <= 6 ) {
-        variant_used = "small_cutting";
-        play_variant_sound( "melee_swing", "small_cutting", seas_str, indoors, night,
-                            vol_src, ang_src, 0.8, 1.2 );
-    } else if( ( weapon_skill == skill_cutting || weapon_skill == skill_stabbing ) &&
-               weapon_volume >= 7 ) {
-        variant_used = "big_cutting";
-        play_variant_sound( "melee_swing", "big_cutting", seas_str, indoors, night,
+    std::string skill_variant_used;
+    std::string variant_used = weapon_id.str();
+
+    if( weapon_skill == skill_bashing ) {
+        skill_variant_used = ( weapon_volume > 8 ) ? "big_bash" : "small_bash";
+    } else if( weapon_skill == skill_cutting ) {
+        skill_variant_used = ( weapon_volume > 6 ) ? "big_cutting" : "small_cutting";
+    } else if( weapon_skill == skill_stabbing ) {
+        skill_variant_used = ( weapon_volume > 4 ) ? "big_stabbing" : "small_stabbing";
+    } else if( weapon_skill == skill_unarmed ) {
+        skill_variant_used = "unarmed";
+    } else {
+        skill_variant_used = "default";
+    }
+    
+    if( weapon_id != itype_id::NULL_ID() && has_variant_sound( "melee_swing", variant_used, seas_str, indoors, night ) ) {
+        play_variant_sound( "melee_swing", variant_used, seas_str, indoors, night,
                             vol_src, ang_src, 0.8, 1.2 );
     } else {
-        variant_used = "default";
-        play_variant_sound( "melee_swing", "default", seas_str, indoors, night,
+        play_variant_sound( "melee_swing", skill_variant_used, seas_str, indoors, night,
                             vol_src, ang_src, 0.8, 1.2 );
     }
+    
     if( hit ) {
-        if( targ_mon ) {
-            if( material == "steel" ) {
-                std::this_thread::sleep_for( std::chrono::milliseconds( rng( weapon_volume * 12,
-                                             weapon_volume * 16 ) ) );
-                play_variant_sound( "melee_hit_metal", variant_used, seas_str, indoors,
-                                    night, vol_targ, ang_targ, 0.8, 1.2 );
-            } else {
-                std::this_thread::sleep_for( std::chrono::milliseconds( rng( weapon_volume * 12,
-                                             weapon_volume * 16 ) ) );
-                play_variant_sound( "melee_hit_flesh", variant_used, seas_str, indoors,
-                                    night, vol_targ, ang_targ, 0.8, 1.2 );
-            }
+        const int sleep_time = weapon_volume * ( targ_mon ? rng( 12, 16 ) : rng( 9, 12 ) );
+        std::string melee_hit_material = ( targ_mon && material == "steel" ) ? "melee_hit_metal" : "melee_hit_flesh";
+    
+        if( weapon_id != itype_id::NULL_ID() && has_variant_sound( melee_hit_material, variant_used, seas_str, indoors, night ) ) {
+            std::this_thread::sleep_for( std::chrono::milliseconds( sleep_time ) );
+            play_variant_sound( melee_hit_material, variant_used, seas_str, indoors,
+                                night, vol_targ, ang_targ, 0.8, 1.2 );
         } else {
-            std::this_thread::sleep_for( std::chrono::milliseconds( rng( weapon_volume * 9,
-                                         weapon_volume * 12 ) ) );
-            play_variant_sound( "melee_hit_flesh", variant_used, seas_str, indoors,
+            std::this_thread::sleep_for( std::chrono::milliseconds( sleep_time ) );
+            play_variant_sound( melee_hit_material, skill_variant_used, seas_str, indoors,
                                 night, vol_targ, ang_targ, 0.8, 1.2 );
         }
     }
