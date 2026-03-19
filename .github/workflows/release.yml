@@ -75,14 +75,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Windows Tiles x64 MSVC
-            artifact: windows-with-graphics-x64
-            arch: x64
-            os: windows-2022
-            ext: zip
-            content: application/zip
-            tiles: 1
-            sound: 0
           - name: Windows Tiles Sounds x64 MSVC
             artifact: windows-with-graphics-and-sounds-x64
             arch: x64
