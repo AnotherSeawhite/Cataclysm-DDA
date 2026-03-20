@@ -1325,6 +1325,7 @@ void sfx::generate_gun_sound( const Character &source_arg, const item &firing )
     }
 
     itype_id weapon_id = firing.typeId();
+    ammotype ammo_type = firing.ammo_type();
     units::angle angle = 0_degrees;
     int distance = 0;
     std::string selected_sound;
@@ -1355,8 +1356,15 @@ void sfx::generate_gun_sound( const Character &source_arg, const item &firing )
         }
     }
 
-    play_variant_sound( selected_sound, weapon_id.str(), seas_str, indoors, night,
-                        heard_volume, angle, 0.8, 1.2 );
+    // always
+    if ( !ammo_type.is_null() && weapon_id != itype_weapon_fire_suppressed &&
+        has_variant_sound( selected_sound + "_ammo", ammo_type.str(), seas_str, indoors, night ) ) {
+        play_variant_sound( selected_sound + "_ammo", ammo_type.str(), seas_str, indoors, night,
+                            heard_volume, angle, 0.8, 1.2 );
+    } else {
+        play_variant_sound( selected_sound, weapon_id.str(), seas_str, indoors, night,
+                            heard_volume, angle, 0.8, 1.2 );
+    }
     start_sfx_timestamp = std::chrono::high_resolution_clock::now();
 }
 
